@@ -16,8 +16,6 @@ public class DrawLine : MonoBehaviour
 
     Slowmotion slowmoClass;
 
-    int numPoints = 0, numAnimators;
-
     private void Start()
     {
         //fingerPositions = new List<GameObject>();
@@ -71,7 +69,6 @@ public class DrawLine : MonoBehaviour
         GameObject lineInstance = Instantiate(linePrefab, newFingerPos, rotation) as GameObject;
         previousFingerPosition = lineInstance;
         playerPrefab.GetComponent<Player>().SetWayPoints(previousFingerPosition, true);
-        numPoints += 1;
     }
 
 }

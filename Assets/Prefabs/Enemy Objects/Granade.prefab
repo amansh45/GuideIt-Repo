@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1115305243761945662}
   - component: {fileID: 1115305243761945660}
   - component: {fileID: 50374604166089338}
-  - component: {fileID: 789585936}
+  - component: {fileID: 1323208920}
   m_Layer: 12
   m_Name: Granade
   m_TagString: Untagged
@@ -30,7 +30,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 2497828663415282049}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -70,15 +71,15 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -996086949
-  m_SortingLayer: 3
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: e7b2bf22825bc9e49b76a2d13cd815e5, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fd10b7f7425d4e34289d60b03a612efb, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.39, y: 1.46}
+  m_Size: {x: 3, y: 3}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -97,6 +98,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   granadeSpeed: 500
+  shrinkFactorOnLaunch: 0.35
+  explosionTime: 1
 --- !u!50 &50374604166089338
 Rigidbody2D:
   serializedVersion: 4
@@ -118,8 +121,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!70 &789585936
-CapsuleCollider2D:
+--- !u!58 &1323208920
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -128,9 +131,84 @@ CapsuleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.3, y: 1.1230769}
-  m_Direction: 0
+  m_Offset: {x: -0.023294032, y: 0.019450158}
+  serializedVersion: 2
+  m_Radius: 0.27926186
+--- !u!1001 &2415015028156518048
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1115305243761945663}
+    m_Modifications:
+    - target: {fileID: 227936113436120865, guid: ba892a1ecbb0e6241833cba06289d4a2,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 227936113436120865, guid: ba892a1ecbb0e6241833cba06289d4a2,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 227936113436120865, guid: ba892a1ecbb0e6241833cba06289d4a2,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 227936113436120865, guid: ba892a1ecbb0e6241833cba06289d4a2,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 227936113436120865, guid: ba892a1ecbb0e6241833cba06289d4a2,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 227936113436120865, guid: ba892a1ecbb0e6241833cba06289d4a2,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 227936113436120865, guid: ba892a1ecbb0e6241833cba06289d4a2,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 227936113436120865, guid: ba892a1ecbb0e6241833cba06289d4a2,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 227936113436120865, guid: ba892a1ecbb0e6241833cba06289d4a2,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 227936113436120865, guid: ba892a1ecbb0e6241833cba06289d4a2,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 227936113436120865, guid: ba892a1ecbb0e6241833cba06289d4a2,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1861021867534272850, guid: ba892a1ecbb0e6241833cba06289d4a2,
+        type: 3}
+      propertyPath: m_Name
+      value: Granade Particle System
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ba892a1ecbb0e6241833cba06289d4a2, type: 3}
+--- !u!4 &2497828663415282049 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 227936113436120865, guid: ba892a1ecbb0e6241833cba06289d4a2,
+    type: 3}
+  m_PrefabInstance: {fileID: 2415015028156518048}
+  m_PrefabAsset: {fileID: 0}

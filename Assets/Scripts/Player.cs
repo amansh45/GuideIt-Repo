@@ -6,14 +6,14 @@ public class Player : MonoBehaviour
 {
 
     // Speed of the ball when mouseDown
-    [SerializeField] float moveSpeed = 1.2f;
+    float moveSpeed;
 
     // Speed of the ball when mouseUp
     [SerializeField] float runSpeed = 10f;
 
     // Hovering speed of the ball when no path is present in the screen..
     [SerializeField] float idleSpeed = 25f;
-
+    
     float ballSpeed;
 
     List<List<GameObject>> waypoints_buffer = new List<List<GameObject>>();
@@ -24,6 +24,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         ballSpeed = idleSpeed;
+        moveSpeed = 0.1f * runSpeed;
     }
 
     public void SetWayPoints(GameObject point, bool isLineCreated)
@@ -39,7 +40,6 @@ public class Player : MonoBehaviour
         {
             waypoints_buffer[lineIndex].Add(point);
         }
-        Debug.Log("Ball speed is:" + ballSpeed);
     }
 
     public void MoveBallNormally()

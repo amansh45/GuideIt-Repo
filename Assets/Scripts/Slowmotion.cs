@@ -30,21 +30,29 @@ public class Slowmotion : MonoBehaviour {
             var granadeLauncher = gameEntities[i].GetComponent<GranadeLauncher>();
             if (granadeLauncher != null) {
                 if (slowmo)
-                    granadeLauncher.InitiateGranade(slowmoSpeed);
+                    granadeLauncher.SetSlowmoForGranadeLauncher(slowmoSpeed);
                 else
-                    granadeLauncher.InitiateGranade(1f);
+                    granadeLauncher.SetSlowmoForGranadeLauncher(1f);
             }
-
         }
 
-        // update speed for all active granades.
+        // update moving speed for all active granades and scaling speed of all non active granades.
         Granade[] granades = FindObjectsOfType<Granade>();
         int activeGranades = granades.Length;
         for (int i = 0; i < activeGranades; i++) {
-            if (slowmo) {
-                granades[i].GetComponent<Granade>().setGranadeSpeed(slowmoSpeed);
+            Granade granadeClass = granades[i].GetComponent<Granade>();
+            if(granadeClass.isGranadeActive()) {
+                if (slowmo) {
+                    granadeClass.setGranadeSpeed(slowmoSpeed);
+                } else {
+                    granadeClass.setGranadeSpeed((1 / slowmoSpeed));
+                }
             } else {
-                granades[i].GetComponent<Granade>().setGranadeSpeed((1 / slowmoSpeed));
+                if(slowmo) {
+                    granadeClass.SetScaleFactor(slowmoSpeed);
+                } else {
+                    granadeClass.SetScaleFactor((1 / slowmoSpeed));
+                }
             }
         }
     }

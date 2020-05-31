@@ -5,14 +5,21 @@ using UnityEngine;
 public class GranadeLauncher : MonoBehaviour {
     
     [SerializeField] GameObject granadePrefab;
+
     float initializationFactor = 1f;
+    Granade granadeClass;
 
     void ShootGranade() {
-        GameObject granade = Instantiate(granadePrefab, transform.position, transform.rotation) as GameObject;
-        granade.GetComponent<Granade>().setGranadeSpeed(initializationFactor);
+        granadeClass.setGranadeSpeed(initializationFactor);
+        granadeClass.MoveGranade();
     }
 
-    public void InitiateGranade(float slowmoFactor) {
+    void InitiateGranade() {
+        GameObject granade = Instantiate(granadePrefab, transform.position, transform.rotation) as GameObject;
+        granadeClass = granade.GetComponent<Granade>();
+    }
+
+    public void SetSlowmoForGranadeLauncher(float slowmoFactor) {
         initializationFactor = slowmoFactor;
     }
 

@@ -41,21 +41,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Play Space
-    uniqueID: 2874507961
-    locked: 0
   - name: Background
     uniqueID: 1711322273
     locked: 0
-  - name: Enemy Objects Base
+  - name: Foreground
+    uniqueID: 4166375983
+    locked: 0
+  - name: Objects Base
     uniqueID: 3298880347
     locked: 0
-  - name: Enemy Objects Upper
+  - name: Objects Upper
     uniqueID: 536208145
-    locked: 0
-  - name: Player Path
-    uniqueID: 3429928425
-    locked: 0
-  - name: Player
-    uniqueID: 436701453
     locked: 0

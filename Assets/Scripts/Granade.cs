@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Granade : MonoBehaviour {
 
-    [SerializeField] float granadeSpeed = 100f, shrinkFactorOnLaunch = 0.6f, explosionTime = 1.5f;
+    [SerializeField] float granadeSpeed = 200f, shrinkFactorOnLaunch = 0.3f, explosionTime = 1.5f, cameraShakeDuration = 0.25f;
     VFXController vfxControllerClass;
 
     bool isGranadeMoving = false;
-    float startScale = 0, scaleFactor = 0.01f;
+    float startScale = 0f, scaleFactor = 0.01f;
 
     private void Start() {
         transform.localScale = new Vector3(startScale, startScale, startScale);
@@ -16,12 +16,14 @@ public class Granade : MonoBehaviour {
     }
 
     void Update() {
-        if(isGranadeMoving) {
+        if (isGranadeMoving) {
             float projectileSpeed = granadeSpeed * Time.deltaTime;
             GetComponent<Rigidbody2D>().velocity = transform.right * projectileSpeed;
-        } else if(startScale <= 1f) {
-            startScale += scaleFactor;
-            transform.localScale = new Vector3(startScale, startScale, startScale);
+        } else {
+            if (startScale < 1f) {
+                startScale += scaleFactor;
+                transform.localScale = new Vector3(startScale, startScale, startScale);    
+            } 
         }
     }
 
@@ -29,6 +31,8 @@ public class Granade : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D other) {
         DeleteThis delClass = other.gameObject.GetComponent<DeleteThis>();
         if(delClass != null) {
+            CameraManager camManager = FindObjectOfType<CameraManager>().GetComponent<CameraManager>();
+            camManager.ShakeCamera(cameraShakeDuration);
             Destroy(gameObject);
             vfxControllerClass.InitiateExplodeEffect(transform.position, explosionTime);
         }
@@ -40,7 +44,7 @@ public class Granade : MonoBehaviour {
 
     public void MoveGranade() {
         isGranadeMoving = true;
-        transform.localScale -= new Vector3(0, shrinkFactorOnLaunch, 0);
+        transform.localScale = new Vector3(1f, (1f-shrinkFactorOnLaunch), 1f);
     }
 
     public void setGranadeSpeed(float slowmotionFactor) {

@@ -9,13 +9,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8501774333693054798}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Aim
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8501774333693054798
 Transform:
   m_ObjectHideFlags: 0
@@ -43,7 +43,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6050546757551528285}
   - component: {fileID: 6050546757551528284}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Circle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -124,7 +124,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6050546757936016439}
   - component: {fileID: 1203927486182875506}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Granade Launcher
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -140,7 +140,7 @@ Transform:
   m_GameObject: {fileID: 6050546757936016432}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.1, y: 1.1, z: 1.1}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0}
   m_Children:
   - {fileID: 6050546759158705080}
   - {fileID: 6050546758937211546}
@@ -169,7 +169,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6050546758101490903}
   - component: {fileID: 6050546758101490902}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Cannon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -251,7 +251,7 @@ GameObject:
   - component: {fileID: 6050546758937211546}
   - component: {fileID: 572031056}
   - component: {fileID: 572031055}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -265,7 +265,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6050546758937211547}
-  m_LocalRotation: {x: -0, y: -0, z: -0.09246073, w: -0.99571633}
+  m_LocalRotation: {x: -0, y: -0, z: -0.2532142, w: -0.96741027}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -274,7 +274,7 @@ Transform:
   - {fileID: 8501774333693054798}
   m_Father: {fileID: 6050546757936016439}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 370.61}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 389.336}
 --- !u!95 &572031056
 Animator:
   serializedVersion: 3
@@ -308,10 +308,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   granadePrefab: {fileID: 1115305243761945601, guid: 493e1d3a6ca1f9246b3f8f3dae4b704f,
     type: 3}
-  electricityParticleSystem: {fileID: 672542552981682269, guid: 8c21b97350bf90347a9f77981d550c6c,
-    type: 3}
-  destroyElectricityEffectAfter: 0.1
-  granadeShrinkFactorOnLaunch: 0.5
 --- !u!1 &6050546759158705081
 GameObject:
   m_ObjectHideFlags: 0
@@ -322,7 +318,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6050546759158705080}
   - component: {fileID: 6050546759158705087}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -379,8 +375,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -128591313
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 472081d3a92957b42a33e6fc9b3bbbb2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -403,7 +399,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8094834617812788425}
   - component: {fileID: 110350060619945131}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Aim Bubble
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -484,7 +480,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6278337771826262067}
   - component: {fileID: 4717867439591896253}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Aim Bubble (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -565,7 +561,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8113669466905259414}
   - component: {fileID: 7704434961416302710}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Aim Bubble (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

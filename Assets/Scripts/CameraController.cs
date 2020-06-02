@@ -8,16 +8,16 @@ public enum CameraTrigger
     Shake,
 }
 
-public class CameraController : MonoBehaviour {
+public class CameraController : MonoBehaviour
+{
     private Animator animator;
 
-    private void Start()
-    {
+    void Start() {
         animator = GetComponent<Animator>();
     }
 
-    public void TriggerCamera(CameraTrigger trigger) {
+    public void TriggerCamera(CameraTrigger trigger)
+    {
         animator.SetTrigger(trigger.ToString());
     }
-
 }

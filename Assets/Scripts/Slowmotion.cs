@@ -26,8 +26,8 @@ public class Slowmotion : MonoBehaviour {
                 }
             }
 
-            // set game launchers to initialize new granades wrt slow-motion factor.
-            var granadeLauncher = gameEntities[i].GetComponent<GranadeLauncher>();
+            // set enemy granade launchers to initialize new granades wrt slow-motion factor.
+            var granadeLauncher = gameEntities[i].GetComponent<EnemyLauncher>();
             if (granadeLauncher != null) {
                 if (slowmo)
                     granadeLauncher.SetSlowmoForGranadeLauncher(slowmoSpeed);

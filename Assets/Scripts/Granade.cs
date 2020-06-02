@@ -6,6 +6,7 @@ public class Granade : MonoBehaviour {
 
     [SerializeField] float granadeSpeed = 200f, shrinkFactorOnLaunch = 0.3f, explosionTime = 1.5f, cameraShakeDuration = 0.25f;
     VFXController vfxControllerClass;
+    ScreenRipple screenRippleClass;
 
     bool isGranadeMoving = false;
     float startScale = 0f, scaleFactor = 0.01f;
@@ -13,6 +14,7 @@ public class Granade : MonoBehaviour {
     private void Start() {
         transform.localScale = new Vector3(startScale, startScale, startScale);
         vfxControllerClass = FindObjectOfType<VFXController>().GetComponent<VFXController>();
+        screenRippleClass = Camera.main.GetComponent<ScreenRipple>();
     }
 
     void Update() {
@@ -33,6 +35,7 @@ public class Granade : MonoBehaviour {
         if(delClass != null) {
             CameraManager camManager = FindObjectOfType<CameraManager>().GetComponent<CameraManager>();
             camManager.ShakeCamera(cameraShakeDuration);
+            screenRippleClass.ScreenRippleEffect(transform.position);
             Destroy(gameObject);
             vfxControllerClass.InitiateExplodeEffect(transform.position, explosionTime);
         }

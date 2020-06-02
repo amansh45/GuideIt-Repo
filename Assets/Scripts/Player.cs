@@ -2,6 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum PlayerState {
+    Run,
+    Still,
+    Hover,
+}
+
 public class Player : MonoBehaviour
 {
 
@@ -12,18 +18,30 @@ public class Player : MonoBehaviour
     [SerializeField] float runSpeed = 10f;
 
     // Hovering speed of the ball when no path is present in the screen..
-    [SerializeField] float idleSpeed = 25f;
-    
+    [SerializeField] float hoverSpeed = 25f;
+
+    [SerializeField] float shootXPThreshold = 5f;
+
+    float currentXP = 5f;
+
+    public float shootingThreshold = 5f;
+
     float ballSpeed;
 
     List<List<GameObject>> waypoints_buffer = new List<List<GameObject>>();
 
     int waypointIndex = 0, lineIndex = 0;
     bool isMouseDown = false;
+    bool reducePlayerScaleToZero = false;
+
+    public void SetScale(float scale)
+    {
+        transform.localScale = new Vector3(scale, scale, scale);
+    }
 
     void Start()
     {
-        ballSpeed = idleSpeed;
+        ballSpeed = hoverSpeed;
         moveSpeed = 0.1f * runSpeed;
     }
 
@@ -42,9 +60,13 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void MoveBallNormally()
-    {
-        ballSpeed = runSpeed;
+    public void MovePlayer(PlayerState speed) {
+        if (speed == PlayerState.Run)
+            ballSpeed = runSpeed;
+        else if (speed == PlayerState.Still)
+            ballSpeed = 0f;
+        else if (speed == PlayerState.Hover)
+            ballSpeed = hoverSpeed;
     }
 
 
@@ -96,9 +118,14 @@ public class Player : MonoBehaviour
         }
         else
         {
-            float movementThisFrame = idleSpeed * Time.deltaTime;
+            float movementThisFrame = ballSpeed * Time.deltaTime;
             GetComponent<Rigidbody2D>().velocity = new Vector2(0, movementThisFrame);
         }
+    }
+
+    public bool reachedXPToShoot()
+    {
+        return currentXP >= shootXPThreshold;
     }
 
 }

@@ -16,17 +16,17 @@ public class CameraManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
     }
 
-
-    IEnumerator CamShake(float sec) {
+    IEnumerator CamShake(float sec)
+    {
         camController.TriggerCamera(CameraTrigger.Shake);
         yield return new WaitForSeconds(sec);
         camController.TriggerCamera(CameraTrigger.Default);
     }
 
-    public void ShakeCamera(float sec) {
+    public void ShakeCamera(float sec)
+    {
         if (routine != null)
             StopCoroutine(routine);
         routine = StartCoroutine(CamShake(sec));
     }
-
 }

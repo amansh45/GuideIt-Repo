@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyLauncher : MonoBehaviour {
-    
-    [SerializeField] GameObject granadePrefab, playerPrefab;
-    
-    float initializationFactor = 1f, spawnScaleFactor = 0f;
-    Granade granadeClass;
-    
+public class EnemyLauncher : MonoBehaviour
+{
 
-    private void Update() {
+    [SerializeField] GameObject granadePrefab, playerPrefab;
+
+    float initializationFactor = 1f, spawnScaleFactor = 0f;
+    Granade latestGranadeClass;
+    GameObject latestGranade;
+
+    private void Update()
+    {
         Vector3 target = playerPrefab.transform.position;
         target.z = 0f;
 
@@ -22,19 +24,27 @@ public class EnemyLauncher : MonoBehaviour {
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
     }
 
-    void ShootGranade() {
-        granadeClass.transform.rotation = transform.rotation;
-        granadeClass.setGranadeSpeed(initializationFactor);
-        granadeClass.MoveGranade();
+    void ShootGranade()
+    {
+        latestGranadeClass.transform.rotation = transform.rotation;
+        latestGranadeClass.setGranadeSpeed(initializationFactor);
+        latestGranadeClass.MoveGranade();
     }
 
-    void InitiateGranade() {
-        GameObject granade = Instantiate(granadePrefab, transform.position, transform.rotation) as GameObject;
-        granadeClass = granade.GetComponent<Granade>();
+    void InitiateGranade()
+    {
+        latestGranade = Instantiate(granadePrefab, transform.position, transform.rotation) as GameObject;
+        latestGranadeClass = latestGranade.GetComponent<Granade>();
     }
 
-    public void SetSlowmoForGranadeLauncher(float slowmoFactor) {
+    public void SetSlowmoForGranadeLauncher(float slowmoFactor)
+    {
         initializationFactor = slowmoFactor;
+    }
+
+    private void OnDestroy()
+    {
+        Destroy(latestGranade);
     }
 
 }

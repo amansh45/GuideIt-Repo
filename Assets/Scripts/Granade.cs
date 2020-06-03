@@ -2,59 +2,86 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Granade : MonoBehaviour {
+public class Granade : MonoBehaviour
+{
 
-    [SerializeField] float granadeSpeed = 200f, shrinkFactorOnLaunch = 0.3f, explosionTime = 1.5f, cameraShakeDuration = 0.25f;
+    [SerializeField] float granadeSpeed = 200f, shrinkFactorOnLaunch = 0.3f;
     VFXController vfxControllerClass;
-    ScreenRipple screenRippleClass;
 
     bool isGranadeMoving = false;
     float startScale = 0f, scaleFactor = 0.01f;
+    Rigidbody2D granadeRigidBody;
 
-    private void Start() {
+    private void Start()
+    {
         transform.localScale = new Vector3(startScale, startScale, startScale);
         vfxControllerClass = FindObjectOfType<VFXController>().GetComponent<VFXController>();
-        screenRippleClass = Camera.main.GetComponent<ScreenRipple>();
+        granadeRigidBody = GetComponent<Rigidbody2D>();
     }
 
-    void Update() {
-        if (isGranadeMoving) {
+    void Update()
+    {
+        if (isGranadeMoving)
+        {
             float projectileSpeed = granadeSpeed * Time.deltaTime;
-            GetComponent<Rigidbody2D>().velocity = transform.right * projectileSpeed;
-        } else {
-            if (startScale < 1f) {
+            granadeRigidBody.velocity = transform.right * projectileSpeed;
+        }
+        else
+        {
+            if (startScale < 1f)
+            {
                 startScale += scaleFactor;
-                transform.localScale = new Vector3(startScale, startScale, startScale);    
-            } 
+                transform.localScale = new Vector3(startScale, startScale, startScale);
+            }
         }
     }
 
-    
-    private void OnTriggerEnter2D(Collider2D other) {
-        DeleteThis delClass = other.gameObject.GetComponent<DeleteThis>();
-        if(delClass != null) {
-            CameraManager camManager = FindObjectOfType<CameraManager>().GetComponent<CameraManager>();
-            camManager.ShakeCamera(cameraShakeDuration);
-            screenRippleClass.ScreenRippleEffect(transform.position);
-            Destroy(gameObject);
-            vfxControllerClass.InitiateExplodeEffect(transform.position, explosionTime);
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+
+        if (tag == ObjectsDescription.EnemyProjectile.ToString() && isGranadeMoving)
+        {
+            if (other.gameObject.tag == ObjectsDescription.Player.ToString() || other.gameObject.tag == ObjectsDescription.PlayerProjectile.ToString())
+            {
+                Destroy(gameObject);
+                vfxControllerClass.InitiateCameraShakeEffect();
+                vfxControllerClass.InitiateScreenRippleEffect(transform.position);
+                vfxControllerClass.InitiateExplodeEffect(transform.position);
+            }
+        }
+        else if (tag == ObjectsDescription.PlayerProjectile.ToString())
+        {
+            if (other.gameObject.tag == ObjectsDescription.EnemyLauncher.ToString())
+            {
+                vfxControllerClass.InitiateCameraShakeEffect();
+                GameObject launcher = other.transform.parent.gameObject;
+                vfxControllerClass.InitiateScreenRippleEffect(launcher.transform.position);
+                vfxControllerClass.InitiateExplodeEffect(launcher.transform.position);
+                Destroy(launcher);
+                Destroy(gameObject);
+            }
         }
     }
 
-    public void SetScaleFactor(float slomotionScaleFactor) {
+    public void SetScaleFactor(float slomotionScaleFactor)
+    {
         scaleFactor *= slomotionScaleFactor;
     }
 
-    public void MoveGranade() {
+    public void MoveGranade()
+    {
         isGranadeMoving = true;
-        transform.localScale = new Vector3(1f, (1f-shrinkFactorOnLaunch), 1f);
+        transform.localScale = new Vector3(1f, (1f - shrinkFactorOnLaunch), 1f);
     }
 
-    public void setGranadeSpeed(float slowmotionFactor) {
+    public void setGranadeSpeed(float slowmotionFactor)
+    {
         granadeSpeed *= slowmotionFactor;
     }
 
-    public bool isGranadeActive() {
+    public bool isGranadeActive()
+    {
         return isGranadeMoving;
     }
 

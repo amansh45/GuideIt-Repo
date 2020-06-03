@@ -2,6 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum ObjectsDescription
+{
+    Player,
+    EnemyObject,
+    EnemyProjectile,
+    PlayerProjectile,
+    EnemyLauncher,
+    FinishLine,
+}
+
 public class CameraManager : MonoBehaviour
 {
     [SerializeField] CameraController camController;

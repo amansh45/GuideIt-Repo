@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectsGlow : MonoBehaviour {
+public class ObjectsGlow : MonoBehaviour
+{
     [SerializeField] Material objectsGlowMaterial;
     [SerializeField] float fadeOneMin = 0.68f, fadeOneMax = 0.68f;
     [SerializeField] float fadeTwoMin = 0.7f, fadeTwoMax = 3f;
@@ -14,7 +15,8 @@ public class ObjectsGlow : MonoBehaviour {
 
     [SerializeField] bool isGlowing = true;
 
-    private IEnumerator Start() {
+    private IEnumerator Start()
+    {
         fadeOneCurrent = fadeOneMin;
         fadeTwoCurrent = fadeTwoMin;
         blendFadeCurrent = blendFadeMin;
@@ -22,14 +24,17 @@ public class ObjectsGlow : MonoBehaviour {
         fadeOneDifference = (fadeOneMax - fadeOneMin) / 20;
         fadeTwoDifference = (fadeTwoMax - fadeTwoMin) / 20;
         blendFadeDifference = (blendFadeMax - blendFadeMin) / 20;
-        while(true) {
+        while (true)
+        {
             yield return StartCoroutine(StartObjectCycle());
         }
     }
 
-    private IEnumerator StartObjectCycle() {
+    private IEnumerator StartObjectCycle()
+    {
         float timeInstance = 0f;
-        while(timeInstance <= glowCycleTime) {
+        while (timeInstance <= glowCycleTime)
+        {
             timeInstance += glowLastingTime;
             yield return new WaitForSeconds(glowLastingTime);
             UpdateObjectGlow();
@@ -47,12 +52,16 @@ public class ObjectsGlow : MonoBehaviour {
             UpdateGlowProperties("_OperationBlen_Fade_1", ref blendFadeCurrent, blendFadeMin, blendFadeMax, blendFadeDifference);
     }
 
-    void UpdateGlowProperties(string propertyName, ref float currentIntensity, float minIntensity, float maxIntensity, float intensityDiff) {
+    void UpdateGlowProperties(string propertyName, ref float currentIntensity, float minIntensity, float maxIntensity, float intensityDiff)
+    {
         objectsGlowMaterial.SetFloat(propertyName, currentIntensity);
-        
-        if (isGlowing) {
+
+        if (isGlowing)
+        {
             currentIntensity += intensityDiff;
-        } else {
+        }
+        else
+        {
             currentIntensity -= intensityDiff;
         }
     }

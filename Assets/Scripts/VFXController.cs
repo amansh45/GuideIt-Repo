@@ -4,16 +4,36 @@ using UnityEngine;
 
 public class VFXController : MonoBehaviour
 {
-    [SerializeField] GameObject rippleEffectParticleSystem;
-    [SerializeField] GameObject explodeParticleSystem;
+    [SerializeField] GameObject rippleEffectParticleSystem, explodeParticleSystem;
+    [SerializeField] float rippleEffectDuration = 1f, explosionEffectDuration = 1.5f, cameraShakeDuration = 0.25f;
+    [SerializeField] Camera mainCamera;
+    ScreenRipple screenRippleClass;
 
-    public void InitiateRippleEffect(Vector3 position, float effectDuration) {
-        GameObject ripple = Instantiate(rippleEffectParticleSystem, position, transform.rotation);
-        Destroy(ripple, effectDuration);
+    private void Start()
+    {
+        screenRippleClass = mainCamera.GetComponent<ScreenRipple>();
     }
-    
-    public void InitiateExplodeEffect(Vector3 position, float effectDuration) {
+
+    public void InitiateRippleEffect(Vector3 position)
+    {
+        GameObject ripple = Instantiate(rippleEffectParticleSystem, position, transform.rotation);
+        Destroy(ripple, rippleEffectDuration);
+    }
+
+    public void InitiateExplodeEffect(Vector3 position)
+    {
         GameObject explosion = Instantiate(explodeParticleSystem, position, transform.rotation);
-        Destroy(explosion, effectDuration);
+        Destroy(explosion, explosionEffectDuration);
+    }
+
+    public void InitiateCameraShakeEffect()
+    {
+        CameraManager camManager = FindObjectOfType<CameraManager>().GetComponent<CameraManager>();
+        camManager.ShakeCamera(cameraShakeDuration);
+    }
+
+    public void InitiateScreenRippleEffect(Vector3 position)
+    {
+        screenRippleClass.ScreenRippleEffect(transform.position);
     }
 }

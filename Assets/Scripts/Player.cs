@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum PlayerState {
+public enum PlayerState
+{
     Run,
     Still,
     Hover,
@@ -24,25 +25,44 @@ public class Player : MonoBehaviour
 
     float currentXP = 5f;
 
-    public float shootingThreshold = 5f;
-
     float ballSpeed;
 
     List<List<GameObject>> waypoints_buffer = new List<List<GameObject>>();
+    List<GameObject> playerParticles = new List<GameObject>();
+    List<Vector3> playerParticlesInitialScale = new List<Vector3>();
 
-    int waypointIndex = 0, lineIndex = 0;
+    int waypointIndex = 0, lineIndex = 0, numParticles;
     bool isMouseDown = false;
     bool reducePlayerScaleToZero = false;
+
+    Rigidbody2D playerRigidBody;
+
+    void Start()
+    {
+        foreach (Transform child in transform)
+        {
+            foreach (Transform particles in child)
+            {
+                playerParticles.Add(particles.gameObject);
+                playerParticlesInitialScale.Add(particles.localScale);
+            }
+        }
+        numParticles = playerParticles.Count;
+        ballSpeed = hoverSpeed;
+        moveSpeed = 0.1f * runSpeed;
+        playerRigidBody = GetComponent<Rigidbody2D>();
+    }
 
     public void SetScale(float scale)
     {
         transform.localScale = new Vector3(scale, scale, scale);
-    }
-
-    void Start()
-    {
-        ballSpeed = hoverSpeed;
-        moveSpeed = 0.1f * runSpeed;
+        for (int i = 0; i < numParticles; i++)
+        {
+            if (scale == 0)
+                playerParticles[i].transform.localScale = new Vector3(scale, scale, scale);
+            else
+                playerParticles[i].transform.localScale = playerParticlesInitialScale[i];
+        }
     }
 
     public void SetWayPoints(GameObject point, bool isLineCreated)
@@ -60,7 +80,8 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void MovePlayer(PlayerState speed) {
+    public void MovePlayer(PlayerState speed)
+    {
         if (speed == PlayerState.Run)
             ballSpeed = runSpeed;
         else if (speed == PlayerState.Still)
@@ -77,9 +98,9 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.GetComponent<Enemy>() != null)
+        if (other.gameObject.tag == ObjectsDescription.EnemyObject.ToString())
             Die();
-        else if (other.gameObject.GetComponent<FinishLine>() != null)
+        else if (other.gameObject.tag == ObjectsDescription.FinishLine.ToString())
             LevelComplete();
     }
 
@@ -108,6 +129,7 @@ public class Player : MonoBehaviour
                 {
                     waypointIndex += 1;
                     Destroy(targetPosition);
+                    //targetPosition.SetActive(false);
                 }
             }
             else if (waypointIndex == waypoints_buffer[lineIndex].Count && waypointIndex != 0)
@@ -119,7 +141,7 @@ public class Player : MonoBehaviour
         else
         {
             float movementThisFrame = ballSpeed * Time.deltaTime;
-            GetComponent<Rigidbody2D>().velocity = new Vector2(0, movementThisFrame);
+            playerRigidBody.velocity = new Vector2(0, movementThisFrame);
         }
     }
 

@@ -2,59 +2,95 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Slowmotion : MonoBehaviour {
+public class Slowmotion : MonoBehaviour
+{
 
     [SerializeField] float slowmoSpeed = 0.1f, normalSpeed = 1f;
     [SerializeField] GameObject[] gameEntities;
-    int numGameEntities;
+    List<Animator> animators = new List<Animator>();
+    List<EnemyLauncher> granadeLaunchersInScene = new List<EnemyLauncher>();
+    int numGameEntities, numAnimators = 0, numLaunchers = 0;
 
 
-    void Start() {
+    void Start()
+    {
         numGameEntities = gameEntities.Length;
-    }
-
-    public void updateAnimations(bool slowmo) {
-
-        // update animations of all gameobjects.
-        for (int i = 0; i < numGameEntities; i++) {
+        for (int i = 0; i < numGameEntities; i++)
+        {
             var animator = gameEntities[i].GetComponent<Animator>();
-            if (animator != null) {
-                if (slowmo) {
-                    animator.speed = slowmoSpeed;
-                } else {
-                    animator.speed = normalSpeed;
-                }
+            if (animator != null)
+            {
+                numAnimators += 1;
+                animators.Add(animator);
             }
 
-            // set enemy granade launchers to initialize new granades wrt slow-motion factor.
-            var granadeLauncher = gameEntities[i].GetComponent<EnemyLauncher>();
-            if (granadeLauncher != null) {
-                if (slowmo)
-                    granadeLauncher.SetSlowmoForGranadeLauncher(slowmoSpeed);
-                else
-                    granadeLauncher.SetSlowmoForGranadeLauncher(1f);
+            var enemyLauncher = gameEntities[i].GetComponent<EnemyLauncher>();
+            if (enemyLauncher != null)
+            {
+                numLaunchers += 1;
+                granadeLaunchersInScene.Add(enemyLauncher);
             }
         }
+    }
+
+    public void updateAnimations(bool slowmo)
+    {
+
+        // update animations of all gameobjects.
+        for (int i = 0; i < numAnimators; i++)
+        {
+            if (animators[i] != null)
+            {
+                if (slowmo)
+                {
+                    animators[i].speed = slowmoSpeed;
+                }
+                else
+                {
+                    animators[i].speed = normalSpeed;
+                }
+            }
+        }
+
+        // set enemy granade launchers to initialize new granades wrt slow-motion factor.
+        for (int i = 0; i < numLaunchers; i++)
+        {
+            if (slowmo)
+                granadeLaunchersInScene[i].SetSlowmoForGranadeLauncher(slowmoSpeed);
+            else
+                granadeLaunchersInScene[i].SetSlowmoForGranadeLauncher(1f);
+        }
+
 
         // update moving speed for all active granades and scaling speed of all non active granades.
         Granade[] granades = FindObjectsOfType<Granade>();
         int activeGranades = granades.Length;
-        for (int i = 0; i < activeGranades; i++) {
+        for (int i = 0; i < activeGranades; i++)
+        {
             Granade granadeClass = granades[i].GetComponent<Granade>();
-            if(granadeClass.isGranadeActive()) {
-                if (slowmo) {
+            if (granadeClass.isGranadeActive())
+            {
+                if (slowmo)
+                {
                     granadeClass.setGranadeSpeed(slowmoSpeed);
-                } else {
+                }
+                else
+                {
                     granadeClass.setGranadeSpeed((1 / slowmoSpeed));
                 }
-            } else {
-                if(slowmo) {
+            }
+            else
+            {
+                if (slowmo)
+                {
                     granadeClass.SetScaleFactor(slowmoSpeed);
-                } else {
+                }
+                else
+                {
                     granadeClass.SetScaleFactor((1 / slowmoSpeed));
                 }
             }
         }
     }
-    
+
 }

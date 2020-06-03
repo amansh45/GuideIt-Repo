@@ -4,100 +4,129 @@ using UnityEngine;
 
 public class PlayerActions : MonoBehaviour
 {
+    [SerializeField] float thresholdDistanceBetweenCheckpoints = 0.3f, thresholdBetweenDClickAndPlayer = 0.5f, thresholdDoubleClickTime = 0.3f;
     [SerializeField] GameObject linePrefab;
-    [SerializeField] float thresholdDistanceBetweenCheckpoints = 0.3f;
     [SerializeField] GameObject slowmotion;
     [SerializeField] GameObject playerLauncher;
-    float aimLineZOffsetForProperRendering = -0.1f, previousClickTime = 0f, doubleClickThreshold = 0.3f;
+    [SerializeField] Camera mainCamera;
+    //ObjectPooler objectPooler;
+
+    float previousClickTime = 0f;
 
     Player playerClass;
-
     GameObject currentLine, previousFingerPosition, playerLauncherInstance;
     Vector2 prevPlayerPosition;
     Slowmotion slowmoClass;
 
     bool isPlayerShooting = false;
-    float bulletSpeed = 5f;
 
-    private void Start() {
+    private void Start()
+    {
         slowmoClass = slowmotion.GetComponent<Slowmotion>();
         playerClass = GetComponent<Player>();
+        //objectPooler = ObjectPooler.Instance;
     }
 
-    private bool isPlayerTryingToShoot(Vector2 fingerPosition) {
+    private bool IsPlayerTryingToShoot(Vector2 fingerPosition)
+    {
         float currentTime = Time.time;
         if (prevPlayerPosition == null)
             return false;
-        bool hasClickedNearPlayer = Vector2.Distance(prevPlayerPosition, fingerPosition) <= playerClass.shootingThreshold;
-        if (currentTime - previousClickTime <= doubleClickThreshold &&  hasClickedNearPlayer) {
+        bool hasClickedNearPlayer = Vector2.Distance(prevPlayerPosition, fingerPosition) <= thresholdBetweenDClickAndPlayer;
+        if (currentTime - previousClickTime <= thresholdDoubleClickTime && hasClickedNearPlayer)
+        {
             previousClickTime = currentTime;
             return true;
-        } else {
+        }
+        else
+        {
             previousClickTime = currentTime;
             return false;
         }
+
     }
 
-    float findAngleBetweenVectors(Vector2 fVec, Vector2 sVec) {
+    float FindAngleBetweenVectors(Vector2 fVec, Vector2 sVec)
+    {
         fVec = fVec - sVec;
         float angle = Mathf.Atan2(fVec.y, fVec.x) * Mathf.Rad2Deg;
         return angle;
     }
 
-    private void InitiateShoot() {
+    private void InitiateShoot()
+    {
         playerClass.MovePlayer(PlayerState.Still);
         playerLauncherInstance = Instantiate(playerLauncher, transform.position, transform.rotation);
         playerClass.SetScale(0f);
         isPlayerShooting = true;
     }
 
-    private void ProcessShoot(Vector2 currentFingerPos, Vector2 currentPlayerPosition) {
-        float launcherAngle = findAngleBetweenVectors(currentPlayerPosition, currentFingerPos);
+    private void ProcessShoot(Vector2 currentFingerPos, Vector2 currentPlayerPosition)
+    {
+        float launcherAngle = FindAngleBetweenVectors(currentPlayerPosition, currentFingerPos);
         var launcherDirection = Quaternion.Euler(new Vector3(0, 0, launcherAngle));
         playerLauncherInstance.transform.rotation = launcherDirection;
     }
 
-    private void FinalizeShoot(Vector2 currentFingerPos, Vector2 currentPlayerPosition) {
+    private void FinalizeShoot(Vector2 currentFingerPos, Vector2 currentPlayerPosition)
+    {
         isPlayerShooting = false;
-        playerClass.SetScale(1f);
-        float bulletFiringAngle = findAngleBetweenVectors(currentPlayerPosition, currentFingerPos);
+        float bulletFiringAngle = FindAngleBetweenVectors(currentPlayerPosition, currentFingerPos);
         var bulletFiringDirection = Quaternion.Euler(new Vector3(0, 0, bulletFiringAngle));
         playerLauncherInstance.GetComponent<PlayerLauncher>().ShootAndSelfDestruct(bulletFiringDirection);
         playerClass.MovePlayer(PlayerState.Hover);
+        playerClass.SetScale(1f);
     }
 
-    private void Update() {
-        Vector2 tempFingerPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    private void Update()
+    {
+        Vector2 tempFingerPos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
         Vector2 currentPlayerPos = transform.position;
-        
-        if (Input.GetMouseButtonDown(0)) {
+
+        if (Input.GetMouseButtonDown(0))
+        {
             slowmoClass.updateAnimations(true);
-            if(isPlayerTryingToShoot(tempFingerPos) && playerClass.reachedXPToShoot()) {
+            if (IsPlayerTryingToShoot(tempFingerPos) && playerClass.reachedXPToShoot())
+            {
                 InitiateShoot();
             }
             prevPlayerPosition = transform.position;
             CreateLine(tempFingerPos);
-        } else if (Input.GetMouseButton(0)) {
-            if(isPlayerShooting) {
+        }
+        else if (Input.GetMouseButton(0))
+        {
+            if (isPlayerShooting)
+            {
                 ProcessShoot(tempFingerPos, currentPlayerPos);
-            } else {
-                try {
+            }
+            else
+            {
+                try
+                {
                     if (Vector2.Distance(tempFingerPos, previousFingerPosition.transform.position) > thresholdDistanceBetweenCheckpoints)
                         UpdateLine(tempFingerPos);
-                } catch (System.Exception exception) {
+                }
+                catch (System.Exception exception)
+                {
                     CreateLine(tempFingerPos);
                 }
             }
-        } else if (Input.GetMouseButtonUp(0)) {
+        }
+        else if (Input.GetMouseButtonUp(0))
+        {
             slowmoClass.updateAnimations(false);
-            if (isPlayerShooting) {
+            if (isPlayerShooting)
+            {
                 FinalizeShoot(tempFingerPos, currentPlayerPos);
-            } else
+            }
+            else
                 playerClass.MovePlayer(PlayerState.Run);
         }
     }
 
-    void CreateLine(Vector2 initialFingerPos) {
+    void CreateLine(Vector2 initialFingerPos)
+    {
+        //currentLine = objectPooler.SpawnFromPool("PathLine", initialFingerPos, Quaternion.identity);
         currentLine = Instantiate(linePrefab, initialFingerPos, Quaternion.identity) as GameObject;
         previousFingerPosition = currentLine;
         playerClass.SetWayPoints(previousFingerPosition, false);
@@ -115,6 +144,7 @@ public class PlayerActions : MonoBehaviour
         }
         */
         var rotation = Quaternion.Euler(0, 0, angle);
+        //GameObject lineInstance = objectPooler.SpawnFromPool("PathLine", newFingerPos, rotation);
         GameObject lineInstance = Instantiate(linePrefab, newFingerPos, rotation) as GameObject;
         previousFingerPosition = lineInstance;
         playerClass.SetWayPoints(previousFingerPosition, true);

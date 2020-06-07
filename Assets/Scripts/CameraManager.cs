@@ -12,6 +12,7 @@ public enum ObjectsDescription
     FinishLine,
 }
 
+
 public class CameraManager : MonoBehaviour
 {
     [SerializeField] CameraController camController;

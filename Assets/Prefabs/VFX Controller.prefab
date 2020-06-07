@@ -39,7 +39,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5725267003532385474}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 09283d47ef58cdb4f8fd64d27be3b03f, type: 3}
   m_Name: 
@@ -65,3 +65,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 414e882a9b66b1b46add18d8c94f2c38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rippleEffectParticleSystem: {fileID: 5759988388290351709, guid: 86c2db124219a224b8b8f0fce77c6f68,
+    type: 3}
+  explodeParticleSystem: {fileID: 714328453090373474, guid: 3459fb56545edd5498a036cb41891bcd,
+    type: 3}
+  rippleEffectDuration: 1
+  explosionEffectDuration: 1.5
+  cameraShakeDuration: 0.25
+  screenBorderOffset: 0.2
+  mainCamera: {fileID: 0}

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 public class VFXController : MonoBehaviour
 {
     [SerializeField] GameObject rippleEffectParticleSystem, explodeParticleSystem;
@@ -9,9 +11,14 @@ public class VFXController : MonoBehaviour
     [SerializeField] Camera mainCamera;
     ScreenRipple screenRippleClass;
 
+
     private void Start()
     {
         screenRippleClass = mainCamera.GetComponent<ScreenRipple>();
+    }
+
+    private void Update() {
+
     }
 
     public void InitiateRippleEffect(Vector3 position)

@@ -21,7 +21,7 @@ TagManager:
   - Play Space
   - Background
   - Enemy Objects
-  - 
+  - Coins
   - 
   - 
   - 
@@ -49,6 +49,9 @@ TagManager:
     locked: 0
   - name: Foreground
     uniqueID: 4166375983
+    locked: 0
+  - name: Coins
+    uniqueID: 3482660809
     locked: 0
   - name: Objects Base
     uniqueID: 3298880347

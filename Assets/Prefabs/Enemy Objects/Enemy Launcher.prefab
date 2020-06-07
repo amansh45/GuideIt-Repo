@@ -69,6 +69,7 @@ MonoBehaviour:
   granadePrefab: {fileID: 1115305243761945601, guid: 493e1d3a6ca1f9246b3f8f3dae4b704f,
     type: 3}
   playerPrefab: {fileID: 0}
+  distanceThreshold: 3
 --- !u!60 &958677897
 PolygonCollider2D:
   m_ObjectHideFlags: 0

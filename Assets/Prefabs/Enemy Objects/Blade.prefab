@@ -93,7 +93,7 @@ Animator:
   m_GameObject: {fileID: 2174306044822466904}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: fe12cd50905d8c24b848bb3e6e3d8022, type: 2}
+  m_Controller: {fileID: 9100000, guid: 9628e44c5735e3d418ec8fd47a07fdc1, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -119,7 +119,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.08, y: 2.5233333}
+    oldSize: {x: 0.81, y: 1.8925}
     newSize: {x: 1.08, y: 2.5233333}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -127,7 +127,7 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -0.024366856, y: -1.2017212}
-      - {x: 0.38235414, y: 0.015051842}
-      - {x: -0.021780133, y: 1.1693554}
-      - {x: -0.4286735, y: -0.014371872}
+    - - {x: -0.024366856, y: -0.93289566}
+      - {x: 0.31514764, y: 0.0016107559}
+      - {x: -0.021780133, y: 0.91397095}
+      - {x: -0.3345846, y: -0.014371872}

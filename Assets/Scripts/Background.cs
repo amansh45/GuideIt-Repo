@@ -5,10 +5,10 @@ using UnityEngine;
 public class Background : MonoBehaviour {
 
     [SerializeField] Camera mainCamera;
-    [SerializeField] float borderSize = 0.2f, extraOffset = 0.5f, borderZAxis = -0.6f, topMargin = 0.5f;
+    [SerializeField] float borderSize = 0.2f, extraOffset = 0.3f, borderZAxis = -0.6f, topMargin = 0.7f;
     [SerializeField] GameObject borderQuadPrefab;
     [SerializeField] List<BackgroundMaterial> backgroundMaterials;
-    
+
     [System.Serializable]
     public struct BackgroundMaterial
     {
@@ -21,7 +21,18 @@ public class Background : MonoBehaviour {
     float cameraWidth, cameraHeight;
     GameLines borderLines;
 
-    private void InstantiateBorders()
+    private void InstantiateBorder(float x, float y, float z, float xScale, float yScale, Material backgroundMaterial, string borderName) {
+        GameObject borderInstance = Instantiate(borderQuadPrefab, transform.position, transform.rotation);
+        if(borderName != "Bottom Border")
+            borderInstance.transform.parent = transform;
+        borderInstance.transform.localScale = new Vector3(xScale, yScale, 0);
+        borderInstance.transform.position = new Vector3(x, y, z);
+        borderInstance.GetComponent<MeshRenderer>().material = backgroundMaterial;
+        borderInstance.transform.name = borderName;
+    }
+
+
+    private void FrameBorders()
     {
         var bottomLeft = mainCamera.ViewportToWorldPoint(new Vector3(0, 0, 0));
         var bottomRight = mainCamera.ViewportToWorldPoint(new Vector3(1, 0, 0));
@@ -31,41 +42,53 @@ public class Background : MonoBehaviour {
         GameObject backgroundQuad = transform.GetChild(0).transform.gameObject;
 
         // left border
-        GameObject borderInstance = Instantiate(borderQuadPrefab, transform.position, transform.rotation);
-        borderInstance.transform.parent = transform;
-        borderInstance.transform.localScale = new Vector3(borderSize, cameraHeight + extraOffset, 0);
-        borderInstance.transform.position = new Vector3(bottomLeft.x + (borderSize/2.0f), backgroundQuad.transform.position.y, borderZAxis);
-        borderInstance.GetComponent<MeshRenderer>().material = backgroundMaterials[currentActiveBackgroundIndex].main;
-        borderInstance.transform.name = "Left Border";
-        
+        InstantiateBorder(bottomLeft.x + (borderSize / 2.0f),
+            backgroundQuad.transform.position.y,
+            borderZAxis,
+            borderSize,
+            cameraHeight + extraOffset,
+            backgroundMaterials[currentActiveBackgroundIndex].main,
+            "Left Border");
+
 
         // right border
-        borderInstance = Instantiate(borderQuadPrefab, transform.position, transform.rotation);
-        borderInstance.transform.parent = transform;
-        borderInstance.transform.localScale = new Vector3(borderSize, cameraHeight + extraOffset, 0);
-        borderInstance.transform.position = new Vector3(bottomRight.x - (borderSize / 2.0f), backgroundQuad.transform.position.y, borderZAxis);
-        borderInstance.GetComponent<MeshRenderer>().material = backgroundMaterials[currentActiveBackgroundIndex].main;
-        borderInstance.transform.name = "Right Border";
-
+        InstantiateBorder(bottomRight.x - (borderSize / 2.0f), 
+            backgroundQuad.transform.position.y,
+            borderZAxis,
+            borderSize,
+            cameraHeight + extraOffset,
+            backgroundMaterials[currentActiveBackgroundIndex].main,
+            "Right Border");
 
         // bottom border
-        borderInstance = Instantiate(borderQuadPrefab, transform.position, transform.rotation);
-        borderInstance.transform.localScale = new Vector3(cameraWidth, borderSize, 0);
-        borderInstance.transform.position = new Vector3(backgroundQuad.transform.position.x, (bottomRight.y + (borderSize / 2.0f)), borderZAxis);
-        borderInstance.GetComponent<MeshRenderer>().material = backgroundMaterials[currentActiveBackgroundIndex].bottom;
-        borderInstance.transform.name = "Bottom Border";
-
+        InstantiateBorder(backgroundQuad.transform.position.x, 
+            (bottomRight.y + (borderSize / 2.0f)),
+            borderZAxis,
+            cameraWidth, 
+            borderSize,
+            backgroundMaterials[currentActiveBackgroundIndex].bottom,
+            "Bottom Border");
 
         // top border
-        borderInstance = Instantiate(borderQuadPrefab, transform.position, transform.rotation);
-        borderInstance.transform.parent = transform;
-        borderInstance.transform.localScale = new Vector3(cameraWidth, topMargin, 0);
-        borderInstance.transform.position = new Vector3(backgroundQuad.transform.position.x, (topRight.y - (borderSize / 2.0f)), borderZAxis);
-        borderInstance.GetComponent<MeshRenderer>().material = backgroundMaterials[currentActiveBackgroundIndex].top;
-        borderInstance.transform.name = "Top Border";
+        InstantiateBorder(backgroundQuad.transform.position.x, 
+            (topRight.y - (topMargin / 2.0f) + extraOffset),
+            borderZAxis,
+            cameraWidth,
+            topMargin,
+            backgroundMaterials[currentActiveBackgroundIndex].top,
+            "Top Border");
+
 
         // draw border lines
-        borderLines.DrawBorderLines(bottomLeft.x + borderSize, bottomLeft.y + borderSize, bottomRight.x - borderSize, topMargin, borderZAxis);
+        borderLines.DrawBorderLines(bottomLeft.x + borderSize, bottomLeft.y + borderSize, bottomRight.x - borderSize, borderZAxis);
+
+        borderLines.ShowLevelProgress(bottomLeft.x + (borderSize / 2.0f), 
+            bottomRight.x - (borderSize / 2.0f), 
+            bottomLeft.y + borderSize, 
+            -1.2f,
+            topRight.y - topMargin + extraOffset,
+            gameObject);
+
     }
     
 
@@ -73,7 +96,7 @@ public class Background : MonoBehaviour {
     {
         borderLines = FindObjectOfType<GameLines>().GetComponent<GameLines>();
         currentActiveBackgroundIndex = 0;
-        InstantiateBorders();
+        FrameBorders();
     }
 
     void Update() {

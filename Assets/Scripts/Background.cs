@@ -17,6 +17,7 @@ public class Background : MonoBehaviour {
         public Material main;
     }
 
+
     int currentActiveBackgroundIndex;
     float cameraWidth, cameraHeight;
     GameLines borderLines;
@@ -84,8 +85,7 @@ public class Background : MonoBehaviour {
 
         borderLines.ShowLevelProgress(bottomLeft.x + (borderSize / 2.0f), 
             bottomRight.x - (borderSize / 2.0f), 
-            bottomLeft.y + borderSize, 
-            -1.2f,
+            bottomLeft.y + borderSize,
             topRight.y - topMargin + extraOffset,
             gameObject);
 

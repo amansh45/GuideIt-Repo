@@ -10,6 +10,7 @@ public class GameLines : MonoBehaviour {
     [SerializeField] float borderWidth = 0.025f;
     [SerializeField] Color color = Color.white;
     [SerializeField] GameObject playerPrefab, levelProgressIndicator;
+    [SerializeField] float progressIndicatorZAxis = -1.2f;
 
     Vector3 bottomLeft, topLeft, bottomRight, topRight;
     Vector3 firstProgressPosition = new Vector3(0,0,0), secondProgressPosition = new Vector3(0,0,0);
@@ -19,10 +20,18 @@ public class GameLines : MonoBehaviour {
     bool gameStarted = false;
     float levelMaxY = 0, levelMinY = 0, playAreaMinY = 0, playAreaMaxY = 0;
 
+    public Dictionary<string, int> borderLineIndicesMapping = new Dictionary<string, int>()
+    {
+        {"Left",  0},
+        {"Right", 1},
+        {"Top", 2},
+        {"Bottom", 3}
+    };
+
     private void RenderLine(Vector3 fpoint, Vector3 spoint, int index)
     {
         Vector3 vPos = lineRenderersList[index].transform.position;
-        if(index != 3)
+        if(borderLineIndicesMapping["Top"] != index)
             lineRenderersList[index].transform.position = new Vector3(vPos.x, vPos.y, borderZaxis);
         else
             lineRenderersList[index].transform.position = new Vector3(vPos.x, vPos.y, (-1) * borderZaxis);
@@ -48,10 +57,10 @@ public class GameLines : MonoBehaviour {
         topLeft = new Vector3(bottomLeftX, topY, borderZaxis);
         topRight = new Vector3(bottomRightX, topY, borderZaxis);
         
-        RenderLine(topRight, bottomRight, 0);
-        RenderLine(bottomLeft, bottomRight, 1);
-        RenderLine(bottomLeft, topLeft, 2);
-        RenderLine(topLeft, topRight, 3);
+        RenderLine(topRight, bottomRight, borderLineIndicesMapping["Right"]);
+        RenderLine(bottomLeft, bottomRight, borderLineIndicesMapping["Bottom"]);
+        RenderLine(bottomLeft, topLeft, borderLineIndicesMapping["Left"]);
+        RenderLine(topLeft, topRight, borderLineIndicesMapping["Top"]);
         levelMaxY = topY;
         levelMinY = bottomLeftY;
     }
@@ -113,18 +122,18 @@ public class GameLines : MonoBehaviour {
         }
     }
 
-    public void ShowLevelProgress(float first_x, float second_x, float y, float z, float globalPlayAreaMaxY, GameObject progressParent)
+    public void ShowLevelProgress(float first_x, float second_x, float y, float globalPlayAreaMaxY, GameObject progressParent)
     {
         firstProgressInstance.transform.parent = progressParent.transform;
         secondProgressInstance.transform.parent = progressParent.transform;
-        firstProgressInstance.transform.position = new Vector3(first_x, y, z);
+        firstProgressInstance.transform.position = new Vector3(first_x, y, progressIndicatorZAxis);
         playAreaMinY = firstProgressInstance.transform.localPosition.y;
 
         // for converting maxY as the localPosition wrt the scrollobject
-        secondProgressInstance.transform.position = new Vector3(second_x, globalPlayAreaMaxY, z);
+        secondProgressInstance.transform.position = new Vector3(second_x, globalPlayAreaMaxY, progressIndicatorZAxis);
         playAreaMaxY = secondProgressInstance.transform.localPosition.y;
 
-        secondProgressInstance.transform.position = new Vector3(second_x, y, z);
+        secondProgressInstance.transform.position = new Vector3(second_x, y, progressIndicatorZAxis);
         gameStarted = true;
     }
 

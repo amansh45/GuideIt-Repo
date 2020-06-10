@@ -8,6 +8,9 @@ public class Background : MonoBehaviour {
     [SerializeField] float borderSize = 0.2f, extraOffset = 0.3f, borderZAxis = -0.6f, topMargin = 0.7f;
     [SerializeField] GameObject borderQuadPrefab;
     [SerializeField] List<BackgroundMaterial> backgroundMaterials;
+    [SerializeField] GameObject playerPrefab;
+
+    PlayerActions playerActionsClass;
 
     [System.Serializable]
     public struct BackgroundMaterial
@@ -33,7 +36,7 @@ public class Background : MonoBehaviour {
     }
 
 
-    private void FrameBorders()
+    private void FrameBordersPlayerAreaAndLevelProgress()
     {
         var bottomLeft = mainCamera.ViewportToWorldPoint(new Vector3(0, 0, 0));
         var bottomRight = mainCamera.ViewportToWorldPoint(new Vector3(1, 0, 0));
@@ -89,14 +92,21 @@ public class Background : MonoBehaviour {
             topRight.y - topMargin + extraOffset,
             gameObject);
 
+        playerActionsClass.SetPlayerMovementArea(bottomLeft.x + (borderSize / 2.0f),
+            bottomRight.x - (borderSize / 2.0f),
+            bottomLeft.y + borderSize,
+            topRight.y - topMargin + extraOffset,
+            gameObject);
+
     }
     
 
     private void Start()
     {
         borderLines = FindObjectOfType<GameLines>().GetComponent<GameLines>();
+        playerActionsClass = playerPrefab.GetComponent<PlayerActions>();
         currentActiveBackgroundIndex = 0;
-        FrameBorders();
+        FrameBordersPlayerAreaAndLevelProgress();
     }
 
     void Update() {

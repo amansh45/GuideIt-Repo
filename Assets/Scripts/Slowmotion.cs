@@ -10,10 +10,11 @@ public class Slowmotion : MonoBehaviour
     List<Animator> animators = new List<Animator>();
     List<EnemyLauncher> granadeLaunchersInScene = new List<EnemyLauncher>();
     int numGameEntities, numAnimators = 0, numLaunchers = 0;
-
+    float slowmoSpeedCache;
 
     void Start()
     {
+        slowmoSpeedCache = slowmoSpeed;
         numGameEntities = gameEntities.Length;
         for (int i = 0; i < numGameEntities; i++)
         {
@@ -31,6 +32,15 @@ public class Slowmotion : MonoBehaviour
                 granadeLaunchersInScene.Add(enemyLauncher);
             }
         }
+    }
+
+    public void customSlowmo(bool flag, float speed)
+    {
+        if(flag)
+            slowmoSpeed = speed;
+        else
+            slowmoSpeed = slowmoSpeedCache;
+        updateAnimations(flag);
     }
 
     public void updateAnimations(bool slowmo)

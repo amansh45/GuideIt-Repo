@@ -6,7 +6,7 @@ public class PlayerLauncher : MonoBehaviour
 {
 
     [SerializeField] GameObject bulletPrefab;
-    [SerializeField] float startScale = 0f, launcherSize = 0.8f, scalingFactor = 0.05f;
+    [SerializeField] float startScale = 0f, launcherSize = 0.6f, scalingFactor = 0.05f;
     Granade bulletClass;
     GameObject bulletInstance;
     

@@ -134,10 +134,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2f90e451eaedad49bc2e988343cc4bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  granadeSpeed: 200
+  granadeSpeed: 250
   shrinkFactorOnLaunch: 0.3
-  explosionTime: 1.5
-  cameraShakeDuration: 0.25
 --- !u!1001 &948198898357459680
 PrefabInstance:
   m_ObjectHideFlags: 0

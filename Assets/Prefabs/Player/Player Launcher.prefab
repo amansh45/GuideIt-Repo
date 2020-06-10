@@ -221,7 +221,7 @@ Transform:
   m_GameObject: {fileID: 5374116133348484072}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5374116132469897152}
   - {fileID: 5374116133445126423}
@@ -244,7 +244,7 @@ MonoBehaviour:
   bulletPrefab: {fileID: 2998421867909495770, guid: a9906cffb071d584c9d5b44b8f7983d6,
     type: 3}
   startScale: 0
-  launcherSize: 0.8
+  launcherSize: 0.55
   scalingFactor: 0.05
 --- !u!1 &5374116133356687829
 GameObject:

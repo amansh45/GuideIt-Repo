@@ -14,12 +14,13 @@ public class PlayerActions : MonoBehaviour
     float previousClickTime = 0f;
 
     Player playerClass;
-    GameObject currentLine, previousFingerPosition, playerLauncherInstance;
+    GameObject currentLine, previousFingerPosition, playerLauncherInstance, playerMovementArea;
     Vector2 prevPlayerPosition;
+    Vector3 playerMovementAreaScale;
     Slowmotion slowmoClass;
 
-    bool isPlayerShooting = false;
-
+    bool isPlayerShooting = false, isLineDrawing = false;
+    public bool isGamePaused = false;
     private void Start()
     {
         slowmoClass = slowmotion.GetComponent<Slowmotion>();
@@ -78,49 +79,88 @@ public class PlayerActions : MonoBehaviour
         playerClass.SetScale(1f);
     }
 
+    public void SetPlayerMovementArea(float leftX, float rightX, float bottomY, float topY, GameObject parent)
+    {
+        playerMovementArea = new GameObject();
+        playerMovementArea.transform.parent = parent.transform;
+        playerMovementArea.transform.position = new Vector3((leftX + rightX) / 2, (bottomY + topY) / 2, 0);
+        playerMovementAreaScale = new Vector3((rightX - leftX), (topY - bottomY), 0);
+        playerMovementArea.transform.localScale = playerMovementAreaScale;
+    }
+
+    bool ClickedInsidePlayerMovementArea(Vector2 clickedPosition)
+    {
+        Vector3 playerMovementAreaPos = playerMovementArea.transform.position;
+        float areaWidht = playerMovementAreaScale.x;
+        float areaHeight = playerMovementAreaScale.y;
+        if (clickedPosition.x >= (playerMovementAreaPos.x - (areaWidht / 2)) &&
+            clickedPosition.x <= (playerMovementAreaPos.x + (areaWidht / 2)) &&
+            clickedPosition.y >= (playerMovementAreaPos.y - (areaHeight / 2)) &&
+            clickedPosition.y <= (playerMovementAreaPos.y + (areaHeight / 2)))
+            return true;
+        else
+            return false;
+
+    }
+
     private void Update()
     {
-        Vector2 tempFingerPos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 currentPlayerPos = transform.position;
+        if(!isGamePaused)
+        {
+            Vector2 tempFingerPos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 currentPlayerPos = transform.position;
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            slowmoClass.updateAnimations(true);
-            if (IsPlayerTryingToShoot(tempFingerPos) && playerClass.reachedXPToShoot())
+            if (Input.GetMouseButtonDown(0))
             {
-                InitiateShoot();
-            }
-            prevPlayerPosition = transform.position;
-            CreateLine(tempFingerPos);
-        }
-        else if (Input.GetMouseButton(0))
-        {
-            if (isPlayerShooting)
-            {
-                ProcessShoot(tempFingerPos, currentPlayerPos);
-            }
-            else
-            {
-                try
+                if (ClickedInsidePlayerMovementArea(tempFingerPos))
                 {
-                    if (Vector2.Distance(tempFingerPos, previousFingerPosition.transform.position) > thresholdDistanceBetweenCheckpoints)
-                        UpdateLine(tempFingerPos);
-                }
-                catch (System.Exception exception)
-                {
+                    slowmoClass.updateAnimations(true);
+                    if (IsPlayerTryingToShoot(tempFingerPos) && playerClass.reachedXPToShoot())
+                    {
+                        InitiateShoot();
+                    }
+                    prevPlayerPosition = transform.position;
                     CreateLine(tempFingerPos);
+                    isLineDrawing = true;
                 }
             }
-        }
-        else if (Input.GetMouseButtonUp(0))
-        {
-            slowmoClass.updateAnimations(false);
-            if (isPlayerShooting)
+            else if (Input.GetMouseButton(0))
             {
-                FinalizeShoot(tempFingerPos, currentPlayerPos);
+                if (ClickedInsidePlayerMovementArea(tempFingerPos))
+                {
+                    if (isPlayerShooting)
+                    {
+                        ProcessShoot(tempFingerPos, currentPlayerPos);
+                    }
+                    else
+                    {
+                        try
+                        {
+                            if (Vector2.Distance(tempFingerPos, previousFingerPosition.transform.position) > thresholdDistanceBetweenCheckpoints)
+                                UpdateLine(tempFingerPos);
+                        }
+                        catch (System.Exception exception)
+                        {
+                            CreateLine(tempFingerPos);
+                        }
+                        isLineDrawing = true;
+                    }
+                }
             }
-            else
-                playerClass.MovePlayer(PlayerState.Run);
+            else if (Input.GetMouseButtonUp(0))
+            {
+                if (isLineDrawing)
+                {
+                    slowmoClass.updateAnimations(false);
+                    if (isPlayerShooting)
+                    {
+                        FinalizeShoot(tempFingerPos, currentPlayerPos);
+                    }
+                    else
+                        playerClass.MovePlayer(PlayerState.Run);
+                    isLineDrawing = false;
+                }
+            }
         }
     }
 

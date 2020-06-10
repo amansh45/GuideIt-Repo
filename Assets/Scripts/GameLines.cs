@@ -30,6 +30,7 @@ public class GameLines : MonoBehaviour {
 
     private void RenderLine(Vector3 fpoint, Vector3 spoint, int index)
     {
+        Debug.Log(index);
         Vector3 vPos = lineRenderersList[index].transform.position;
         if(borderLineIndicesMapping["Top"] != index)
             lineRenderersList[index].transform.position = new Vector3(vPos.x, vPos.y, borderZaxis);
@@ -65,7 +66,7 @@ public class GameLines : MonoBehaviour {
         levelMinY = bottomLeftY;
     }
 
-    private void Start()
+    private void Awake()
     {
         finishParticle = transform.GetChild(0).gameObject;
         finishParticle.SetActive(false);

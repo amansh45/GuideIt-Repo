@@ -5,9 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class OnClickMenuUI : MonoBehaviour
 {
-
     //[SerializeField] GameObject sceneLoader;
     //SceneLoader sceneLoaderClass;
+    LevelController levelController = null;
+
 
     private void Start()
     {
@@ -31,4 +32,27 @@ public class OnClickMenuUI : MonoBehaviour
         //sceneLoaderClass.LoadSceneByName("Settings");
         SceneManager.LoadScene("Settings");
     }
+
+    public void OnMenuIconClick()
+    {
+        // Removing this null is giving error which is mapped to levelController from inspector.
+        if (levelController == null)
+            levelController = FindObjectOfType<LevelController>();
+        levelController.clickedPauseButton();
+    }
+
+    public void OnResumeClick()
+    {
+        if (levelController == null)
+            levelController = FindObjectOfType<LevelController>();
+        levelController.clickedResumeButton();
+    }
+
+    public void OnRetryClick()
+    {
+        if (levelController == null)
+            levelController = FindObjectOfType<LevelController>();
+        levelController.clickedRetryButton();
+    }
+
 }

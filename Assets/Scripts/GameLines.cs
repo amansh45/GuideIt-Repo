@@ -90,7 +90,7 @@ public class GameLines : MonoBehaviour {
 
     void LevelComplete() {
         finishParticle.SetActive(true);
-        Destroy(gameObjectsForLineRenderer[3]);
+        Destroy(gameObjectsForLineRenderer[borderLineIndicesMapping["Top"]]);
         float currentVal = topLeft.x + 0.1f;
         while(currentVal <= topRight.x) {
             GameObject dashInstance = Instantiate(lineDash, new Vector3(currentVal, topLeft.y, borderZaxis), transform.rotation);

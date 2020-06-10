@@ -11,6 +11,7 @@ public class PlayerStatistics : MonoBehaviour
 
     private void Start()
     {
+
         coinsAcquiredOnScreenText = coinsAcquired.GetComponent<TextMeshProUGUI>();
         coinsInScene = FindObjectsOfType<Coin>().Length;
         coinsAcquiredOnScreenText.text = currentCoinsAcquired.ToString() + " / " + coinsInScene;

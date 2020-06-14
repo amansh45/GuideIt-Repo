@@ -86,6 +86,7 @@ public class PlayerActions : MonoBehaviour
         playerMovementArea.transform.position = new Vector3((leftX + rightX) / 2, (bottomY + topY) / 2, 0);
         playerMovementAreaScale = new Vector3((rightX - leftX), (topY - bottomY), 0);
         playerMovementArea.transform.localScale = playerMovementAreaScale;
+        playerMovementArea.name = "Player Movement Area";
     }
 
     bool ClickedInsidePlayerMovementArea(Vector2 clickedPosition)

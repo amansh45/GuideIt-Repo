@@ -4,21 +4,21 @@ using UnityEngine;
 
 public class Coin : MonoBehaviour {
 
-    [SerializeField] GameObject playerStatistics;
+    [SerializeField] GameObject levelController;
     [SerializeField] float coinValue;
     [SerializeField] string coinType;
 
     VFXController vfxControllerClass;
-    PlayerStatistics playerStatsClass;
+    LevelController levelControllerClass;
 
     private void Start() {
         vfxControllerClass = FindObjectOfType<VFXController>().GetComponent<VFXController>();
-        playerStatsClass = playerStatistics.GetComponent<PlayerStatistics>();
+        levelControllerClass = levelController.GetComponent<LevelController>();
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
         Destroy(gameObject);
         vfxControllerClass.InitiateRippleEffect(transform.position);
-        playerStatsClass.CoinAcquired(coinValue, coinType);
+        levelControllerClass.CoinAcquired(coinValue, coinType);
     }
 }

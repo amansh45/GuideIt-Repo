@@ -10,6 +10,7 @@ public enum ObjectsDescription
     PlayerProjectile,
     EnemyLauncher,
     FinishLine,
+    Coin,
 }
 
 

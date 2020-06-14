@@ -96,7 +96,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a194c4152cac6c47ac1de58ec9ff027, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStatistics: {fileID: 0}
+  levelController: {fileID: 0}
   coinValue: 2
   coinType: Normal
 --- !u!60 &929961085189442440

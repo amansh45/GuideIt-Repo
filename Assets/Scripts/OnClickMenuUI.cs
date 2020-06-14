@@ -8,7 +8,7 @@ public class OnClickMenuUI : MonoBehaviour
     //[SerializeField] GameObject sceneLoader;
     //SceneLoader sceneLoaderClass;
     LevelController levelController = null;
-
+    MainMenuHandler menuHandlerClass = null;
 
     private void Start()
     {
@@ -33,26 +33,57 @@ public class OnClickMenuUI : MonoBehaviour
         SceneManager.LoadScene("Settings");
     }
 
-    public void OnMenuIconClick()
+    public void OnPauseIconClick()
     {
         // Removing this null is giving error which is mapped to levelController from inspector.
         if (levelController == null)
             levelController = FindObjectOfType<LevelController>();
-        levelController.clickedPauseButton();
+        levelController.ClickedPauseButton();
     }
 
     public void OnResumeClick()
     {
         if (levelController == null)
             levelController = FindObjectOfType<LevelController>();
-        levelController.clickedResumeButton();
+        levelController.ClickedResumeButton();
     }
 
     public void OnRetryClick()
     {
         if (levelController == null)
             levelController = FindObjectOfType<LevelController>();
-        levelController.clickedRetryButton();
+        levelController.ClickedRetryButton();
+    }
+
+    public void LoadNextLevel()
+    {
+
+    }
+
+    public void OnTaskCompleted(int index)
+    {
+        if(menuHandlerClass == null)
+            menuHandlerClass = FindObjectOfType<MainMenuHandler>().GetComponent<MainMenuHandler>();
+        menuHandlerClass.CompleteTask(index);
+    }
+
+    public void LoadUpgradeScene()
+    {
+        SceneManager.LoadScene("Upgrades");
+    }
+
+    public void OnNextChapterArrowClicked()
+    {
+        if (menuHandlerClass == null)
+            menuHandlerClass = FindObjectOfType<MainMenuHandler>().GetComponent<MainMenuHandler>();
+        menuHandlerClass.RightArrowClicked();
+    }
+
+    public void OnPrevChapterArrowClicked()
+    {
+        if (menuHandlerClass == null)
+            menuHandlerClass = FindObjectOfType<MainMenuHandler>().GetComponent<MainMenuHandler>();
+        menuHandlerClass.LeftArrowClicked();
     }
 
 }

@@ -58,6 +58,7 @@ MonoBehaviour:
   playerPrefab: {fileID: 0}
   levelProgressIndicator: {fileID: 490738820208185190, guid: 87be9092d80137745b952e2c13a9fd1c,
     type: 3}
+  levelController: {fileID: 0}
   progressIndicatorZAxis: -1.2
 --- !u!61 &2705887151364670108
 BoxCollider2D:

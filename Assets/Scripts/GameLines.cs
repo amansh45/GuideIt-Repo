@@ -9,15 +9,16 @@ public class GameLines : MonoBehaviour {
     [SerializeField] Camera mainCamera;
     [SerializeField] float borderWidth = 0.025f;
     [SerializeField] Color color = Color.white;
-    [SerializeField] GameObject playerPrefab, levelProgressIndicator;
-    [SerializeField] float progressIndicatorZAxis = -1.2f;
+    [SerializeField] GameObject playerPrefab, levelProgressIndicator, levelController;
+    [SerializeField] float progressIndicatorZAxis = -1.2f, finishLevelAfter = 1.3f;
 
     Vector3 bottomLeft, topLeft, bottomRight, topRight;
     Vector3 firstProgressPosition = new Vector3(0,0,0), secondProgressPosition = new Vector3(0,0,0);
     List<GameObject> gameObjectsForLineRenderer = new List<GameObject>();
     List<LineRenderer> lineRenderersList = new List<LineRenderer>();
     GameObject finishParticle, playSpace, firstProgressInstance, secondProgressInstance;
-    bool gameStarted = false;
+    LevelController levelControllerClass;
+    bool gameRunning = false;
     float levelMaxY = 0, levelMinY = 0, playAreaMinY = 0, playAreaMaxY = 0;
 
     public Dictionary<string, int> borderLineIndicesMapping = new Dictionary<string, int>()
@@ -30,7 +31,6 @@ public class GameLines : MonoBehaviour {
 
     private void RenderLine(Vector3 fpoint, Vector3 spoint, int index)
     {
-        Debug.Log(index);
         Vector3 vPos = lineRenderersList[index].transform.position;
         if(borderLineIndicesMapping["Top"] != index)
             lineRenderersList[index].transform.position = new Vector3(vPos.x, vPos.y, borderZaxis);
@@ -86,7 +86,12 @@ public class GameLines : MonoBehaviour {
         Vector3 progressInstanceScale = secondProgressInstance.transform.localScale;
         secondProgressInstance.transform.localScale = new Vector3((-1) * progressInstanceScale.x, progressInstanceScale.y, progressInstanceScale.z);
         firstProgressInstance.transform.name = "Left Progress Indicator";
-        secondProgressInstance.transform.name = "Second Progress Indicator";
+        secondProgressInstance.transform.name = "Right Progress Indicator";
+    }
+
+    private void Start()
+    {
+        levelControllerClass = levelController.GetComponent<LevelController>();
     }
 
     void LevelComplete() {
@@ -100,11 +105,19 @@ public class GameLines : MonoBehaviour {
             dashInstance.transform.localScale = new Vector3(singleDashLength, singleDashWidth, 1);
             currentVal += spaceBetweenLine;
         }
+        gameRunning = false;
+        StartCoroutine(ShowLevelCompleteScene());
+    }
+
+    IEnumerator ShowLevelCompleteScene()
+    {
+        yield return new WaitForSeconds(finishLevelAfter);
+        levelControllerClass.OnLevelFinished();
     }
 
     private void Update()
     {
-        if(gameStarted) {
+        if(gameRunning) {
             var prevFirstProgressPos = firstProgressInstance.transform.localPosition;
             var prevSecondProgressPos = secondProgressInstance.transform.localPosition;
             float playerY = playerPrefab.transform.position.y, nextProgressY;
@@ -135,7 +148,7 @@ public class GameLines : MonoBehaviour {
         playAreaMaxY = secondProgressInstance.transform.localPosition.y;
 
         secondProgressInstance.transform.position = new Vector3(second_x, y, progressIndicatorZAxis);
-        gameStarted = true;
+        gameRunning = true;
     }
 
     private void OnTriggerEnter2D(Collider2D other) {

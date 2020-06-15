@@ -309,7 +309,7 @@ GameObject:
   - component: {fileID: 777379901427656292}
   - component: {fileID: 777379901427656294}
   - component: {fileID: 777379901427656295}
-  - component: {fileID: 198883500001893459}
+  - component: {fileID: 364287509}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -373,7 +373,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &198883500001893459
+--- !u!114 &364287509
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -415,7 +415,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 777379901427656295}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8803324749177651510, guid: 9335573b68e75b04597059890f14a13d,
+          type: 3}
+        m_MethodName: OnLevelSelected
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &777379901529855705
 GameObject:
   m_ObjectHideFlags: 0
@@ -611,7 +623,7 @@ GameObject:
   - component: {fileID: 777379902004201199}
   - component: {fileID: 777379902004201185}
   - component: {fileID: 777379902004201198}
-  - component: {fileID: 8084533283682386927}
+  - component: {fileID: 364287510}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -675,7 +687,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &8084533283682386927
+--- !u!114 &364287510
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -717,7 +729,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 777379902004201198}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8803324749177651510, guid: 9335573b68e75b04597059890f14a13d,
+          type: 3}
+        m_MethodName: OnLevelSelected
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6398063449200657265
 GameObject:
   m_ObjectHideFlags: 0

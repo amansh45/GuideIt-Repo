@@ -5449,7 +5449,6 @@ MonoBehaviour:
   scrollContent: {fileID: 758883578}
   scrollItemPrefab: {fileID: 6398063449200657265, guid: a8766ccd872a5d145986eba2c97a3ab3,
     type: 3}
-  chapterIndex: 0
 --- !u!4 &1234074520
 Transform:
   m_ObjectHideFlags: 0

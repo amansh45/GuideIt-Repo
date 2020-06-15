@@ -21,15 +21,18 @@ public class LevelScroller : MonoBehaviour
 
     void Update()
     {
-        
-        if(firstTimeLoad && playerStats.playerStatsLoaded)
+        if(!playerStats.playerStatsLoaded)
+            playerStats = FindObjectOfType<PlayerStatistics>();
+
+        if (firstTimeLoad && playerStats.playerStatsLoaded)
         {
+            Debug.Log("About to load levels.");
             PlayerStatistics.Chapter chapterData = playerStats.chaptersList[chapterIndex];
             List<PlayerStatistics.Level> levelsInChapter = chapterData.LevelsInChapter;
             int numLevels = levelsInChapter.Count;
             for (int i = numLevels-1; i >= 0; i--)
             {
-                generateLevelItem(levelsInChapter[i].IsPlayed, levelsInChapter[i].IsPlaying, levelsInChapter[i].IsLocked);
+                generateLevelItem(levelsInChapter[i].IsPlayed, levelsInChapter[i].IsPlaying, levelsInChapter[i].IsLocked, levelsInChapter[i].LevelIndex);
             }
             scrollView.verticalNormalizedPosition = 0f;
             firstTimeLoad = false;
@@ -37,11 +40,12 @@ public class LevelScroller : MonoBehaviour
 
     }
     
-    void generateLevelItem(bool isPlayed, bool isPlaying, bool isLocked)
+    void generateLevelItem(bool isPlayed, bool isPlaying, bool isLocked, int levelIndex)
     {
         GameObject scrollItemObj = Instantiate(scrollItemPrefab);
         scrollItemObj.transform.parent = scrollContent.transform;
         scrollItemObj.transform.localScale = new Vector3(1, 1, 1);
+        scrollItemObj.name = chapterIndex.ToString() +"."+ levelIndex.ToString();
         if (isLocked)
         {
             foreach (Transform child in scrollItemObj.transform)

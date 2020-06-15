@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
 public class OnClickMenuUI : MonoBehaviour
 {
@@ -19,6 +20,13 @@ public class OnClickMenuUI : MonoBehaviour
     {
         //sceneLoaderClass.LoadSceneByName("Level1");
         SceneManager.LoadScene("Level1");
+    }
+
+    public void LoadChapter()
+    {
+        if (menuHandlerClass == null)
+            menuHandlerClass = FindObjectOfType<MainMenuHandler>().GetComponent<MainMenuHandler>();
+        menuHandlerClass.LoadChapter();
     }
 
     public void LoadMainMenu()
@@ -84,6 +92,13 @@ public class OnClickMenuUI : MonoBehaviour
         if (menuHandlerClass == null)
             menuHandlerClass = FindObjectOfType<MainMenuHandler>().GetComponent<MainMenuHandler>();
         menuHandlerClass.LeftArrowClicked();
+    }
+
+    public void OnLevelSelected()
+    {
+        var levelClickedGO = EventSystem.current.currentSelectedGameObject;
+        string levelName = levelClickedGO.transform.parent.transform.parent.name;
+        SceneManager.LoadScene(levelName);
     }
 
 }

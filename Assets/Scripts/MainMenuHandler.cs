@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class MainMenuHandler : MonoBehaviour
 {
-    [SerializeField] GameObject firstTaskGO, secondTaskGO;
+    [SerializeField] GameObject firstTaskGO, secondTaskGO, chapterNameGO, loadIcon;
     PlayerStatistics playerStats;
     string taskDescription;
     bool firstTimeLoad = true;
+    TextMeshProUGUI chapterName;
+    int numChapters;
 
     private void UpdateFirstTaskOnScreen()
     {
@@ -85,6 +88,7 @@ public class MainMenuHandler : MonoBehaviour
     {
         playerStats = FindObjectOfType<PlayerStatistics>();
         PersistentInformation.CurrentChapter = 0;
+        chapterName = chapterNameGO.GetComponent<TextMeshProUGUI>();
     }
     
     public void CompleteTask(int index)
@@ -96,25 +100,73 @@ public class MainMenuHandler : MonoBehaviour
             UpdateSecondTaskOnScreen();
     }
 
+    private void UpdateIcons() {
+        if (playerStats.chaptersList[PersistentInformation.CurrentChapter].IsLocked)
+        {
+            foreach(Transform child in loadIcon.transform)
+            {
+                string childName = child.gameObject.name;
+                if (childName == "Load")
+                    child.gameObject.SetActive(false);
+                else if (childName == "Locked")
+                    child.gameObject.SetActive(true);
+                else if (childName == "Outer Circle")
+                    child.gameObject.GetComponent<Animator>().enabled = false;
+            }
+        } else
+        {
+            foreach (Transform child in loadIcon.transform)
+            {
+                string childName = child.gameObject.name;
+                if (childName == "Load")
+                    child.gameObject.SetActive(true);
+                else if (childName == "Locked")
+                    child.gameObject.SetActive(false);
+                else if (childName == "Outer Circle")
+                    child.gameObject.GetComponent<Animator>().enabled = true;
+            }
+        }
+    }
+
     void Update()
     {
         if(firstTimeLoad && playerStats.playerStatsLoaded)
         {
             UpdateFirstTaskOnScreen();
             UpdateSecondTaskOnScreen();
+            numChapters = playerStats.chaptersList.Count;
             PersistentInformation.CurrentChapter = playerStats.highestChapter;
+            chapterName.text = playerStats.chaptersList[PersistentInformation.CurrentChapter].ChapterName;
+            UpdateIcons();
             firstTimeLoad = false;
         }
     }
 
     public void LeftArrowClicked()
     {
-
+        if(PersistentInformation.CurrentChapter > 0)
+        {
+            PersistentInformation.CurrentChapter = PersistentInformation.CurrentChapter - 1;
+            chapterName.text = playerStats.chaptersList[PersistentInformation.CurrentChapter].ChapterName;
+            UpdateIcons();
+        }
     }
 
     public void RightArrowClicked()
     {
-
+        if (PersistentInformation.CurrentChapter < numChapters - 1)
+        {
+            PersistentInformation.CurrentChapter = PersistentInformation.CurrentChapter + 1;
+            chapterName.text = playerStats.chaptersList[PersistentInformation.CurrentChapter].ChapterName;
+            UpdateIcons();
+        }
     }
+
+    public void LoadChapter()
+    {
+        if(!playerStats.chaptersList[PersistentInformation.CurrentChapter].IsLocked)
+            SceneManager.LoadScene("Chapter");
+    }
+
 
 }

@@ -19,7 +19,7 @@ public class GameLines : MonoBehaviour {
     GameObject finishParticle, playSpace, firstProgressInstance, secondProgressInstance;
     LevelController levelControllerClass;
     bool gameRunning = false;
-    float levelMaxY = 0, levelMinY = 0, playAreaMinY = 0, playAreaMaxY = 0;
+    float levelMaxY = 0, levelMinY = 0, playAreaMinY = 0, playAreaMaxY = 0, playerTimer = 0f;
 
     public Dictionary<string, int> borderLineIndicesMapping = new Dictionary<string, int>()
     {
@@ -95,6 +95,8 @@ public class GameLines : MonoBehaviour {
     }
 
     void LevelComplete() {
+        Debug.Log("Time Taken: " + playerTimer);
+        gameRunning = false;
         finishParticle.SetActive(true);
         Destroy(gameObjectsForLineRenderer[borderLineIndicesMapping["Top"]]);
         float currentVal = topLeft.x + 0.1f;
@@ -105,19 +107,20 @@ public class GameLines : MonoBehaviour {
             dashInstance.transform.localScale = new Vector3(singleDashLength, singleDashWidth, 1);
             currentVal += spaceBetweenLine;
         }
-        gameRunning = false;
+        //Destroy(playerPrefab);
         StartCoroutine(ShowLevelCompleteScene());
     }
 
     IEnumerator ShowLevelCompleteScene()
     {
         yield return new WaitForSeconds(finishLevelAfter);
-        levelControllerClass.OnLevelFinished();
+        levelControllerClass.OnLevelFinished(playerTimer);
     }
 
     private void Update()
     {
         if(gameRunning) {
+            playerTimer += Time.deltaTime;
             var prevFirstProgressPos = firstProgressInstance.transform.localPosition;
             var prevSecondProgressPos = secondProgressInstance.transform.localPosition;
             float playerY = playerPrefab.transform.position.y, nextProgressY;

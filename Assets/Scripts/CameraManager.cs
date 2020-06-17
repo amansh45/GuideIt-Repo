@@ -16,20 +16,26 @@ public enum ObjectsDescription
 
 public class CameraManager : MonoBehaviour
 {
-    [SerializeField] CameraController camController;
+    public CameraController camController;
     private Coroutine routine;
 
     private void Awake()
     {
+        camController = FindObjectOfType<CameraController>();
         int cameraManagerCount = FindObjectsOfType<CameraManager>().Length;
         if (cameraManagerCount > 1)
             Destroy(gameObject);
         else
+        {
             DontDestroyOnLoad(gameObject);
+        }
     }
 
     IEnumerator CamShake(float sec)
     {
+        if (camController == null)
+            camController = FindObjectOfType<CameraController>();
+
         camController.TriggerCamera(CameraTrigger.Shake);
         yield return new WaitForSeconds(sec);
         camController.TriggerCamera(CameraTrigger.Default);

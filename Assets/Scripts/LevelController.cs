@@ -11,6 +11,7 @@ public class LevelController : MonoBehaviour
     Slowmotion slowmotionClass;
     Player playerClass;
     PlayerActions playerActionsClass;
+    PlayerStatistics playerStats;
 
     [SerializeField] GameObject coinsAcquired;
     TextMeshProUGUI coinsAcquiredOnScreenText;
@@ -24,6 +25,13 @@ public class LevelController : MonoBehaviour
         coinsAcquiredOnScreenText = coinsAcquired.GetComponent<TextMeshProUGUI>();
         coinsInScene = FindObjectsOfType<Coin>().Length;
         coinsAcquiredOnScreenText.text = currentCoinsAcquired.ToString() + " / " + coinsInScene;
+        playerStats = FindObjectOfType<PlayerStatistics>();
+    }
+
+    private void Update()
+    {
+        if (!playerStats.playerStatsLoaded)
+            playerStats = FindObjectOfType<PlayerStatistics>();
     }
 
     public void CoinAcquired(float coinValue, string coinType)
@@ -54,11 +62,83 @@ public class LevelController : MonoBehaviour
         SceneManager.LoadScene(scene.name);
     }
 
-    public void OnLevelFinished()
+    private void UpdateAndUnlockNextLevel(int currentChapterIndex, int currentLevelIndex, float timeTaken)
     {
-        Destroy(player);
-        levelCanvas.gameObject.SetActive(false);
-        finishCanvas.gameObject.SetActive(true);
+        playerStats.playerCoins += currentCoinsAcquired;
+        PlayerStatistics.Level currentLevelObj = playerStats.chaptersList[currentChapterIndex].LevelsInChapter[currentLevelIndex];
+        currentLevelObj.IsPlayed = true;
+        currentLevelObj.IsPlaying = false;
+        currentLevelObj.PersonalBestTime = Mathf.Min(currentLevelObj.PersonalBestTime, timeTaken);
+        playerStats.chaptersList[currentChapterIndex].LevelsInChapter[currentLevelIndex] = currentLevelObj;
+
+        if (currentLevelIndex == playerStats.chaptersList[currentChapterIndex].LevelsInChapter.Count - 1)
+        {
+            if(currentChapterIndex == playerStats.chaptersList.Count - 1)
+            {
+
+            } else
+            {
+                PlayerStatistics.Chapter nextChapterObj = playerStats.chaptersList[currentChapterIndex + 1];
+                nextChapterObj.IsLocked = false;
+                playerStats.chaptersList[currentChapterIndex + 1] = nextChapterObj;
+                PlayerStatistics.Level nextLevelObj = playerStats.chaptersList[currentChapterIndex + 1].LevelsInChapter[0];
+                playerStats.highestChapter = PersistentInformation.CurrentChapter = currentChapterIndex + 1;
+                if(!nextLevelObj.IsPlayed)
+                    nextLevelObj.IsPlaying = true;
+                nextLevelObj.IsLocked = false;
+                playerStats.chaptersList[currentChapterIndex + 1].LevelsInChapter[0] = nextLevelObj;
+            }
+
+        } else
+        {
+            PlayerStatistics.Level nextLevelObj = playerStats.chaptersList[currentChapterIndex].LevelsInChapter[currentLevelIndex + 1];
+            nextLevelObj.IsPlaying = true;
+            nextLevelObj.IsLocked = false;
+            playerStats.chaptersList[currentChapterIndex].LevelsInChapter[currentLevelIndex + 1] = nextLevelObj;
+        }
+    }
+    
+
+    public void OnLevelFinished(float timeTaken)
+    {
+        
+        string levelName = gameObject.scene.name;
+        string[] levelIdentity = levelName.Split('.');
+        int currentChapterIndex = int.Parse(levelIdentity[0]);
+        int currentLevelIndex = int.Parse(levelIdentity[1]);
+
+        float prevBestTime = playerStats.chaptersList[currentChapterIndex].LevelsInChapter[currentLevelIndex].PersonalBestTime;
+        playerStats.levelCompletionData = new PlayerStatistics.LevelCompletionData(currentChapterIndex, currentLevelIndex, coinsInScene, currentCoinsAcquired, timeTaken, prevBestTime);
+        UpdateAndUnlockNextLevel(currentChapterIndex, currentLevelIndex, timeTaken);
+        
+        SceneManager.LoadScene("Level Complete");
+
+    }
+
+    public void LoadNextLevel()
+    {
+        string levelName = gameObject.scene.name;
+        string[] levelIdentity = levelName.Split('.');
+        int currentChapterIndex = int.Parse(levelIdentity[0]);
+        int currentLevelIndex = int.Parse(levelIdentity[1]);
+
+        if (currentLevelIndex == playerStats.chaptersList[currentChapterIndex].LevelsInChapter.Count - 1)
+        {
+            if (currentChapterIndex == playerStats.chaptersList.Count - 1)
+            {
+
+            }
+            else
+            {
+                SceneManager.LoadScene((currentChapterIndex + 1).ToString() + ".0");
+            }
+
+        }
+        else
+        {
+            SceneManager.LoadScene(currentChapterIndex.ToString() + "." + (currentLevelIndex + 1).ToString());
+        }
+
     }
 
 }

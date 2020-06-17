@@ -62,11 +62,7 @@ public class OnClickMenuUI : MonoBehaviour
             levelController = FindObjectOfType<LevelController>();
         levelController.ClickedRetryButton();
     }
-
-    public void LoadNextLevel()
-    {
-
-    }
+    
 
     public void OnTaskCompleted(int index)
     {
@@ -92,6 +88,13 @@ public class OnClickMenuUI : MonoBehaviour
         if (menuHandlerClass == null)
             menuHandlerClass = FindObjectOfType<MainMenuHandler>().GetComponent<MainMenuHandler>();
         menuHandlerClass.LeftArrowClicked();
+    }
+
+    public void OnLoadNextLevelClicked()
+    {
+        if (levelController == null)
+            levelController = FindObjectOfType<LevelController>();
+        levelController.LoadNextLevel();
     }
 
     public void OnLevelSelected()

@@ -1,24 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
-public class LevelFinishBackground : MonoBehaviour
+public class LevelComplete : MonoBehaviour
 {
-    [SerializeField] GameObject quadPrefab, backgroundPrefab;
     [SerializeField] Camera mainCamera;
     [SerializeField] float borderScreenOffset = 1f, borderWidth = 0.025f, finishBackgroundZAxis = -1.3f;
     [SerializeField] Color color = Color.white;
-    [SerializeField] Material currentBackgroundMaterial;
-    [SerializeField] GameObject backgroundParticleSystem;
+    [SerializeField] GameObject coinTextGO, levelIndexGO, prevBestTimeGO, currentTimeGO; 
 
     Vector3 bottomLeft, topRight, bottomRight, topLeft;
-
+    PlayerStatistics playerStats;
+    bool firstTimeLoad = true;
     
     public void RenderLine(Vector3 fpoint, Vector3 spoint)
     {
         GameObject borderLineGO = new GameObject();
         borderLineGO.transform.parent = transform;
         borderLineGO.transform.position = transform.position;
+        borderLineGO.transform.name = "Border Line";
         LineRenderer borderLineRenderer = borderLineGO.AddComponent<LineRenderer>();
         borderLineRenderer.material = new Material(Shader.Find("Mobile/Particles/Additive"));
         borderLineRenderer.startColor = color;
@@ -45,32 +46,38 @@ public class LevelFinishBackground : MonoBehaviour
 
     void Start()
     {
-
-    }
-
-    private void OnEnable()
-    {
         bottomLeft = mainCamera.ViewportToWorldPoint(new Vector3(0, 0, 0));
         bottomRight = mainCamera.ViewportToWorldPoint(new Vector3(1, 0, 0));
         topRight = mainCamera.ViewportToWorldPoint(new Vector3(1, 1, 0));
         topLeft = mainCamera.ViewportToWorldPoint(new Vector3(0, 1, 0));
         float cameraWidth = bottomRight.x - bottomLeft.x;
         float cameraHeight = topRight.y - bottomLeft.y;
-
-        GameObject finishBackgroundInstance = Instantiate(quadPrefab, transform.position, transform.rotation);
-        finishBackgroundInstance.transform.position = new Vector3(mainCamera.transform.position.x, mainCamera.transform.position.y, finishBackgroundZAxis);
-        finishBackgroundInstance.transform.localScale = new Vector3(cameraWidth, cameraHeight, 0);
-        finishBackgroundInstance.GetComponent<MeshRenderer>().material = currentBackgroundMaterial;
-        finishBackgroundInstance.transform.parent = transform;
-        finishBackgroundInstance.name = "Finish Background";
-
-        GameObject backgroundParticle = Instantiate(backgroundParticleSystem, transform.position, transform.rotation);
-        backgroundParticle.transform.position = new Vector3(mainCamera.transform.position.x, mainCamera.transform.position.y + (cameraHeight/2.0f), finishBackgroundZAxis);
-        backgroundParticle.transform.Rotate(90f, 0, 0, Space.World);
-        backgroundParticle.transform.parent = transform;
-        backgroundParticle.name = "Background Particle";
+        playerStats = FindObjectOfType<PlayerStatistics>();
 
         CreateBorders();
+        
+    }
+
+    private void Update()
+    {
+        if (!playerStats.playerStatsLoaded)
+            playerStats = FindObjectOfType<PlayerStatistics>();
+
+        if(firstTimeLoad && playerStats.playerStatsLoaded)
+        {
+            PlayerStatistics.LevelCompletionData completedLevel = playerStats.levelCompletionData;
+
+            coinTextGO.GetComponent<TextMeshProUGUI>().text = playerStats.playerCoins.ToString();
+            levelIndexGO.GetComponent<TextMeshProUGUI>().text = completedLevel.LevelIndex.ToString();
+            currentTimeGO.GetComponent<TextMeshProUGUI>().text = System.Math.Round(completedLevel.RecentTime, 2).ToString() + "s";
+
+            if (completedLevel.BestTime == int.MaxValue)
+                prevBestTimeGO.GetComponent<TextMeshProUGUI>().text = "Best Time:  --";
+            else
+                prevBestTimeGO.GetComponent<TextMeshProUGUI>().text = "Best Time: " + System.Math.Round(completedLevel.BestTime, 2).ToString() + "s";
+
+            firstTimeLoad = false;
+        }
     }
 
 }

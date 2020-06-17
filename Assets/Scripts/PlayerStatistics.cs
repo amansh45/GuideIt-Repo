@@ -85,11 +85,29 @@ public class PlayerStatistics : MonoBehaviour
         }
     }
 
+    public struct LevelCompletionData
+    {
+        public int ChapterIndex, LevelIndex, TotalCoins, CoinsCollected;
+        public float RecentTime, BestTime;
+
+        public LevelCompletionData(int chapterIndex, int levelIndex, int totalCoins, int coinsCollected, float recentTime, float bestTime)
+        {
+            ChapterIndex = chapterIndex;
+            LevelIndex = levelIndex;
+            TotalCoins = totalCoins;
+            CoinsCollected = coinsCollected;
+            RecentTime = recentTime;
+            BestTime = bestTime;
+        }
+
+    }
+
     public List<Task> tasksList = new List<Task>();
     public List<Chapter> chaptersList = new List<Chapter>();
     public List<Upgrade> upgradesList = new List<Upgrade>();
-    public int firstActiveTaskIndex = 0, secondActiveTaskIndex = 1, tasksCompleted = 0, totalTasks = 0, highestChapter = 0, highestLevel = 0;
+    public int firstActiveTaskIndex = 0, secondActiveTaskIndex = 1, tasksCompleted = 0, totalTasks = 0, highestChapter = 0, highestLevel = 0, playerCoins;
     public bool playerStatsLoaded = false;
+    public LevelCompletionData levelCompletionData;
     [SerializeField] List<int> levelsInChapter = new List<int>();
 
     private void Awake()
@@ -103,6 +121,8 @@ public class PlayerStatistics : MonoBehaviour
     
     private void Start()
     {
+        PersistentInformation.CurrentChapter = 0;
+        playerCoins = 0;
         AddTasks();
         AddChapters();
         playerStatsLoaded = true;
@@ -116,9 +136,9 @@ public class PlayerStatistics : MonoBehaviour
         {
             Level level;
             if(chapterIndex == 0 && i == 0)
-                level = new Level(0, 0, i, true, false, false, "test");
+                level = new Level(int.MaxValue, 0, i, true, false, false, "test");
             else
-                level = new Level(0, 0, i, false, false, true, "test");
+                level = new Level(int.MaxValue, 0, i, false, false, true, "test");
             levels.Add(level);
         }
         return levels;
@@ -141,43 +161,16 @@ public class PlayerStatistics : MonoBehaviour
 
     private void AddTasks()
     {
-        /*
+        
         Task task = new Task(false, ObjectsDescription.Coin, "Collect 10 coins", 0, 20, true, 10);
         tasksList.Add(task);
-        task = new Task(true, ObjectsDescription.Player, "Complete Level in one go", 2, 50, false);
+        task = new Task(false, ObjectsDescription.Player, "Complete Level in one go", 1, 50, false);
         tasksList.Add(task);
-        task = new Task(false, ObjectsDescription.Coin, "Collect 40 coins", 1, 80, true, 40);
+        task = new Task(false, ObjectsDescription.Coin, "Collect 40 coins", 2, 80, true, 40);
         tasksList.Add(task);
         task = new Task(false, ObjectsDescription.EnemyLauncher, "Destroy 8 enemy cannons", 3, 100, true, 8);
         tasksList.Add(task);
-        */
-
-        Task task = new Task(true, ObjectsDescription.EnemyLauncher, "1", 3, 100, true, 8);
-        tasksList.Add(task);
-        task = new Task(true, ObjectsDescription.EnemyLauncher, "2", 3, 100, true, 8);
-        tasksList.Add(task);
-        task = new Task(true, ObjectsDescription.EnemyLauncher, "3", 3, 100, true, 8);
-        tasksList.Add(task);
-        task = new Task(true, ObjectsDescription.EnemyLauncher, "4", 3, 100, true, 8);
-        tasksList.Add(task);
-        task = new Task(true, ObjectsDescription.EnemyLauncher, "5", 3, 100, true, 8);
-        tasksList.Add(task);
-        task = new Task(true, ObjectsDescription.EnemyLauncher, "6", 3, 100, true, 8);
-        tasksList.Add(task);
-        task = new Task(true, ObjectsDescription.EnemyLauncher, "7", 3, 100, true, 8);
-        tasksList.Add(task);
-        task = new Task(true, ObjectsDescription.EnemyLauncher, "8", 3, 100, true, 8);
-        tasksList.Add(task);
-        task = new Task(true, ObjectsDescription.EnemyLauncher, "9", 3, 100, true, 8);
-        tasksList.Add(task);
-        task = new Task(true, ObjectsDescription.EnemyLauncher, "10", 3, 100, true, 8);
-        tasksList.Add(task);
-        task = new Task(true, ObjectsDescription.EnemyLauncher, "11", 3, 100, true, 8);
-        tasksList.Add(task);
-        task = new Task(true, ObjectsDescription.EnemyLauncher, "12", 3, 100, true, 8);
-        tasksList.Add(task);
-        task = new Task(true, ObjectsDescription.EnemyLauncher, "13", 3, 100, true, 8);
-        tasksList.Add(task);
+        
         totalTasks = tasksList.Count;
     }
 

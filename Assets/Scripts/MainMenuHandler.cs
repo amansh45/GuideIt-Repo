@@ -20,6 +20,7 @@ public class MainMenuHandler : MonoBehaviour
         if (findex != -1)
         {
             firstTask = playerStats.tasksList[findex];
+            playerStats.playerCoins += firstTask.TaskCompletionAward;
             foreach (Transform child in firstTaskGO.gameObject.transform)
             {
                 if (child.gameObject.name == "Text")
@@ -55,6 +56,7 @@ public class MainMenuHandler : MonoBehaviour
         if (sindex != -1)
         {
             secondTask = playerStats.tasksList[sindex];
+            playerStats.playerCoins += secondTask.TaskCompletionAward;
             foreach (Transform child in secondTaskGO.transform)
             {
                 if (child.gameObject.name == "Text")
@@ -87,7 +89,6 @@ public class MainMenuHandler : MonoBehaviour
     void Start()
     {
         playerStats = FindObjectOfType<PlayerStatistics>();
-        PersistentInformation.CurrentChapter = 0;
         chapterName = chapterNameGO.GetComponent<TextMeshProUGUI>();
     }
     

@@ -7,31 +7,38 @@ public class PlayerStatistics : MonoBehaviour
 {
     public struct Task
     {
-        public bool IsCompleted, IsCountable;
-        public int TaskIndex, TaskCompletionAward, CountLimit, CurrentCount;
+        public bool IsCompleted, IsLevelTask;
+        public int TaskIndex, TaskCompletionAward, CurrentCount;
+        public float CountLimit;
         public ObjectsDescription AssociatedWith;
+        public TaskTypes CurrTaskType;
+        public TaskCategory CurrTaskCategory;
         public string TaskDescription;
 
-        public Task(bool isCompleted, ObjectsDescription associatedWith, string taskDescription, int taskIndex, int taskCompletionAward, bool isCountable)
+        public Task(bool isCompleted, bool isLevelTask, ObjectsDescription associatedWith, string taskDescription, int taskIndex, int taskCompletionAward, TaskTypes taskType, TaskCategory taskCategory)
         {
             IsCompleted = isCompleted;
+            IsLevelTask = isLevelTask;
             AssociatedWith = associatedWith;
             TaskIndex = taskIndex;
             TaskCompletionAward = taskCompletionAward;
             TaskDescription = taskDescription;
-            IsCountable = isCountable;
+            CurrTaskCategory = taskCategory;
+            CurrTaskType = taskType;
             CountLimit = 0;
             CurrentCount = 0;
         }
 
-        public Task(bool isCompleted, ObjectsDescription associatedWith, string taskDescription, int taskIndex, int taskCompletionAward, bool isCountable, int countLimit)
+        public Task(bool isCompleted, bool isLevelTask, ObjectsDescription associatedWith, string taskDescription, int taskIndex, int taskCompletionAward, TaskTypes taskType, TaskCategory taskCategory, float countLimit)
         {
             IsCompleted = isCompleted;
+            IsLevelTask = isLevelTask;
             AssociatedWith = associatedWith;
             TaskIndex = taskIndex;
             TaskCompletionAward = taskCompletionAward;
             TaskDescription = taskDescription;
-            IsCountable = isCountable;
+            CurrTaskCategory = taskCategory;
+            CurrTaskType = taskType;
             CountLimit = countLimit;
             CurrentCount = 0;
         }
@@ -162,13 +169,13 @@ public class PlayerStatistics : MonoBehaviour
     private void AddTasks()
     {
         
-        Task task = new Task(false, ObjectsDescription.Coin, "Collect 10 coins", 0, 20, true, 10);
+        Task task = new Task(false, false, ObjectsDescription.Coin, "Collect 10 coins in any level", 0, 20, TaskTypes.Collect, TaskCategory.CountingTask, 10f);
         tasksList.Add(task);
-        task = new Task(false, ObjectsDescription.Player, "Complete Level in one go", 1, 50, false);
+        task = new Task(false, true, ObjectsDescription.Player, "Complete Level in one go", 1, 50, TaskTypes.NoHit, TaskCategory.CountingTask, 1f);
         tasksList.Add(task);
-        task = new Task(false, ObjectsDescription.Coin, "Collect 40 coins", 2, 80, true, 40);
+        task = new Task(false, true, ObjectsDescription.Coin, "Collect 10 coins in any level", 2, 20, TaskTypes.Collect, TaskCategory.CountingTask, 40f);
         tasksList.Add(task);
-        task = new Task(false, ObjectsDescription.EnemyLauncher, "Destroy 8 enemy cannons", 3, 100, true, 8);
+        task = new Task(false, true, ObjectsDescription.EnemyLauncher, "Destroy 18 enemy Cannons", 3, 100, TaskTypes.Destroy, TaskCategory.CountingTask, 18f);
         tasksList.Add(task);
         
         totalTasks = tasksList.Count;

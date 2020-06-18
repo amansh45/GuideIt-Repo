@@ -6,6 +6,9 @@ public enum ObjectsDescription
 {
     Player,
     EnemyObject,
+    Box,
+    Blade,
+    Square,
     EnemyProjectile,
     PlayerProjectile,
     EnemyLauncher,

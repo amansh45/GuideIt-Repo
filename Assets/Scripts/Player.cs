@@ -36,6 +36,7 @@ public class Player : MonoBehaviour
     bool reducePlayerScaleToZero = false;
 
     Rigidbody2D playerRigidBody;
+    TaskHandler taskHandlerClass;
 
     void Start()
     {
@@ -51,6 +52,7 @@ public class Player : MonoBehaviour
         ballSpeed = hoverSpeed;
         moveSpeed = 0.1f * runSpeed;
         playerRigidBody = GetComponent<Rigidbody2D>();
+        taskHandlerClass = FindObjectOfType<TaskHandler>();
     }
 
     public void SetScale(float scale)
@@ -102,6 +104,19 @@ public class Player : MonoBehaviour
             Die();
         else if (other.gameObject.tag == ObjectsDescription.FinishLine.ToString())
             LevelComplete();
+        else if(other.gameObject.transform.parent.name == ObjectsDescription.Blade.ToString())
+        {
+            Debug.Log("Near Miss registered with blade");
+            taskHandlerClass.UpdateLevelTaskState(ObjectsDescription.Blade, TaskTypes.NearMiss, TaskCategory.CountingTask);
+        } else if(other.gameObject.transform.parent.name == ObjectsDescription.Box.ToString())
+        {
+            Debug.Log("Near Miss registered with box");
+            taskHandlerClass.UpdateLevelTaskState(ObjectsDescription.Box, TaskTypes.NearMiss, TaskCategory.CountingTask);
+        } else if(other.gameObject.transform.parent.name == ObjectsDescription.Square.ToString())
+        {
+            Debug.Log("Near Miss registered with square");
+            taskHandlerClass.UpdateLevelTaskState(ObjectsDescription.Square, TaskTypes.NearMiss, TaskCategory.CountingTask);
+        }
     }
 
     void Die()

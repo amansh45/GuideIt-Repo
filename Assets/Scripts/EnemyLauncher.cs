@@ -11,7 +11,13 @@ public class EnemyLauncher : MonoBehaviour
     float initializationFactor = 1f, spawnScaleFactor = 0f;
     Granade latestGranadeClass;
     GameObject latestGranade;
+    TaskHandler taskHandlerClass;
     int counter = 0;
+
+    private void Start()
+    {
+        taskHandlerClass = FindObjectOfType<TaskHandler>();
+    }
 
     private void Update() {
         Vector3 target = playerPrefab.transform.position;
@@ -50,7 +56,9 @@ public class EnemyLauncher : MonoBehaviour
 
     private void OnDestroy()
     {
-        Destroy(latestGranade);
+        taskHandlerClass.UpdateLevelTaskState(ObjectsDescription.EnemyLauncher, TaskTypes.Destroy, TaskCategory.CountingTask);
+        if(!latestGranadeClass.isGranadeActive())
+            Destroy(latestGranade);
     }
 
 }

@@ -12,6 +12,7 @@ public class LevelController : MonoBehaviour
     Player playerClass;
     PlayerActions playerActionsClass;
     PlayerStatistics playerStats;
+    TaskHandler taskHandler;
 
     [SerializeField] GameObject coinsAcquired;
     TextMeshProUGUI coinsAcquiredOnScreenText;
@@ -20,12 +21,13 @@ public class LevelController : MonoBehaviour
     private void Start()
     {
         slowmotionClass = slowmotion.GetComponent<Slowmotion>();
-        playerClass = FindObjectOfType<Player>();
-        playerActionsClass = FindObjectOfType<PlayerActions>();
+        playerClass = player.GetComponent<Player>();
+        playerActionsClass = player.GetComponent<PlayerActions>();
         coinsAcquiredOnScreenText = coinsAcquired.GetComponent<TextMeshProUGUI>();
         coinsInScene = FindObjectsOfType<Coin>().Length;
         coinsAcquiredOnScreenText.text = currentCoinsAcquired.ToString() + " / " + coinsInScene;
         playerStats = FindObjectOfType<PlayerStatistics>();
+        taskHandler = FindObjectOfType<TaskHandler>();
     }
 
     private void Update()
@@ -38,6 +40,7 @@ public class LevelController : MonoBehaviour
     {
         currentCoinsAcquired += 1;
         coinsAcquiredOnScreenText.text = currentCoinsAcquired.ToString() + " / " + coinsInScene;
+        taskHandler.UpdateLevelTaskState(ObjectsDescription.Coin, TaskTypes.Collect, TaskCategory.CountingTask);
     }
 
     public void ClickedPauseButton()

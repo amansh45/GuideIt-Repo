@@ -13,20 +13,23 @@ public class MainMenuHandler : MonoBehaviour
     TextMeshProUGUI chapterName;
     int numChapters;
 
-    private void UpdateFirstTaskOnScreen()
+    private void UpdateFirstTaskOnScreen(bool isTaskCompleted)
     {
         int findex = playerStats.firstActiveTaskIndex;
         PlayerStatistics.Task firstTask;
         if (findex != -1)
         {
             firstTask = playerStats.tasksList[findex];
-            playerStats.playerCoins += firstTask.TaskCompletionAward;
+
+            if(isTaskCompleted)
+                playerStats.playerCoins += firstTask.TaskCompletionAward;
+
             foreach (Transform child in firstTaskGO.gameObject.transform)
             {
                 if (child.gameObject.name == "Text")
                 {
                     var tmpTask = child.gameObject.GetComponent<TextMeshProUGUI>();
-                    if (firstTask.IsCountable)
+                    if (firstTask.CurrTaskCategory == TaskCategory.CountingTask)
                         tmpTask.text = firstTask.TaskDescription + "\n" + firstTask.CurrentCount + " / " + firstTask.CountLimit;
                     else
                         tmpTask.text = firstTask.TaskDescription;
@@ -50,19 +53,22 @@ public class MainMenuHandler : MonoBehaviour
         }
     }
 
-    private void UpdateSecondTaskOnScreen() {
+    private void UpdateSecondTaskOnScreen(bool isTaskCompleted) {
         PlayerStatistics.Task secondTask;
         int sindex = playerStats.secondActiveTaskIndex;
         if (sindex != -1)
         {
             secondTask = playerStats.tasksList[sindex];
-            playerStats.playerCoins += secondTask.TaskCompletionAward;
+
+            if(isTaskCompleted)
+                playerStats.playerCoins += secondTask.TaskCompletionAward;
+
             foreach (Transform child in secondTaskGO.transform)
             {
                 if (child.gameObject.name == "Text")
                 {
                     var tmpTask = child.gameObject.GetComponent<TextMeshProUGUI>();
-                    if (secondTask.IsCountable)
+                    if (secondTask.CurrTaskCategory == TaskCategory.CountingTask)
                         tmpTask.text = secondTask.TaskDescription + "\n" + secondTask.CurrentCount + " / " + secondTask.CountLimit;
                     else
                         tmpTask.text = secondTask.TaskDescription;
@@ -96,9 +102,9 @@ public class MainMenuHandler : MonoBehaviour
     {
         playerStats.TaskCompleted(index);
         if (index == 0)
-            UpdateFirstTaskOnScreen();
+            UpdateFirstTaskOnScreen(true);
         else
-            UpdateSecondTaskOnScreen();
+            UpdateSecondTaskOnScreen(true);
     }
 
     private void UpdateIcons() {
@@ -131,10 +137,13 @@ public class MainMenuHandler : MonoBehaviour
 
     void Update()
     {
-        if(firstTimeLoad && playerStats.playerStatsLoaded)
+        if (!playerStats.playerStatsLoaded)
+            playerStats = FindObjectOfType<PlayerStatistics>();
+
+        if (firstTimeLoad && playerStats.playerStatsLoaded)
         {
-            UpdateFirstTaskOnScreen();
-            UpdateSecondTaskOnScreen();
+            UpdateFirstTaskOnScreen(false);
+            UpdateSecondTaskOnScreen(false);
             numChapters = playerStats.chaptersList.Count;
             PersistentInformation.CurrentChapter = playerStats.highestChapter;
             chapterName.text = playerStats.chaptersList[PersistentInformation.CurrentChapter].ChapterName;

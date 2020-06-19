@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class PlayerStatistics : MonoBehaviour
 {
     public struct Task
@@ -48,15 +49,25 @@ public class PlayerStatistics : MonoBehaviour
 
     public struct Upgrade
     {
-        string upgradeType;
-        int coinCost;
-        int moneyCost;
-        bool isBoughtByCoin;
-        bool isBoughtByMoney;
-        bool isUnlocked;
-        bool isActive;
-        string applicableOn;
-        List<GameObject> particles;
+        public UpgradeTypes UpgradeType;
+        public int CoinCost;
+        public float MoneyCost;
+        public bool IsBoughtByCoin, IsBoughtByMoney, IsUnlocked, IsActive;
+        public ObjectsDescription ApplicableOn;
+        public UpgradeParticles UpgradeParticle;
+
+        public Upgrade(UpgradeTypes upgradeType, int coinCost, float moneyCost, bool isBoughtByCoin, bool isBoughtByMoney, bool isUnlocked, bool isActive, ObjectsDescription applicableOn, UpgradeParticles upgradeParticle)
+        {
+            UpgradeType = upgradeType;
+            CoinCost = coinCost;
+            MoneyCost = moneyCost;
+            IsBoughtByCoin = isBoughtByCoin;
+            IsBoughtByMoney = isBoughtByMoney;
+            IsUnlocked = isUnlocked;
+            IsActive = isActive;
+            ApplicableOn = applicableOn;
+            UpgradeParticle = upgradeParticle;
+        }
     }
 
     public struct Level
@@ -112,7 +123,7 @@ public class PlayerStatistics : MonoBehaviour
     public List<Task> tasksList = new List<Task>();
     public List<Chapter> chaptersList = new List<Chapter>();
     public List<Upgrade> upgradesList = new List<Upgrade>();
-    public int firstActiveTaskIndex = 0, secondActiveTaskIndex = 1, tasksCompleted = 0, totalTasks = 0, highestChapter = 0, highestLevel = 0, playerCoins;
+    public int firstActiveTaskIndex = 0, secondActiveTaskIndex = 1, tasksCompleted = 0, totalTasks = 0, highestChapter = 0, highestLevel = 0, activeUpgradeIndex = 0, playerCoins;
     public bool playerStatsLoaded = false;
     public LevelCompletionData levelCompletionData;
     [SerializeField] List<int> levelsInChapter = new List<int>();
@@ -125,24 +136,15 @@ public class PlayerStatistics : MonoBehaviour
         else
             DontDestroyOnLoad(gameObject);
     }
-    
-    private void Start()
-    {
-        PersistentInformation.CurrentChapter = 0;
-        playerCoins = 0;
-        AddTasks();
-        AddChapters();
-        playerStatsLoaded = true;
-    }
 
     private List<Level> AddLevels(int chapterIndex)
     {
         List<Level> levels = new List<Level>();
         int numLevels = levelsInChapter[chapterIndex];
-        for(int i=0;i<numLevels;i++)
+        for (int i = 0; i < numLevels; i++)
         {
             Level level;
-            if(chapterIndex == 0 && i == 0)
+            if (chapterIndex == 0 && i == 0)
                 level = new Level(int.MaxValue, 0, i, true, false, false, "test");
             else
                 level = new Level(int.MaxValue, 0, i, false, false, true, "test");
@@ -153,7 +155,7 @@ public class PlayerStatistics : MonoBehaviour
 
     private void AddChapters()
     {
-        for(int i=0;i<levelsInChapter.Count;i++)
+        for (int i = 0; i < levelsInChapter.Count; i++)
         {
             string chapterName = "Chapter " + (i + 1).ToString();
             List<Level> levels = AddLevels(i);
@@ -168,17 +170,39 @@ public class PlayerStatistics : MonoBehaviour
 
     private void AddTasks()
     {
-        
-        Task task = new Task(false, false, ObjectsDescription.Coin, "Collect 10 coins in any level", 0, 20, TaskTypes.Collect, TaskCategory.CountingTask, 10f);
+
+        Task task = new Task(false, true, ObjectsDescription.Coin, "Collect 5 coins in any level", 0, 20, TaskTypes.Collect, TaskCategory.CountingTask, 5f);
         tasksList.Add(task);
-        task = new Task(false, true, ObjectsDescription.Player, "Complete Level in one go", 1, 50, TaskTypes.NoHit, TaskCategory.CountingTask, 1f);
+        task = new Task(false, false, ObjectsDescription.EnemyLauncher, "Destroy 4 enemy Cannons", 1, 100, TaskTypes.Destroy, TaskCategory.CountingTask, 4f);
         tasksList.Add(task);
         task = new Task(false, true, ObjectsDescription.Coin, "Collect 10 coins in any level", 2, 20, TaskTypes.Collect, TaskCategory.CountingTask, 40f);
         tasksList.Add(task);
-        task = new Task(false, true, ObjectsDescription.EnemyLauncher, "Destroy 18 enemy Cannons", 3, 100, TaskTypes.Destroy, TaskCategory.CountingTask, 18f);
+        task = new Task(false, true, ObjectsDescription.Player, "Complete Level in one go", 3, 50, TaskTypes.NoHit, TaskCategory.CountingTask, 1f);
         tasksList.Add(task);
-        
+
         totalTasks = tasksList.Count;
+    }
+
+    private void AddUpgrades()
+    {
+        Upgrade upgrade = new Upgrade(UpgradeTypes.Skin, 200, 1.5f, false, false, false, true, ObjectsDescription.Player, UpgradeParticles.YellowPlayerSkin);
+        upgradesList.Add(upgrade);
+
+        upgrade = new Upgrade(UpgradeTypes.Skin, 200, 1.5f, false, false, false, false, ObjectsDescription.Player, UpgradeParticles.RedPlayerSkin);
+        upgradesList.Add(upgrade);
+
+        upgrade = new Upgrade(UpgradeTypes.Skin, 200, 1.5f, false, false, false, false, ObjectsDescription.Player, UpgradeParticles.BluePlayerSkin);
+        upgradesList.Add(upgrade);
+    }
+
+    private void Start()
+    {
+        PersistentInformation.CurrentChapter = 0;
+        playerCoins = 0;
+        AddTasks();
+        AddChapters();
+        AddUpgrades();
+        playerStatsLoaded = true;
     }
 
     public void TaskCompleted(int taskIndex)

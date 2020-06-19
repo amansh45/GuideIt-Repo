@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2934734691032128873}
   - component: {fileID: 2934734691032128875}
   - component: {fileID: 2934734691032128874}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Player Trail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4823,7 +4823,7 @@ GameObject:
   - component: {fileID: 2934734691148376043}
   - component: {fileID: 2934734691148375829}
   - component: {fileID: 2934734691148375828}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Player Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -17,8 +17,11 @@ public class Coin : MonoBehaviour {
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
-        Destroy(gameObject);
-        vfxControllerClass.InitiateRippleEffect(transform.position);
-        levelControllerClass.CoinAcquired(coinValue, coinType);
+        if(other.gameObject.name == ObjectsDescription.Player.ToString())
+        {
+            Destroy(gameObject);
+            vfxControllerClass.InitiateRippleEffect(transform.position);
+            levelControllerClass.CoinAcquired(coinValue, coinType);
+        }
     }
 }

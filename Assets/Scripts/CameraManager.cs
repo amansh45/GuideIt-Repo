@@ -10,6 +10,7 @@ public enum ObjectsDescription
     Blade,
     Square,
     EnemyProjectile,
+    NearMissBoundary,
     PlayerProjectile,
     EnemyLauncher,
     FinishLine,

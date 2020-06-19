@@ -5,9 +5,7 @@ using UnityEngine;
 public class PlayerActions : MonoBehaviour
 {
     [SerializeField] float thresholdDistanceBetweenCheckpoints = 0.3f, thresholdBetweenDClickAndPlayer = 0.5f, thresholdDoubleClickTime = 0.3f;
-    [SerializeField] GameObject linePrefab;
-    [SerializeField] GameObject slowmotion;
-    [SerializeField] GameObject playerLauncher;
+    [SerializeField] GameObject linePrefab, slowmotion, playerLauncher;
     [SerializeField] Camera mainCamera;
     //ObjectPooler objectPooler;
 

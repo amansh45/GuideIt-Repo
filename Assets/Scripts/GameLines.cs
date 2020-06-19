@@ -6,7 +6,6 @@ public class GameLines : MonoBehaviour {
 
     [SerializeField] GameObject lineDash;
     [SerializeField] float screenBorderOffset = 0.2f, spaceBetweenLine = 0.2f, singleDashLength = 0.2f, singleDashWidth = 0.1f, borderZaxis;
-    [SerializeField] Camera mainCamera;
     [SerializeField] float borderWidth = 0.025f;
     [SerializeField] Color color = Color.white;
     [SerializeField] GameObject playerPrefab, levelProgressIndicator, levelController;

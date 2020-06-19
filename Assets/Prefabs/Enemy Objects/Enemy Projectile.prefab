@@ -1,5 +1,52 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1785800132
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1785800133}
+  - component: {fileID: 1785800134}
+  m_Layer: 12
+  m_Name: Near Miss GO
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1785800133
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1785800132}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1115305243761945663}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &1785800134
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1785800132}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0.0006901622}
+  serializedVersion: 2
+  m_Radius: 0.31628495
 --- !u!1 &1115305243761945601
 GameObject:
   m_ObjectHideFlags: 0
@@ -32,6 +79,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2497828663415282049}
+  - {fileID: 1785800133}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -72,7 +120,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -996086949
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: fd10b7f7425d4e34289d60b03a612efb, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -99,8 +147,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   granadeSpeed: 200
   shrinkFactorOnLaunch: 0.3
-  explosionTime: 1
-  cameraShakeDuration: 0.25
 --- !u!50 &50374604166089338
 Rigidbody2D:
   serializedVersion: 4
@@ -135,9 +181,9 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.00029288232, y: -0.00020569563}
+  m_Offset: {x: 0.0030597895, y: -0.00020569563}
   serializedVersion: 2
-  m_Radius: 0.22029461
+  m_Radius: 0.21199386
 --- !u!1001 &2415015028156518048
 PrefabInstance:
   m_ObjectHideFlags: 0

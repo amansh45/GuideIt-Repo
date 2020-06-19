@@ -10,6 +10,7 @@ TagManager:
   - FinishLine
   - EnemyObject
   - Coin
+  - PlayerLauncher
   layers:
   - Default
   - TransparentFX

@@ -100,33 +100,42 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == ObjectsDescription.EnemyObject.ToString())
+        Debug.Log("Collider Name: " + other.gameObject.name);
+
+        if (other.gameObject.tag == ObjectsDescription.EnemyObject.ToString() || other.gameObject.tag == ObjectsDescription.EnemyLauncher.ToString())
             Die();
         else if (other.gameObject.tag == ObjectsDescription.FinishLine.ToString())
             LevelComplete();
-        else if(other.gameObject.transform.parent.name == ObjectsDescription.Blade.ToString())
+        else if(other.gameObject.name == ObjectsDescription.NearMissBoundary.ToString())
         {
-            Debug.Log("Near Miss registered with blade");
-            taskHandlerClass.UpdateLevelTaskState(ObjectsDescription.Blade, TaskTypes.NearMiss, TaskCategory.CountingTask);
-        } else if(other.gameObject.transform.parent.name == ObjectsDescription.Box.ToString())
-        {
-            Debug.Log("Near Miss registered with box");
-            taskHandlerClass.UpdateLevelTaskState(ObjectsDescription.Box, TaskTypes.NearMiss, TaskCategory.CountingTask);
-        } else if(other.gameObject.transform.parent.name == ObjectsDescription.Square.ToString())
-        {
-            Debug.Log("Near Miss registered with square");
-            taskHandlerClass.UpdateLevelTaskState(ObjectsDescription.Square, TaskTypes.NearMiss, TaskCategory.CountingTask);
+            if (other.gameObject.transform.parent.name == ObjectsDescription.Blade.ToString())
+            {
+                Debug.Log("Near Miss registered with blade");
+                taskHandlerClass.UpdateLevelTaskState(ObjectsDescription.Blade, TaskTypes.NearMiss, TaskCategory.CountingTask);
+            }
+            else if (other.gameObject.transform.parent.name == ObjectsDescription.Box.ToString())
+            {
+                Debug.Log("Near Miss registered with box");
+                taskHandlerClass.UpdateLevelTaskState(ObjectsDescription.Box, TaskTypes.NearMiss, TaskCategory.CountingTask);
+            }
+            else if (other.gameObject.transform.parent.name == ObjectsDescription.Square.ToString())
+            {
+                Debug.Log("Near Miss registered with square");
+                taskHandlerClass.UpdateLevelTaskState(ObjectsDescription.Square, TaskTypes.NearMiss, TaskCategory.CountingTask);
+            }
         }
     }
 
     void Die()
     {
         Debug.Log("Player Died...");
+        taskHandlerClass.ResetTasks();
     }
 
     void LevelComplete()
     {
         Debug.Log("Level Complete...");
+        taskHandlerClass.FinalizeTasks();
     }
 
 
@@ -155,6 +164,7 @@ public class Player : MonoBehaviour
         }
         else
         {
+            ballSpeed = hoverSpeed;
             float movementThisFrame = ballSpeed * Time.deltaTime;
             playerRigidBody.velocity = new Vector2(0, movementThisFrame);
         }

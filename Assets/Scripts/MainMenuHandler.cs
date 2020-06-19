@@ -11,6 +11,7 @@ public class MainMenuHandler : MonoBehaviour
     string taskDescription;
     bool firstTimeLoad = true;
     TextMeshProUGUI chapterName;
+    TaskHandler taskHandlerClass;
     int numChapters;
 
     private void UpdateFirstTaskOnScreen(bool isTaskCompleted)
@@ -96,7 +97,9 @@ public class MainMenuHandler : MonoBehaviour
     {
         playerStats = FindObjectOfType<PlayerStatistics>();
         chapterName = chapterNameGO.GetComponent<TextMeshProUGUI>();
+        taskHandlerClass = FindObjectOfType<TaskHandler>();
     }
+
     
     public void CompleteTask(int index)
     {
@@ -105,6 +108,8 @@ public class MainMenuHandler : MonoBehaviour
             UpdateFirstTaskOnScreen(true);
         else
             UpdateSecondTaskOnScreen(true);
+        taskHandlerClass.UpdateTaskPointers();
+        
     }
 
     private void UpdateIcons() {
@@ -150,6 +155,10 @@ public class MainMenuHandler : MonoBehaviour
             UpdateIcons();
             firstTimeLoad = false;
         }
+
+        if (taskHandlerClass == null)
+            taskHandlerClass = FindObjectOfType<TaskHandler>();
+
     }
 
     public void LeftArrowClicked()

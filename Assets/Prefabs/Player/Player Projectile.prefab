@@ -1,5 +1,52 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &216066790
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 216066791}
+  - component: {fileID: 216066792}
+  m_Layer: 9
+  m_Name: Near Miss GO
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &216066791
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 216066790}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2998421867909495768}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &216066792
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 216066790}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0.0020737052}
+  serializedVersion: 2
+  m_Radius: 0.23466104
 --- !u!1 &2998421867909495770
 GameObject:
   m_ObjectHideFlags: 0
@@ -13,8 +60,8 @@ GameObject:
   - component: {fileID: -6927107666835662003}
   - component: {fileID: 7300054416139541423}
   - component: {fileID: 7137924674159716793}
-  m_Layer: 0
-  m_Name: Player Bullet
+  m_Layer: 9
+  m_Name: Player Projectile
   m_TagString: PlayerProjectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,6 +79,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6414154087453630179}
+  - {fileID: 216066791}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -143,10 +191,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2998421867909495768}
     m_Modifications:
+    - target: {fileID: 3130893513620998642, guid: ae33c6223058d8446b6964ed9beb79cd,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 5679441277448542832, guid: ae33c6223058d8446b6964ed9beb79cd,
         type: 3}
       propertyPath: m_Name
       value: Bullet Particle System
+      objectReference: {fileID: 0}
+    - target: {fileID: 5679441277448542832, guid: ae33c6223058d8446b6964ed9beb79cd,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 6064953381242815491, guid: ae33c6223058d8446b6964ed9beb79cd,
         type: 3}
@@ -202,6 +260,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8840911961297113684, guid: ae33c6223058d8446b6964ed9beb79cd,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ae33c6223058d8446b6964ed9beb79cd, type: 3}

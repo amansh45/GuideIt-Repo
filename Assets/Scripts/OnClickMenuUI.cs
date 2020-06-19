@@ -10,6 +10,7 @@ public class OnClickMenuUI : MonoBehaviour
     //SceneLoader sceneLoaderClass;
     LevelController levelController = null;
     MainMenuHandler menuHandlerClass = null;
+    UpgradeManager upgradeManagerClass = null;
 
     private void Start()
     {
@@ -102,6 +103,12 @@ public class OnClickMenuUI : MonoBehaviour
         var levelClickedGO = EventSystem.current.currentSelectedGameObject;
         string levelName = levelClickedGO.transform.parent.transform.parent.name;
         SceneManager.LoadScene(levelName);
+    }
+
+    public void OnUpgradeSelected()
+    {
+        if (upgradeManagerClass == null)
+            upgradeManagerClass = FindObjectOfType<UpgradeManager>();
     }
 
 }

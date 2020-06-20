@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class UpgradeScroller : MonoBehaviour
 {
@@ -25,9 +26,10 @@ public class UpgradeScroller : MonoBehaviour
 
         if (firstTimeLoad && playerStats.playerStatsLoaded)
         {
-            for(int i=0; i<5; i++)
+            int numUpgrades = playerStats.upgradesList.Count;
+            for(int i=0; i<numUpgrades; i++)
             {
-                generateUpgradeItem();
+                generateUpgradeItem(i);
             }
             scrollView.horizontalNormalizedPosition = 0f;
             firstTimeLoad = false;
@@ -35,11 +37,37 @@ public class UpgradeScroller : MonoBehaviour
 
     }
 
-    void generateUpgradeItem()
+    void generateUpgradeItem(int index)
     {
+        PlayerStatistics.Upgrade upgradeData = playerStats.upgradesList[index];
         GameObject scrollItemObj = Instantiate(scrollItemPrefab);
         scrollItemObj.transform.parent = scrollContent.transform;
         scrollItemObj.transform.localScale = new Vector3(1, 1, 1);
+
+        foreach(Transform child in scrollItemObj.transform)
+        {
+            if(upgradeData.IsUnlocked)
+            {
+                if (child.name == "Lock Image")
+                    child.gameObject.SetActive(false);
+                else if (child.name == "Unlock Image")
+                    child.gameObject.SetActive(true);
+            } else
+            {
+                if (child.name == "Lock Image")
+                    child.gameObject.SetActive(true);
+                else if (child.name == "Unlock Image")
+                    child.gameObject.SetActive(false);
+            }
+
+            if(child.transform.name == "Upgrade Name")
+            {
+                TextMeshProUGUI upgradeName = child.gameObject.GetComponent<TextMeshProUGUI>();
+                upgradeName.text = "Test";
+            }
+        }
+
+        scrollItemObj.transform.name = index.ToString();
     }
 
 }

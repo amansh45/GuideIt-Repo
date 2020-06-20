@@ -24,9 +24,11 @@ public enum UpgradeParticles
 public class UpgradeManager : MonoBehaviour
 {
     [SerializeField] Camera mainCamera;
-    [SerializeField] GameObject uiPreviewArea, linePrefab, playerSkin;
+    [SerializeField] GameObject uiPreviewArea, linePrefab, playerSkin, coinTextGO, moneyTextGO;
     [SerializeField] float thresholdDistanceBetweenCheckpoints = 0.3f;
-    
+
+    int previewUpgradeIndex;
+
     GameObject previewMovementArea, currentLine, previousFingerPosition;
     Vector3 previewMovementAreaScale;
     Player playerClass;
@@ -59,22 +61,7 @@ public class UpgradeManager : MonoBehaviour
 
     }
 
-    void Start()
-    {    
-        Vector3[] corners = new Vector3[4];
-        uiPreviewArea.GetComponent<RectTransform>().GetWorldCorners(corners);
-        for(int i=0;i<4;i++) {
-            corners[i] = mainCamera.ScreenToWorldPoint(corners[i]);
-            Debug.Log(corners[i]);
-        }
-        playerClass = playerSkin.GetComponent<Player>();
-
-        playerStats = FindObjectOfType<PlayerStatistics>();
-
-        SetPreviewMovementArea(corners[0].x, corners[3].x, corners[0].y, corners[1].y);
-    }
-
-    private void EnablePlayerSkin()
+    private void EnablePlayerSkinPreview()
     {
         Vector2 tempFingerPos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
         Vector2 currentPlayerPos = transform.position;
@@ -107,14 +94,6 @@ public class UpgradeManager : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-        PlayerStatistics.Upgrade activeUpgrade = playerStats.upgradesList[playerStats.activeUpgradeIndex];
-        if (activeUpgrade.ApplicableOn == ObjectsDescription.Player) {
-            EnablePlayerSkin();
-        }
-    }
-
     void CreateLine(Vector2 initialFingerPos)
     {
         //currentLine = objectPooler.SpawnFromPool("PathLine", initialFingerPos, Quaternion.identity);
@@ -139,5 +118,37 @@ public class UpgradeManager : MonoBehaviour
         GameObject lineInstance = Instantiate(linePrefab, newFingerPos, rotation) as GameObject;
         previousFingerPosition = lineInstance;
         playerClass.SetWayPoints(previousFingerPosition, true);
+    }
+
+    public void UpgradeClicked(int index)
+    {
+        previewUpgradeIndex = index;
+    }
+
+    void Start()
+    {
+        Vector3[] corners = new Vector3[4];
+        uiPreviewArea.GetComponent<RectTransform>().GetWorldCorners(corners);
+        for (int i = 0; i < 4; i++)
+        {
+            corners[i] = mainCamera.ScreenToWorldPoint(corners[i]);
+            Debug.Log(corners[i]);
+        }
+        playerClass = playerSkin.GetComponent<Player>();
+
+        playerStats = FindObjectOfType<PlayerStatistics>();
+
+        previewUpgradeIndex = playerStats.activeUpgradeIndex;
+
+        SetPreviewMovementArea(corners[0].x, corners[3].x, corners[0].y, corners[1].y);
+    }
+
+    void Update()
+    {
+        PlayerStatistics.Upgrade activeUpgrade = playerStats.upgradesList[previewUpgradeIndex];
+        if (activeUpgrade.ApplicableOn == ObjectsDescription.Player)
+        {
+            EnablePlayerSkinPreview();
+        }
     }
 }

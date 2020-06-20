@@ -185,7 +185,7 @@ public class PlayerStatistics : MonoBehaviour
 
     private void AddUpgrades()
     {
-        Upgrade upgrade = new Upgrade(UpgradeTypes.Skin, 200, 1.5f, false, false, false, true, ObjectsDescription.Player, UpgradeParticles.YellowPlayerSkin);
+        Upgrade upgrade = new Upgrade(UpgradeTypes.Skin, 200, 1.5f, false, false, true, true, ObjectsDescription.Player, UpgradeParticles.YellowPlayerSkin);
         upgradesList.Add(upgrade);
 
         upgrade = new Upgrade(UpgradeTypes.Skin, 200, 1.5f, false, false, false, false, ObjectsDescription.Player, UpgradeParticles.RedPlayerSkin);

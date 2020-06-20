@@ -105,10 +105,13 @@ public class OnClickMenuUI : MonoBehaviour
         SceneManager.LoadScene(levelName);
     }
 
-    public void OnUpgradeSelected()
+    public void PreviewUpgrade()
     {
         if (upgradeManagerClass == null)
             upgradeManagerClass = FindObjectOfType<UpgradeManager>();
+        var upgradeClickedGO = EventSystem.current.currentSelectedGameObject;
+        string upgradeIndex = upgradeClickedGO.transform.parent.name;
+        upgradeManagerClass.UpgradeClicked(int.Parse(upgradeIndex));
     }
 
 }

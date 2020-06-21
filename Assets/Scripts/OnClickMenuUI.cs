@@ -105,13 +105,45 @@ public class OnClickMenuUI : MonoBehaviour
         SceneManager.LoadScene(levelName);
     }
 
-    public void PreviewUpgrade()
+    public void ShowPreviewOfUpgrade()
     {
         if (upgradeManagerClass == null)
             upgradeManagerClass = FindObjectOfType<UpgradeManager>();
         var upgradeClickedGO = EventSystem.current.currentSelectedGameObject;
         string upgradeIndex = upgradeClickedGO.transform.parent.name;
         upgradeManagerClass.UpgradeClicked(int.Parse(upgradeIndex));
+    }
+
+    public void UpgradeColorClicked()
+    {
+        if (upgradeManagerClass == null)
+            upgradeManagerClass = FindObjectOfType<UpgradeManager>();
+        upgradeManagerClass.ShowColorsMenu();
+    }
+    
+    public void EnterToUpgradeMainCanvas()
+    {
+        if (upgradeManagerClass == null)
+            upgradeManagerClass = FindObjectOfType<UpgradeManager>();
+        upgradeManagerClass.ShowMainCanvas();
+    }
+
+    public void OnSelectColorForUpgrade()
+    {
+        if (upgradeManagerClass == null)
+            upgradeManagerClass = FindObjectOfType<UpgradeManager>();
+        var colorClickedGO = EventSystem.current.currentSelectedGameObject;
+        string colorName = colorClickedGO.transform.name;
+
+        foreach (Transform child in colorClickedGO.transform.parent)
+        {
+            if (child.gameObject.name == colorName)
+                child.GetChild(1).gameObject.SetActive(true);
+            else
+                child.GetChild(1).gameObject.SetActive(false);
+        }
+        
+        upgradeManagerClass.SelectColor(colorName);
     }
 
 }

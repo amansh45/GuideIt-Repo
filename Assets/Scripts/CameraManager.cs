@@ -13,6 +13,7 @@ public enum ObjectsDescription
     NearMissBoundary,
     PlayerProjectile,
     EnemyLauncher,
+    PlayerLauncher,
     FinishLine,
     Coin,
 }

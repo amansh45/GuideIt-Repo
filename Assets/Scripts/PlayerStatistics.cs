@@ -47,18 +47,50 @@ public class PlayerStatistics : MonoBehaviour
 
     }
 
+    public struct CustomColor
+    {
+        public Color FirstColor, SecondColor, ThirdColor, FourthColor;
+
+        public CustomColor(Color firstColor, Color secondColor, Color thirdColor, Color fourthColor)
+        {
+            FirstColor = firstColor;
+            SecondColor = secondColor;
+            ThirdColor = thirdColor;
+            FourthColor = fourthColor;
+        }
+    }
+
+    public struct SkinColorStuff
+    {
+        public int CoinCost;
+        public float MoneyCost;
+        public bool IsActive;
+        public bool IsUnlocked;
+
+        public SkinColorStuff(int coinCost, float moneyCost, bool isActive, bool isUnlocked)
+        {
+            CoinCost = coinCost;
+            MoneyCost = moneyCost;
+            IsActive = isActive;
+            IsUnlocked = isUnlocked;
+        }
+    }
+
     public struct Upgrade
     {
-        public UpgradeTypes UpgradeType;
         public int CoinCost;
         public float MoneyCost;
         public bool IsBoughtByCoin, IsBoughtByMoney, IsUnlocked, IsActive;
         public ObjectsDescription ApplicableOn;
-        public UpgradeParticles UpgradeParticle;
+        public GameObject UpgradeParticle;
+        public SkinColors ParticlesColor;
+        public SkinCategory UpgradeCategory; 
+        public string UpgradeName;
+        public Dictionary<string, SkinColorStuff> ColorStuff;
 
-        public Upgrade(UpgradeTypes upgradeType, int coinCost, float moneyCost, bool isBoughtByCoin, bool isBoughtByMoney, bool isUnlocked, bool isActive, ObjectsDescription applicableOn, UpgradeParticles upgradeParticle)
+        public Upgrade(int coinCost, float moneyCost, bool isBoughtByCoin, bool isBoughtByMoney, bool isUnlocked, bool isActive, ObjectsDescription applicableOn, 
+            SkinCategory upgradeCategory, GameObject upgradeParticle, SkinColors particlesColor, string upgradeName, Dictionary<string, SkinColorStuff> colorStuff)
         {
-            UpgradeType = upgradeType;
             CoinCost = coinCost;
             MoneyCost = moneyCost;
             IsBoughtByCoin = isBoughtByCoin;
@@ -67,6 +99,10 @@ public class PlayerStatistics : MonoBehaviour
             IsActive = isActive;
             ApplicableOn = applicableOn;
             UpgradeParticle = upgradeParticle;
+            ParticlesColor = particlesColor;
+            UpgradeName = upgradeName;
+            UpgradeCategory = upgradeCategory;
+            ColorStuff = colorStuff;
         }
     }
 
@@ -123,10 +159,13 @@ public class PlayerStatistics : MonoBehaviour
     public List<Task> tasksList = new List<Task>();
     public List<Chapter> chaptersList = new List<Chapter>();
     public List<Upgrade> upgradesList = new List<Upgrade>();
-    public int firstActiveTaskIndex = 0, secondActiveTaskIndex = 1, tasksCompleted = 0, totalTasks = 0, highestChapter = 0, highestLevel = 0, activeUpgradeIndex = 0, playerCoins;
+    public List<int> activeUpgrades = new List<int>();
+    public int firstActiveTaskIndex = 0, secondActiveTaskIndex = 1, tasksCompleted = 0, totalTasks = 0, highestChapter = 0, highestLevel = 0, playerCoins;
     public bool playerStatsLoaded = false;
     public LevelCompletionData levelCompletionData;
+    public Dictionary<string, CustomColor> colorsData = new Dictionary<string, CustomColor>();
     [SerializeField] List<int> levelsInChapter = new List<int>();
+    [SerializeField] GameObject playerBasic, launcherBasic, bulletBasic, playerModerate, launcherModerate, bulletModerate, playerAdvance, launcherAdvance, bulletAdvance;
 
     private void Awake()
     {
@@ -168,31 +207,108 @@ public class PlayerStatistics : MonoBehaviour
         }
     }
 
+    public string IntegerToRoman(int number)
+    {
+        String[] roman = new String[] { "M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I" };
+        int[] decimals = new int[] { 1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1 };
+
+        string romanValue = String.Empty;
+
+        for (int i = 0; i < 13; i++)
+        {
+            while (number >= decimals[i])
+            {
+                number -= decimals[i];
+                romanValue += roman[i];
+            }
+        }
+
+        return romanValue;
+    }
+
     private void AddTasks()
     {
 
-        Task task = new Task(false, true, ObjectsDescription.Coin, "Collect 5 coins in any level", 0, 20, TaskTypes.Collect, TaskCategory.CountingTask, 5f);
+        Task task = new Task(false, true, ObjectsDescription.Coin, "Collect 5 coins in any level", 0, 20, TaskTypes.Collect, TaskCategory.CountingTask);
         tasksList.Add(task);
-        task = new Task(false, false, ObjectsDescription.EnemyLauncher, "Destroy 4 enemy Cannons", 1, 100, TaskTypes.Destroy, TaskCategory.CountingTask, 4f);
+        task = new Task(false, false, ObjectsDescription.EnemyLauncher, "Destroy 4 enemy Cannons", 1, 100, TaskTypes.Destroy, TaskCategory.CountingTask);
         tasksList.Add(task);
-        task = new Task(false, true, ObjectsDescription.Coin, "Collect 10 coins in any level", 2, 20, TaskTypes.Collect, TaskCategory.CountingTask, 40f);
+        task = new Task(false, true, ObjectsDescription.Coin, "Collect 10 coins in any level", 2, 20, TaskTypes.Collect, TaskCategory.CountingTask);
         tasksList.Add(task);
-        task = new Task(false, true, ObjectsDescription.Player, "Complete Level in one go", 3, 50, TaskTypes.NoHit, TaskCategory.CountingTask, 1f);
+        task = new Task(false, true, ObjectsDescription.Player, "Complete Level in one go", 3, 50, TaskTypes.NoHit, TaskCategory.CountingTask);
         tasksList.Add(task);
 
         totalTasks = tasksList.Count;
     }
 
+    private Dictionary<string, SkinColorStuff> CostForColor()
+    {
+        Dictionary<string, SkinColorStuff> mDict = new Dictionary<string, SkinColorStuff>();
+
+        SkinColorStuff stuff;
+        
+        stuff = new SkinColorStuff(100, 10f, true, true);
+        mDict.Add(SkinColors.Yellow.ToString(), stuff);
+        stuff = new SkinColorStuff(130, 12f, false, false);
+        mDict.Add(SkinColors.Blue.ToString(), stuff);
+        stuff = new SkinColorStuff(180, 15f, false, false);
+        mDict.Add(SkinColors.Red.ToString(), stuff);
+        stuff = new SkinColorStuff(200, 20f, false, false);
+        mDict.Add(SkinColors.Purple.ToString(), stuff);
+        
+        return mDict;
+    }
+
     private void AddUpgrades()
     {
-        Upgrade upgrade = new Upgrade(UpgradeTypes.Skin, 200, 1.5f, false, false, true, true, ObjectsDescription.Player, UpgradeParticles.YellowPlayerSkin);
+
+        Dictionary<string, SkinColorStuff> colorsCost = CostForColor();
+
+        Upgrade upgrade = new Upgrade(0, 0f, false, false, true, true, ObjectsDescription.Player, SkinCategory.PlayerBasic, playerBasic, SkinColors.Yellow, IntegerToRoman(1), colorsCost);
         upgradesList.Add(upgrade);
 
-        upgrade = new Upgrade(UpgradeTypes.Skin, 200, 1.5f, false, false, false, false, ObjectsDescription.Player, UpgradeParticles.RedPlayerSkin);
+        upgrade = new Upgrade(500, 5f, false, false, true, false, ObjectsDescription.Player, SkinCategory.PlayerModerate, playerModerate, SkinColors.Yellow, IntegerToRoman(2), colorsCost);
         upgradesList.Add(upgrade);
 
-        upgrade = new Upgrade(UpgradeTypes.Skin, 200, 1.5f, false, false, false, false, ObjectsDescription.Player, UpgradeParticles.BluePlayerSkin);
+        upgrade = new Upgrade(1000, 10f, false, false, false, false, ObjectsDescription.Player, SkinCategory.PlayerAdvance, playerAdvance, SkinColors.Yellow, IntegerToRoman(3), colorsCost);
         upgradesList.Add(upgrade);
+
+        upgrade = new Upgrade(0, 0f, false, false, true, true, ObjectsDescription.PlayerLauncher, SkinCategory.LauncherBasic, launcherBasic, SkinColors.Yellow, IntegerToRoman(4), colorsCost);
+        upgradesList.Add(upgrade);
+
+        upgrade = new Upgrade(500, 5f, false, false, false, false, ObjectsDescription.PlayerLauncher, SkinCategory.LauncherModerate, launcherModerate, SkinColors.Yellow, IntegerToRoman(5), colorsCost);
+        upgradesList.Add(upgrade);
+
+        upgrade = new Upgrade(1000, 10f, false, false, false, false, ObjectsDescription.PlayerLauncher, SkinCategory.LauncherAdvance, launcherAdvance, SkinColors.Yellow, IntegerToRoman(6), colorsCost);
+        upgradesList.Add(upgrade);
+
+        upgrade = new Upgrade(0, 0f, false, false, true, true, ObjectsDescription.PlayerProjectile, SkinCategory.BulletBasic, bulletBasic, SkinColors.Yellow, IntegerToRoman(7), colorsCost);
+        upgradesList.Add(upgrade);
+
+        upgrade = new Upgrade(500, 5f, false, false, false, false, ObjectsDescription.PlayerProjectile, SkinCategory.BulletModerate, bulletModerate, SkinColors.Yellow, IntegerToRoman(8), colorsCost);
+        upgradesList.Add(upgrade);
+
+        upgrade = new Upgrade(1000, 10f, false, false, false, false, ObjectsDescription.PlayerProjectile, SkinCategory.BulletAdvance, bulletAdvance, SkinColors.Yellow, IntegerToRoman(9), colorsCost);
+        upgradesList.Add(upgrade);
+    }
+
+    private Color HexToRGB(string code)
+    {
+        Color testColor;
+        ColorUtility.TryParseHtmlString(code, out testColor);
+        return testColor;
+    }
+
+    private void DumpColors()
+    {
+        CustomColor mcolor = new CustomColor(HexToRGB("#FF7D1E"), HexToRGB("#FFDF5D"), HexToRGB("#FFE981"), HexToRGB("#FFBA00")); ;
+        colorsData.Add(SkinColors.Yellow.ToString(), mcolor);
+        mcolor = new CustomColor(HexToRGB("#1E31FF"), HexToRGB("#5DCDFF"), HexToRGB("#66E5FF"), HexToRGB("#001BFF"));
+        colorsData.Add(SkinColors.Blue.ToString(), mcolor);
+        mcolor = new CustomColor(HexToRGB("#FF0F00"), HexToRGB("#FF6C5E"), HexToRGB("#FFA27F"), HexToRGB("#FF1500"));
+        colorsData.Add(SkinColors.Red.ToString(), mcolor);
+        mcolor = new CustomColor(HexToRGB("#FF00EC"), HexToRGB("#FF5ED4"), HexToRGB("#FF90EC"), HexToRGB("#F700FF"));
+        colorsData.Add(SkinColors.Purple.ToString(), mcolor);
     }
 
     private void Start()
@@ -201,6 +317,7 @@ public class PlayerStatistics : MonoBehaviour
         playerCoins = 0;
         AddTasks();
         AddChapters();
+        DumpColors();
         AddUpgrades();
         playerStatsLoaded = true;
     }

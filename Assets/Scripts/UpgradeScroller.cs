@@ -63,7 +63,7 @@ public class UpgradeScroller : MonoBehaviour
             if(child.transform.name == "Upgrade Name")
             {
                 TextMeshProUGUI upgradeName = child.gameObject.GetComponent<TextMeshProUGUI>();
-                upgradeName.text = "Test";
+                upgradeName.text = upgradeData.UpgradeName;
             }
         }
 

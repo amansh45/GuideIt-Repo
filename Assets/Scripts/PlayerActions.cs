@@ -54,7 +54,7 @@ public class PlayerActions : MonoBehaviour
 
     private void InitiateShoot()
     {
-        playerClass.MovePlayer(PlayerState.Still);
+        playerClass.playerState = PlayerState.Still;
         playerLauncherInstance = Instantiate(playerLauncher, transform.position, transform.rotation);
         playerClass.SetScale(0f);
         isPlayerShooting = true;
@@ -73,7 +73,7 @@ public class PlayerActions : MonoBehaviour
         float bulletFiringAngle = FindAngleBetweenVectors(currentPlayerPosition, currentFingerPos);
         var bulletFiringDirection = Quaternion.Euler(new Vector3(0, 0, bulletFiringAngle));
         playerLauncherInstance.GetComponent<PlayerLauncher>().ShootAndSelfDestruct(bulletFiringDirection);
-        playerClass.MovePlayer(PlayerState.Hover);
+        playerClass.playerState = PlayerState.Hover;
         playerClass.SetScale(1f);
     }
 
@@ -109,23 +109,26 @@ public class PlayerActions : MonoBehaviour
             Vector2 tempFingerPos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
             Vector2 currentPlayerPos = transform.position;
 
-            if (Input.GetMouseButtonDown(0))
+            if (ClickedInsidePlayerMovementArea(tempFingerPos))
             {
-                if (ClickedInsidePlayerMovementArea(tempFingerPos))
+
+                if (Input.GetMouseButtonDown(0))
                 {
+
                     slowmoClass.updateAnimations(true);
                     if (IsPlayerTryingToShoot(tempFingerPos) && playerClass.reachedXPToShoot())
                     {
                         InitiateShoot();
+                        isLineDrawing = false;
+                    } else
+                    {
+                        CreateLine(tempFingerPos);
+                        isLineDrawing = true;
                     }
                     prevPlayerPosition = transform.position;
-                    CreateLine(tempFingerPos);
-                    isLineDrawing = true;
+                    
                 }
-            }
-            else if (Input.GetMouseButton(0))
-            {
-                if (ClickedInsidePlayerMovementArea(tempFingerPos))
+                else if (Input.GetMouseButton(0))
                 {
                     if (isPlayerShooting)
                     {
@@ -133,31 +136,33 @@ public class PlayerActions : MonoBehaviour
                     }
                     else
                     {
-                        try
+                        if (ClickedInsidePlayerMovementArea(tempFingerPos))
                         {
-                            if (Vector2.Distance(tempFingerPos, previousFingerPosition.transform.position) > thresholdDistanceBetweenCheckpoints)
-                                UpdateLine(tempFingerPos);
+                            try
+                            {
+                                if (Vector2.Distance(tempFingerPos, previousFingerPosition.transform.position) > thresholdDistanceBetweenCheckpoints)
+                                    UpdateLine(tempFingerPos);
+                            }
+                            catch (System.Exception exception)
+                            {
+                                CreateLine(tempFingerPos);
+                            }
+                            isLineDrawing = true;
                         }
-                        catch (System.Exception exception)
-                        {
-                            CreateLine(tempFingerPos);
-                        }
-                        isLineDrawing = true;
                     }
                 }
-            }
-            else if (Input.GetMouseButtonUp(0))
-            {
-                if (isLineDrawing)
+                else if (Input.GetMouseButtonUp(0))
                 {
+                    
                     slowmoClass.updateAnimations(false);
                     if (isPlayerShooting)
                     {
                         FinalizeShoot(tempFingerPos, currentPlayerPos);
                     }
                     else
-                        playerClass.MovePlayer(PlayerState.Run);
+                        playerClass.playerState = PlayerState.Run;
                     isLineDrawing = false;
+                    
                 }
             }
         }

@@ -72,5 +72,4 @@ MonoBehaviour:
   rippleEffectDuration: 1
   explosionEffectDuration: 1.5
   cameraShakeDuration: 0.25
-  screenBorderOffset: 0.2
   mainCamera: {fileID: 0}

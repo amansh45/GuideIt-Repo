@@ -7,6 +7,7 @@ public enum PlayerState
     Run,
     Still,
     Hover,
+    Move,
 }
 
 public class Player : MonoBehaviour
@@ -38,6 +39,8 @@ public class Player : MonoBehaviour
     Rigidbody2D playerRigidBody;
     TaskHandler taskHandlerClass;
 
+    public PlayerState playerState;
+
     void Start()
     {
         foreach (Transform child in transform)
@@ -53,6 +56,7 @@ public class Player : MonoBehaviour
         moveSpeed = 0.1f * runSpeed;
         playerRigidBody = GetComponent<Rigidbody2D>();
         taskHandlerClass = FindObjectOfType<TaskHandler>();
+        playerState = PlayerState.Hover;
     }
 
     public void SetScale(float scale)
@@ -69,7 +73,7 @@ public class Player : MonoBehaviour
 
     public void SetWayPoints(GameObject point, bool isLineCreated)
     {
-        ballSpeed = moveSpeed;
+        playerState = PlayerState.Move;
         if (!isLineCreated)
         {
             List<GameObject> waypoints = new List<GameObject>();
@@ -78,23 +82,21 @@ public class Player : MonoBehaviour
         }
         else
         {
-            waypoints_buffer[lineIndex].Add(point);
+            waypoints_buffer[waypoints_buffer.Count-1].Add(point);
         }
     }
-
-    public void MovePlayer(PlayerState speed)
-    {
-        if (speed == PlayerState.Run)
-            ballSpeed = runSpeed;
-        else if (speed == PlayerState.Still)
-            ballSpeed = 0f;
-        else if (speed == PlayerState.Hover)
-            ballSpeed = hoverSpeed;
-    }
-
-
+    
     void Update()
     {
+        if (playerState == PlayerState.Run)
+            ballSpeed = runSpeed;
+        else if (playerState == PlayerState.Still)
+            ballSpeed = 0f;
+        else if (playerState == PlayerState.Hover)
+            ballSpeed = hoverSpeed;
+        else if (playerState == PlayerState.Move)
+            ballSpeed = moveSpeed;
+
         Move();
     }
 
@@ -164,7 +166,11 @@ public class Player : MonoBehaviour
         }
         else
         {
-            ballSpeed = hoverSpeed;
+            if (playerState != PlayerState.Still)
+            {
+                playerState = PlayerState.Hover;
+                ballSpeed = hoverSpeed;
+            }
             float movementThisFrame = ballSpeed * Time.deltaTime;
             playerRigidBody.velocity = new Vector2(0, movementThisFrame);
         }

@@ -45,7 +45,7 @@ public class LevelController : MonoBehaviour
 
     public void ClickedPauseButton()
     {
-        playerClass.MovePlayer(PlayerState.Still);
+        playerClass.playerState = PlayerState.Still;
         slowmotionClass.customSlowmo(true, onPauseSlowmoFactor);
         pauseCanvas.gameObject.SetActive(true);
         playerActionsClass.isGamePaused = true;
@@ -53,7 +53,7 @@ public class LevelController : MonoBehaviour
 
     public void ClickedResumeButton()
     {
-        playerClass.MovePlayer(PlayerState.Hover);
+        playerClass.playerState = PlayerState.Hover;
         slowmotionClass.customSlowmo(false, onPauseSlowmoFactor);
         pauseCanvas.gameObject.SetActive(false);
         playerActionsClass.isGamePaused = false;

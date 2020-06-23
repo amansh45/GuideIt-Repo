@@ -82,14 +82,13 @@ public class PlayerStatistics : MonoBehaviour
         public float MoneyCost;
         public bool IsBoughtByCoin, IsBoughtByMoney, IsUnlocked, IsActive;
         public ObjectsDescription ApplicableOn;
-        public GameObject UpgradeParticle;
         public SkinColors ParticlesColor;
         public SkinCategory UpgradeCategory; 
         public string UpgradeName;
         public Dictionary<string, SkinColorStuff> ColorStuff;
 
         public Upgrade(int coinCost, float moneyCost, bool isBoughtByCoin, bool isBoughtByMoney, bool isUnlocked, bool isActive, ObjectsDescription applicableOn, 
-            SkinCategory upgradeCategory, GameObject upgradeParticle, SkinColors particlesColor, string upgradeName, Dictionary<string, SkinColorStuff> colorStuff)
+            SkinCategory upgradeCategory, SkinColors particlesColor, string upgradeName, Dictionary<string, SkinColorStuff> colorStuff)
         {
             CoinCost = coinCost;
             MoneyCost = moneyCost;
@@ -98,7 +97,6 @@ public class PlayerStatistics : MonoBehaviour
             IsUnlocked = isUnlocked;
             IsActive = isActive;
             ApplicableOn = applicableOn;
-            UpgradeParticle = upgradeParticle;
             ParticlesColor = particlesColor;
             UpgradeName = upgradeName;
             UpgradeCategory = upgradeCategory;
@@ -159,13 +157,11 @@ public class PlayerStatistics : MonoBehaviour
     public List<Task> tasksList = new List<Task>();
     public List<Chapter> chaptersList = new List<Chapter>();
     public List<Upgrade> upgradesList = new List<Upgrade>();
-    public List<int> activeUpgrades = new List<int>();
     public int firstActiveTaskIndex = 0, secondActiveTaskIndex = 1, tasksCompleted = 0, totalTasks = 0, highestChapter = 0, highestLevel = 0, playerCoins;
     public bool playerStatsLoaded = false;
     public LevelCompletionData levelCompletionData;
     public Dictionary<string, CustomColor> colorsData = new Dictionary<string, CustomColor>();
     [SerializeField] List<int> levelsInChapter = new List<int>();
-    [SerializeField] GameObject playerBasic, launcherBasic, bulletBasic, playerModerate, launcherModerate, bulletModerate, playerAdvance, launcherAdvance, bulletAdvance;
 
     private void Awake()
     {
@@ -261,13 +257,13 @@ public class PlayerStatistics : MonoBehaviour
 
     private void AddUpgrades()
     {
+        Upgrade upgrade = new Upgrade(0, 0f, false, false, true, true, ObjectsDescription.Player, SkinCategory.PlayerBasic, SkinColors.Yellow, IntegerToRoman(1), CostForColor());
+        upgradesList.Add(upgrade);
+
+        upgrade = new Upgrade(500, 5f, false, false, false, false, ObjectsDescription.Player, SkinCategory.PlayerModerate, SkinColors.Yellow, IntegerToRoman(2), CostForColor());
+        upgradesList.Add(upgrade);
         
-        Upgrade upgrade = new Upgrade(0, 0f, false, false, true, true, ObjectsDescription.Player, SkinCategory.PlayerBasic, playerBasic, SkinColors.Yellow, IntegerToRoman(1), CostForColor());
-        upgradesList.Add(upgrade);
-
-        upgrade = new Upgrade(500, 5f, false, false, false, false, ObjectsDescription.Player, SkinCategory.PlayerModerate, playerModerate, SkinColors.Yellow, IntegerToRoman(2), CostForColor());
-        upgradesList.Add(upgrade);
-
+        /*
         upgrade = new Upgrade(1000, 10f, false, false, false, false, ObjectsDescription.Player, SkinCategory.PlayerAdvance, playerAdvance, SkinColors.Yellow, IntegerToRoman(3), CostForColor());
         upgradesList.Add(upgrade);
 
@@ -288,6 +284,7 @@ public class PlayerStatistics : MonoBehaviour
 
         upgrade = new Upgrade(1000, 10f, false, false, false, false, ObjectsDescription.PlayerProjectile, SkinCategory.BulletAdvance, bulletAdvance, SkinColors.Yellow, IntegerToRoman(9), CostForColor());
         upgradesList.Add(upgrade);
+        */
     }
 
     public Color HexToRGB(string code)

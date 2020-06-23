@@ -8,6 +8,7 @@ public enum SkinCategory
 {
     PlayerBasic,
     PlayerModerate,
+/*
     PlayerAdvance,
     LauncherBasic,
     LauncherModerate,
@@ -15,6 +16,7 @@ public enum SkinCategory
     BulletBasic,
     BulletModerate,
     BulletAdvance,
+*/
 }
 
 public enum SkinColors
@@ -32,7 +34,10 @@ public class UpgradeManager : MonoBehaviour
     [SerializeField] GameObject uiPreviewArea, linePrefab, playerSkin, playerLauncher, coinTextGO, moneyTextGO, lockButtonsGO, unlockButtonsGO, unlockTextGO;
     [SerializeField] GameObject colorSelector;
     [SerializeField] float thresholdDistanceBetweenCheckpoints = 0.3f, thresholdDoubleClickTime = 0.3f, thresholdBetweenDClickAndPlayer = 0.5f;
-    [SerializeField] GameObject mainCanvas, secondaryCanvas;
+    [SerializeField] GameObject mainCanvas, secondaryCanvas, secondaryCanvasColors;
+
+    // Note: The sequence for declaring these should be same as that of skinCategory and also the size of the list should be the size of the skinCategory...
+    [SerializeField] List<GameObject> upgradesGO;
 
     int selectedUpgradeIndexForPreview;
     TextMeshProUGUI coinCostTMPro, moneyCostTMPro, unlockButtonTMPro;
@@ -42,7 +47,8 @@ public class UpgradeManager : MonoBehaviour
     float previousClickTime = int.MinValue;
     PlayerStatistics playerStats;
     UpgradeScroller upgradeScrollerClass;
-    
+    public Dictionary<string, GameObject> skinsAndMaterials = new Dictionary<string, GameObject>();
+
     bool isShooting = false;
 
     private void SetPreviewMovementArea(float leftX, float rightX, float bottomY, float topY)
@@ -143,6 +149,22 @@ public class UpgradeManager : MonoBehaviour
         playerClass.SetScale(1f);
     }
 
+    void CreateLine(Vector2 initialFingerPos)
+    {
+        currentLine = Instantiate(linePrefab, initialFingerPos, Quaternion.identity) as GameObject;
+        previousFingerPosition = currentLine;
+        playerClass.SetWayPoints(previousFingerPosition, false);
+    }
+
+
+    void UpdateLine(Vector2 newFingerPos)
+    {
+        float angle = 0;
+        var rotation = Quaternion.Euler(0, 0, angle);
+        GameObject lineInstance = Instantiate(linePrefab, newFingerPos, rotation) as GameObject;
+        previousFingerPosition = lineInstance;
+        playerClass.SetWayPoints(previousFingerPosition, true);
+    }
 
     private void EnableLauncherSkinPreview()
     {
@@ -177,11 +199,23 @@ public class UpgradeManager : MonoBehaviour
         }
     }
 
+
+
+
+
     public void ShowColorsMenu()
     {
+        PlayerStatistics.Upgrade currentUpgrade = playerStats.upgradesList[selectedUpgradeIndexForPreview];
         mainCanvas.SetActive(false);
-        secondaryCanvas.SetActive(true);
         playerSkin.SetActive(false);
+        secondaryCanvas.SetActive(true);
+        foreach (Transform child in secondaryCanvasColors.transform)
+        {
+            if (child.gameObject.name == currentUpgrade.ParticlesColor.ToString())
+                child.GetChild(1).gameObject.SetActive(true);
+            else
+                child.GetChild(1).gameObject.SetActive(false);
+        }
     }
 
     public void SelectColor(string colorStr)
@@ -210,25 +244,8 @@ public class UpgradeManager : MonoBehaviour
     public void ShowMainCanvas()
     {
         secondaryCanvas.SetActive(false);
-        playerSkin.SetActive(true);
+        playerSkin.SetActive(true);    
         mainCanvas.SetActive(true);
-    }
-
-    void CreateLine(Vector2 initialFingerPos)
-    {
-        currentLine = Instantiate(linePrefab, initialFingerPos, Quaternion.identity) as GameObject;
-        previousFingerPosition = currentLine;
-        playerClass.SetWayPoints(previousFingerPosition, false);
-    }
-
-
-    void UpdateLine(Vector2 newFingerPos)
-    {
-        float angle = 0;
-        var rotation = Quaternion.Euler(0, 0, angle);
-        GameObject lineInstance = Instantiate(linePrefab, newFingerPos, rotation) as GameObject;
-        previousFingerPosition = lineInstance;
-        playerClass.SetWayPoints(previousFingerPosition, true);
     }
 
     public void UpgradeClicked(int index)
@@ -251,10 +268,13 @@ public class UpgradeManager : MonoBehaviour
         else
             targetParticle = playerSkin.transform.GetChild(0).gameObject;
 
-        GameObject newParticle = Instantiate(currentUpgrade.UpgradeParticle, targetParticle.transform.position, targetParticle.transform.rotation);
+        GameObject newParticle = skinsAndMaterials[currentUpgrade.UpgradeCategory.ToString()];
+        newParticle.SetActive(true);
         newParticle.transform.parent = targetParticle.transform.parent;
-        newParticle.transform.name = currentUpgrade.UpgradeCategory.ToString();
-        Destroy(targetParticle);
+        newParticle.transform.position = targetParticle.transform.position;
+
+        targetParticle.transform.parent = transform;
+        targetParticle.SetActive(false);
     }
 
     private void UpdateUiData(PlayerStatistics.Upgrade currentUpgrade)
@@ -309,11 +329,13 @@ public class UpgradeManager : MonoBehaviour
     {
         PlayerStatistics.CustomColor mcolor = playerStats.colorsData[currUpgrade.ParticlesColor.ToString()];
         playerSkin.GetComponent<SpriteRenderer>().color = mcolor.ThirdColor;
+        
         foreach (Transform child in mat.transform)
         {
             ParticleSystem ps = child.GetComponent<ParticleSystem>();
             if (child.transform.name == "Player Trail" || child.transform.name == "Player Particles")
             {
+                //Debug.Log("Updating "+ child.transform.name + "to: " + currUpgrade.ParticlesColor.ToString());
                 var col = ps.colorOverLifetime;
                 col.enabled = true;
                 Gradient grad = new Gradient();                
@@ -336,14 +358,13 @@ public class UpgradeManager : MonoBehaviour
             if(currentUpgrade.UpgradeCategory == SkinCategory.PlayerBasic)
             {
                 GameObject mat = playerSkin.transform.GetChild(0).gameObject;
+                Debug.Log("Inside basic, name of upgrade: " + mat.name);
                 UpdatePlayerBasicSkinColor(mat, currentUpgrade);
             } else if(currentUpgrade.UpgradeCategory == SkinCategory.PlayerModerate)
             {
                 GameObject mat = playerSkin.transform.GetChild(0).gameObject;
+                Debug.Log("Inside moderate, name of upgrade: " + mat.name);
                 UpdatePlayerBasicSkinColor(mat, currentUpgrade);
-            } else if(currentUpgrade.UpgradeCategory == SkinCategory.PlayerAdvance)
-            {
-
             }
         } else if(currentUpgrade.ApplicableOn == ObjectsDescription.PlayerLauncher)
         {
@@ -423,6 +444,22 @@ public class UpgradeManager : MonoBehaviour
         }
         UpdateUiData(currentUpgrade);
     }
+
+
+    private void CreateSkinsAndMaterialsDict()
+    {
+        var categoriesList = (SkinCategory[])System.Enum.GetValues(typeof(SkinCategory));
+        int numSkins = categoriesList.Length;
+        for(int i=0;i<numSkins;i++)
+        {
+            GameObject goInstance = Instantiate(upgradesGO[i]);
+            goInstance.transform.parent = transform;
+            goInstance.SetActive(false);
+            skinsAndMaterials.Add(categoriesList[i].ToString(), goInstance);
+        }
+    }
+
+
     void Start()
     {
         Vector3[] corners = new Vector3[4];
@@ -447,7 +484,11 @@ public class UpgradeManager : MonoBehaviour
 
         PlayerStatistics.Upgrade currentUpgrade = playerStats.upgradesList[selectedUpgradeIndexForPreview];
 
+        CreateSkinsAndMaterialsDict();
+        
         UpdateUiData(currentUpgrade);
+
+        UpdateMaterial(currentUpgrade);
 
         UpdateColorOfSkin(currentUpgrade);
 
@@ -462,6 +503,20 @@ public class UpgradeManager : MonoBehaviour
         } else if(activeUpgrade.ApplicableOn == ObjectsDescription.PlayerLauncher)
         {
             EnableLauncherSkinPreview();
+        }
+    }
+
+    private void OnDestroy()
+    {
+        int numUpgrades = playerStats.upgradesList.Count;
+        for(int i=0;i<numUpgrades;i++)
+        {
+            PlayerStatistics.Upgrade currUpgrade = playerStats.upgradesList[i];
+            if (currUpgrade.IsActive)
+            {
+                skinsAndMaterials[currUpgrade.UpgradeCategory.ToString()].transform.parent = playerStats.transform;
+                skinsAndMaterials[currUpgrade.UpgradeCategory.ToString()].SetActive(false);
+            }
         }
     }
 }

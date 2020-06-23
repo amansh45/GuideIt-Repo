@@ -40,8 +40,8 @@ public class TaskHandler : MonoBehaviour
 
     private void Awake()
     {
-        int cameraManagerCount = FindObjectsOfType<CameraManager>().Length;
-        if (cameraManagerCount > 1)
+        int taskHandlerCount = FindObjectsOfType<TaskHandler>().Length;
+        if (taskHandlerCount > 1)
             Destroy(gameObject);
         else
             DontDestroyOnLoad(gameObject);

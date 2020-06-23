@@ -261,38 +261,36 @@ public class PlayerStatistics : MonoBehaviour
 
     private void AddUpgrades()
     {
-
-        Dictionary<string, SkinColorStuff> colorsCost = CostForColor();
-
-        Upgrade upgrade = new Upgrade(0, 0f, false, false, true, true, ObjectsDescription.Player, SkinCategory.PlayerBasic, playerBasic, SkinColors.Yellow, IntegerToRoman(1), colorsCost);
+        
+        Upgrade upgrade = new Upgrade(0, 0f, false, false, true, true, ObjectsDescription.Player, SkinCategory.PlayerBasic, playerBasic, SkinColors.Yellow, IntegerToRoman(1), CostForColor());
         upgradesList.Add(upgrade);
 
-        upgrade = new Upgrade(500, 5f, false, false, true, false, ObjectsDescription.Player, SkinCategory.PlayerModerate, playerModerate, SkinColors.Yellow, IntegerToRoman(2), colorsCost);
+        upgrade = new Upgrade(500, 5f, false, false, false, false, ObjectsDescription.Player, SkinCategory.PlayerModerate, playerModerate, SkinColors.Yellow, IntegerToRoman(2), CostForColor());
         upgradesList.Add(upgrade);
 
-        upgrade = new Upgrade(1000, 10f, false, false, false, false, ObjectsDescription.Player, SkinCategory.PlayerAdvance, playerAdvance, SkinColors.Yellow, IntegerToRoman(3), colorsCost);
+        upgrade = new Upgrade(1000, 10f, false, false, false, false, ObjectsDescription.Player, SkinCategory.PlayerAdvance, playerAdvance, SkinColors.Yellow, IntegerToRoman(3), CostForColor());
         upgradesList.Add(upgrade);
 
-        upgrade = new Upgrade(0, 0f, false, false, true, true, ObjectsDescription.PlayerLauncher, SkinCategory.LauncherBasic, launcherBasic, SkinColors.Yellow, IntegerToRoman(4), colorsCost);
+        upgrade = new Upgrade(0, 0f, false, false, true, true, ObjectsDescription.PlayerLauncher, SkinCategory.LauncherBasic, launcherBasic, SkinColors.Yellow, IntegerToRoman(4), CostForColor());
         upgradesList.Add(upgrade);
 
-        upgrade = new Upgrade(500, 5f, false, false, false, false, ObjectsDescription.PlayerLauncher, SkinCategory.LauncherModerate, launcherModerate, SkinColors.Yellow, IntegerToRoman(5), colorsCost);
+        upgrade = new Upgrade(500, 5f, false, false, false, false, ObjectsDescription.PlayerLauncher, SkinCategory.LauncherModerate, launcherModerate, SkinColors.Yellow, IntegerToRoman(5), CostForColor());
         upgradesList.Add(upgrade);
 
-        upgrade = new Upgrade(1000, 10f, false, false, false, false, ObjectsDescription.PlayerLauncher, SkinCategory.LauncherAdvance, launcherAdvance, SkinColors.Yellow, IntegerToRoman(6), colorsCost);
+        upgrade = new Upgrade(1000, 10f, false, false, false, false, ObjectsDescription.PlayerLauncher, SkinCategory.LauncherAdvance, launcherAdvance, SkinColors.Yellow, IntegerToRoman(6), CostForColor());
         upgradesList.Add(upgrade);
 
-        upgrade = new Upgrade(0, 0f, false, false, true, true, ObjectsDescription.PlayerProjectile, SkinCategory.BulletBasic, bulletBasic, SkinColors.Yellow, IntegerToRoman(7), colorsCost);
+        upgrade = new Upgrade(0, 0f, false, false, true, true, ObjectsDescription.PlayerProjectile, SkinCategory.BulletBasic, bulletBasic, SkinColors.Yellow, IntegerToRoman(7), CostForColor());
         upgradesList.Add(upgrade);
 
-        upgrade = new Upgrade(500, 5f, false, false, false, false, ObjectsDescription.PlayerProjectile, SkinCategory.BulletModerate, bulletModerate, SkinColors.Yellow, IntegerToRoman(8), colorsCost);
+        upgrade = new Upgrade(500, 5f, false, false, false, false, ObjectsDescription.PlayerProjectile, SkinCategory.BulletModerate, bulletModerate, SkinColors.Yellow, IntegerToRoman(8), CostForColor());
         upgradesList.Add(upgrade);
 
-        upgrade = new Upgrade(1000, 10f, false, false, false, false, ObjectsDescription.PlayerProjectile, SkinCategory.BulletAdvance, bulletAdvance, SkinColors.Yellow, IntegerToRoman(9), colorsCost);
+        upgrade = new Upgrade(1000, 10f, false, false, false, false, ObjectsDescription.PlayerProjectile, SkinCategory.BulletAdvance, bulletAdvance, SkinColors.Yellow, IntegerToRoman(9), CostForColor());
         upgradesList.Add(upgrade);
     }
 
-    private Color HexToRGB(string code)
+    public Color HexToRGB(string code)
     {
         Color testColor;
         ColorUtility.TryParseHtmlString(code, out testColor);
@@ -314,7 +312,7 @@ public class PlayerStatistics : MonoBehaviour
     private void Start()
     {
         PersistentInformation.CurrentChapter = 0;
-        playerCoins = 0;
+        playerCoins = 1000;
         AddTasks();
         AddChapters();
         DumpColors();

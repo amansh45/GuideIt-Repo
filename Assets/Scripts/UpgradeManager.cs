@@ -41,6 +41,7 @@ public class UpgradeManager : MonoBehaviour
     Player playerClass;
     float previousClickTime = int.MinValue;
     PlayerStatistics playerStats;
+    UpgradeScroller upgradeScrollerClass;
     
     bool isShooting = false;
 
@@ -202,8 +203,8 @@ public class UpgradeManager : MonoBehaviour
 
         playerStats.upgradesList[selectedUpgradeIndexForPreview] = currentUpgrade;
 
-        UpdateUiData();
-        UpdateColorOfSkin();
+        UpdateUiData(currentUpgrade);
+        UpdateColorOfSkin(currentUpgrade);
     }
 
     public void ShowMainCanvas()
@@ -215,7 +216,6 @@ public class UpgradeManager : MonoBehaviour
 
     void CreateLine(Vector2 initialFingerPos)
     {
-        //currentLine = objectPooler.SpawnFromPool("PathLine", initialFingerPos, Quaternion.identity);
         currentLine = Instantiate(linePrefab, initialFingerPos, Quaternion.identity) as GameObject;
         previousFingerPosition = currentLine;
         playerClass.SetWayPoints(previousFingerPosition, false);
@@ -225,15 +225,7 @@ public class UpgradeManager : MonoBehaviour
     void UpdateLine(Vector2 newFingerPos)
     {
         float angle = 0;
-        /*
-        if (numPoints > 1) {
-            Vector2 secondVector = newFingerPos - fingerPositions[numPoints - 1];
-            Vector2 firstVector = fingerPositions[numPoints - 1] - fingerPositions[numPoints - 2];
-            angle = Vector2.Angle(firstVector, secondVector);
-        }
-        */
         var rotation = Quaternion.Euler(0, 0, angle);
-        //GameObject lineInstance = objectPooler.SpawnFromPool("PathLine", newFingerPos, rotation);
         GameObject lineInstance = Instantiate(linePrefab, newFingerPos, rotation) as GameObject;
         previousFingerPosition = lineInstance;
         playerClass.SetWayPoints(previousFingerPosition, true);
@@ -242,36 +234,55 @@ public class UpgradeManager : MonoBehaviour
     public void UpgradeClicked(int index)
     {
         selectedUpgradeIndexForPreview = index;
-        UpdateUiData();
-        //UpdateMaterial();
-        UpdateColorOfSkin();
+        PlayerStatistics.Upgrade currentUpgrade = playerStats.upgradesList[selectedUpgradeIndexForPreview];
+        upgradeScrollerClass.UpgradeChosen(index);
+        UpdateUiData(currentUpgrade);
+        UpdateMaterial(currentUpgrade);
+        UpdateColorOfSkin(currentUpgrade);
     }
 
-    private void UpdateUiData()
+    private void UpdateMaterial(PlayerStatistics.Upgrade currentUpgrade)
     {
-        PlayerStatistics.Upgrade activeUpgrade = playerStats.upgradesList[selectedUpgradeIndexForPreview];
-        if (activeUpgrade.IsUnlocked)
+        GameObject targetParticle;
+        if (currentUpgrade.ApplicableOn == ObjectsDescription.Player)
+            targetParticle = playerSkin.transform.GetChild(0).gameObject;
+        else if(currentUpgrade.ApplicableOn == ObjectsDescription.PlayerLauncher)
+            targetParticle = playerSkin.transform.GetChild(0).gameObject;
+        else
+            targetParticle = playerSkin.transform.GetChild(0).gameObject;
+
+        GameObject newParticle = Instantiate(currentUpgrade.UpgradeParticle, targetParticle.transform.position, targetParticle.transform.rotation);
+        newParticle.transform.parent = targetParticle.transform.parent;
+        newParticle.transform.name = currentUpgrade.UpgradeCategory.ToString();
+        Destroy(targetParticle);
+    }
+
+    private void UpdateUiData(PlayerStatistics.Upgrade currentUpgrade)
+    {
+        currentUpgrade = playerStats.upgradesList[selectedUpgradeIndexForPreview];
+        if (currentUpgrade.IsUnlocked)
         {
             unlockButtonsGO.SetActive(true);
             
-            if(activeUpgrade.IsActive)
+            if(currentUpgrade.IsActive)
             {
-                if (!activeUpgrade.ColorStuff[activeUpgrade.ParticlesColor.ToString()].IsUnlocked)
+                if (!currentUpgrade.ColorStuff[currentUpgrade.ParticlesColor.ToString()].IsUnlocked)
                 {
                     unlockButtonsGO.SetActive(false);
                     lockButtonsGO.SetActive(true);
-                    moneyCostTMPro.text = activeUpgrade.ColorStuff[activeUpgrade.ParticlesColor.ToString()].MoneyCost.ToString();
-                    coinCostTMPro.text = activeUpgrade.ColorStuff[activeUpgrade.ParticlesColor.ToString()].CoinCost.ToString();
+                    moneyCostTMPro.text = currentUpgrade.ColorStuff[currentUpgrade.ParticlesColor.ToString()].MoneyCost.ToString();
+                    coinCostTMPro.text = currentUpgrade.ColorStuff[currentUpgrade.ParticlesColor.ToString()].CoinCost.ToString();
                 }
                 else
                 {
                     lockButtonsGO.SetActive(false);
-                    if (activeUpgrade.ColorStuff[activeUpgrade.ParticlesColor.ToString()].IsActive)
+                    if (currentUpgrade.ColorStuff[currentUpgrade.ParticlesColor.ToString()].IsActive)
                         unlockButtonTMPro.text = "Selected";
                     else
                         unlockButtonTMPro.text = "Select Color";
                 }
                 colorSelector.SetActive(true);
+                colorSelector.GetComponent<Image>().color = playerStats.colorsData[currentUpgrade.ParticlesColor.ToString()].ThirdColor;
             } else
             {
                 unlockButtonTMPro.text = "Select Skin";
@@ -283,36 +294,11 @@ public class UpgradeManager : MonoBehaviour
             unlockButtonsGO.SetActive(false);
             lockButtonsGO.SetActive(true);
             colorSelector.SetActive(false);
-            moneyCostTMPro.text = activeUpgrade.MoneyCost.ToString();
-            coinCostTMPro.text = activeUpgrade.CoinCost.ToString();
+            moneyCostTMPro.text = currentUpgrade.MoneyCost.ToString();
+            coinCostTMPro.text = currentUpgrade.CoinCost.ToString();
         }
     }
 
-    void Start()
-    {
-        Vector3[] corners = new Vector3[4];
-        uiPreviewArea.GetComponent<RectTransform>().GetWorldCorners(corners);
-        for (int i = 0; i < 4; i++)
-        {
-            corners[i] = mainCamera.ScreenToWorldPoint(corners[i]);
-        }
-        playerClass = playerSkin.GetComponent<Player>();
-
-        playerStats = FindObjectOfType<PlayerStatistics>();
-
-        selectedUpgradeIndexForPreview = 0;
-
-        SetPreviewMovementArea(corners[0].x, corners[3].x, corners[0].y, corners[1].y);
-
-        coinCostTMPro = coinTextGO.GetComponent<TextMeshProUGUI>();
-        moneyCostTMPro = moneyTextGO.GetComponent<TextMeshProUGUI>();
-        unlockButtonTMPro = unlockTextGO.GetComponent<TextMeshProUGUI>();
-
-        UpdateUiData();
-
-        UpdateColorOfSkin();
-
-    }
 
     /*
      * Updating the color of the skin
@@ -342,9 +328,8 @@ public class UpgradeManager : MonoBehaviour
         }
     }
 
-    private void UpdateColorOfSkin()
+    private void UpdateColorOfSkin(PlayerStatistics.Upgrade currentUpgrade)
     {
-        PlayerStatistics.Upgrade currentUpgrade = playerStats.upgradesList[selectedUpgradeIndexForPreview];
 
         if (currentUpgrade.ApplicableOn == ObjectsDescription.Player)
         {
@@ -354,7 +339,8 @@ public class UpgradeManager : MonoBehaviour
                 UpdatePlayerBasicSkinColor(mat, currentUpgrade);
             } else if(currentUpgrade.UpgradeCategory == SkinCategory.PlayerModerate)
             {
-
+                GameObject mat = playerSkin.transform.GetChild(0).gameObject;
+                UpdatePlayerBasicSkinColor(mat, currentUpgrade);
             } else if(currentUpgrade.UpgradeCategory == SkinCategory.PlayerAdvance)
             {
 
@@ -371,6 +357,101 @@ public class UpgradeManager : MonoBehaviour
     /*
      * End
      */
+
+    public void SelectButtonClicked()
+    {
+        PlayerStatistics.Upgrade currentUpgrade = playerStats.upgradesList[selectedUpgradeIndexForPreview];
+        if(currentUpgrade.IsActive)
+        {
+            PlayerStatistics.SkinColorStuff skinColorData = currentUpgrade.ColorStuff[currentUpgrade.ParticlesColor.ToString()];
+            List<string> keys = new List<string>(currentUpgrade.ColorStuff.Keys);
+            foreach (string key in keys)
+            {
+                PlayerStatistics.SkinColorStuff colorData = currentUpgrade.ColorStuff[key];
+                if (key == currentUpgrade.ParticlesColor.ToString())
+                    colorData.IsActive = true;
+                else
+                    colorData.IsActive = false;
+                currentUpgrade.ColorStuff[key] = colorData;
+            }
+        } else
+        {
+            int numUpgrades = playerStats.upgradesList.Count;
+            for (int i=0; i<numUpgrades; i++)
+            {
+                PlayerStatistics.Upgrade tempUpgrade = playerStats.upgradesList[i];
+                if(tempUpgrade.ApplicableOn == currentUpgrade.ApplicableOn)
+                {
+                    tempUpgrade.IsActive = false;
+                    playerStats.upgradesList[i] = tempUpgrade;
+                }
+            }
+            currentUpgrade.IsActive = true;
+        }
+        playerStats.upgradesList[selectedUpgradeIndexForPreview] = currentUpgrade;
+        UpdateUiData(currentUpgrade);
+    }
+
+    public void BuyButtonClicked(bool fromCoin)
+    {
+        PlayerStatistics.Upgrade currentUpgrade = playerStats.upgradesList[selectedUpgradeIndexForPreview];
+        if(currentUpgrade.IsUnlocked)
+        {
+            if(fromCoin)
+            {
+                PlayerStatistics.SkinColorStuff skinColorData = currentUpgrade.ColorStuff[currentUpgrade.ParticlesColor.ToString()];
+                playerStats.playerCoins -= skinColorData.CoinCost;
+                skinColorData.IsUnlocked = true;
+                currentUpgrade.ColorStuff[currentUpgrade.ParticlesColor.ToString()] = skinColorData;
+            } else
+            {
+                // pay from credit card.
+            }
+            playerStats.upgradesList[selectedUpgradeIndexForPreview] = currentUpgrade;
+        } else
+        {
+            if(fromCoin)
+            {
+                playerStats.playerCoins -= currentUpgrade.CoinCost;
+                currentUpgrade.IsUnlocked = true;
+            } else
+            {
+                // pay from credit card.
+            }
+            playerStats.upgradesList[selectedUpgradeIndexForPreview] = currentUpgrade;
+            upgradeScrollerClass.UpgradeUnlocked(selectedUpgradeIndexForPreview);
+        }
+        UpdateUiData(currentUpgrade);
+    }
+    void Start()
+    {
+        Vector3[] corners = new Vector3[4];
+        uiPreviewArea.GetComponent<RectTransform>().GetWorldCorners(corners);
+        for (int i = 0; i < 4; i++)
+        {
+            corners[i] = mainCamera.ScreenToWorldPoint(corners[i]);
+        }
+        playerClass = playerSkin.GetComponent<Player>();
+
+        playerStats = FindObjectOfType<PlayerStatistics>();
+
+        selectedUpgradeIndexForPreview = 0;
+
+        SetPreviewMovementArea(corners[0].x, corners[3].x, corners[0].y, corners[1].y);
+
+        coinCostTMPro = coinTextGO.GetComponent<TextMeshProUGUI>();
+        moneyCostTMPro = moneyTextGO.GetComponent<TextMeshProUGUI>();
+        unlockButtonTMPro = unlockTextGO.GetComponent<TextMeshProUGUI>();
+
+        upgradeScrollerClass = GetComponent<UpgradeScroller>();
+
+        PlayerStatistics.Upgrade currentUpgrade = playerStats.upgradesList[selectedUpgradeIndexForPreview];
+
+        UpdateUiData(currentUpgrade);
+
+        UpdateColorOfSkin(currentUpgrade);
+
+    }
 
     void Update()
     {

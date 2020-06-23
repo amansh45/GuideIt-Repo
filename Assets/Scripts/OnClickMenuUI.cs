@@ -132,6 +132,7 @@ public class OnClickMenuUI : MonoBehaviour
     {
         if (upgradeManagerClass == null)
             upgradeManagerClass = FindObjectOfType<UpgradeManager>();
+
         var colorClickedGO = EventSystem.current.currentSelectedGameObject;
         string colorName = colorClickedGO.transform.name;
 
@@ -142,8 +143,23 @@ public class OnClickMenuUI : MonoBehaviour
             else
                 child.GetChild(1).gameObject.SetActive(false);
         }
-        
         upgradeManagerClass.SelectColor(colorName);
+    }
+
+    public void BuySkin(bool fromCoin)
+    {
+        if (upgradeManagerClass == null)
+            upgradeManagerClass = FindObjectOfType<UpgradeManager>();
+
+        upgradeManagerClass.BuyButtonClicked(fromCoin);
+    }
+
+    public void SelectSkin()
+    {
+        if (upgradeManagerClass == null)
+            upgradeManagerClass = FindObjectOfType<UpgradeManager>();
+
+        upgradeManagerClass.SelectButtonClicked();
     }
 
 }

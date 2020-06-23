@@ -109,10 +109,11 @@ public class PlayerActions : MonoBehaviour
             Vector2 tempFingerPos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
             Vector2 currentPlayerPos = transform.position;
 
-            if (ClickedInsidePlayerMovementArea(tempFingerPos))
-            {
+            
 
-                if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (ClickedInsidePlayerMovementArea(tempFingerPos))
                 {
 
                     slowmoClass.updateAnimations(true);
@@ -120,50 +121,50 @@ public class PlayerActions : MonoBehaviour
                     {
                         InitiateShoot();
                         isLineDrawing = false;
-                    } else
+                    }
+                    else
                     {
                         CreateLine(tempFingerPos);
                         isLineDrawing = true;
                     }
                     prevPlayerPosition = transform.position;
-                    
-                }
-                else if (Input.GetMouseButton(0))
+                }    
+            }
+            else if (Input.GetMouseButton(0))
+            {
+                if (isPlayerShooting)
                 {
-                    if (isPlayerShooting)
+                    ProcessShoot(tempFingerPos, currentPlayerPos);
+                }
+                else
+                {
+                    if (ClickedInsidePlayerMovementArea(tempFingerPos))
                     {
-                        ProcessShoot(tempFingerPos, currentPlayerPos);
-                    }
-                    else
-                    {
-                        if (ClickedInsidePlayerMovementArea(tempFingerPos))
+                        try
                         {
-                            try
-                            {
-                                if (Vector2.Distance(tempFingerPos, previousFingerPosition.transform.position) > thresholdDistanceBetweenCheckpoints)
-                                    UpdateLine(tempFingerPos);
-                            }
-                            catch (System.Exception exception)
-                            {
-                                CreateLine(tempFingerPos);
-                            }
-                            isLineDrawing = true;
+                            if (Vector2.Distance(tempFingerPos, previousFingerPosition.transform.position) > thresholdDistanceBetweenCheckpoints)
+                                UpdateLine(tempFingerPos);
                         }
+                        catch (System.Exception exception)
+                        {
+                            CreateLine(tempFingerPos);
+                        }
+                        isLineDrawing = true;
                     }
                 }
-                else if (Input.GetMouseButtonUp(0))
+            }
+            else if (Input.GetMouseButtonUp(0))
+            {
+                    
+                slowmoClass.updateAnimations(false);
+                if (isPlayerShooting)
                 {
-                    
-                    slowmoClass.updateAnimations(false);
-                    if (isPlayerShooting)
-                    {
-                        FinalizeShoot(tempFingerPos, currentPlayerPos);
-                    }
-                    else
-                        playerClass.playerState = PlayerState.Run;
-                    isLineDrawing = false;
-                    
+                    FinalizeShoot(tempFingerPos, currentPlayerPos);
                 }
+                else
+                    playerClass.playerState = PlayerState.Run;
+                isLineDrawing = false;
+                    
             }
         }
     }

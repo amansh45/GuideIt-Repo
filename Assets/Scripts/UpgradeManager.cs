@@ -41,13 +41,13 @@ public class UpgradeManager : MonoBehaviour
 
     int selectedUpgradeIndexForPreview;
     TextMeshProUGUI coinCostTMPro, moneyCostTMPro, unlockButtonTMPro;
-    GameObject previewMovementArea, currentLine, previousFingerPosition, playerLauncherInstance;
-    Vector3 previewMovementAreaScale;
+    GameObject previewMovementArea, currentLine, previousFingerPosition, playerLauncherInstance, colorSelectorArea;
+    Vector3 previewMovementAreaScale, colorSelectorAreaScale;
     Player playerClass;
     float previousClickTime = int.MinValue;
     PlayerStatistics playerStats;
     UpgradeScroller upgradeScrollerClass;
-    public Dictionary<string, GameObject> skinsAndMaterials = new Dictionary<string, GameObject>();
+    Dictionary<string, GameObject> skinsAndMaterials = new Dictionary<string, GameObject>();
 
     bool isShooting = false;
 
@@ -61,15 +61,25 @@ public class UpgradeManager : MonoBehaviour
         previewMovementArea.name = "Preview Movement Area";
     }
 
-    bool ClickedInsidePreviewArea(Vector2 clickedPosition)
+    private void SetColorSelectorArea(float leftX, float rightX, float bottomY, float topY)
     {
-        Vector3 playerMovementAreaPos = previewMovementArea.transform.position;
-        float areaWidht = previewMovementAreaScale.x;
-        float areaHeight = previewMovementAreaScale.y;
-        if (clickedPosition.x >= (playerMovementAreaPos.x - (areaWidht / 2)) &&
-            clickedPosition.x <= (playerMovementAreaPos.x + (areaWidht / 2)) &&
-            clickedPosition.y >= (playerMovementAreaPos.y - (areaHeight / 2)) &&
-            clickedPosition.y <= (playerMovementAreaPos.y + (areaHeight / 2)))
+        colorSelectorArea = new GameObject();
+        colorSelectorArea.transform.parent = transform;
+        colorSelectorArea.transform.position = new Vector3((leftX + rightX) / 2, (bottomY + topY) / 2, 0);
+        colorSelectorAreaScale = new Vector3((rightX - leftX), (topY - bottomY), 0);
+        colorSelectorArea.transform.localScale = previewMovementAreaScale;
+        colorSelectorArea.name = "Color Selector Area";
+    }
+
+    bool ClickedInsideArea(Vector2 clickedPosition, Vector3 areaScale, GameObject targetArea)
+    {
+        Vector3 targetAreaPos = targetArea.transform.position;
+        float areaWidht = areaScale.x;
+        float areaHeight = areaScale.y;
+        if (clickedPosition.x >= (targetAreaPos.x - (areaWidht / 2)) &&
+            clickedPosition.x <= (targetAreaPos.x + (areaWidht / 2)) &&
+            clickedPosition.y >= (targetAreaPos.y - (areaHeight / 2)) &&
+            clickedPosition.y <= (targetAreaPos.y + (areaHeight / 2)))
             return true;
         else
             return false;
@@ -81,16 +91,19 @@ public class UpgradeManager : MonoBehaviour
         Vector2 tempFingerPos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
         Vector2 currentPlayerPos = transform.position;
 
+        bool isClickedInsidePreview = ClickedInsideArea(tempFingerPos, previewMovementAreaScale, previewMovementArea);
+        bool isClickedOnColorSelector = ClickedInsideArea(tempFingerPos, colorSelectorAreaScale, colorSelectorArea);
+
         if (Input.GetMouseButtonDown(0))
         {
-            if (ClickedInsidePreviewArea(tempFingerPos))
+            if (isClickedInsidePreview && !isClickedOnColorSelector)
             {
                 CreateLine(tempFingerPos);
             }
         }
         else if (Input.GetMouseButton(0))
         {
-            if (ClickedInsidePreviewArea(tempFingerPos))
+            if (isClickedInsidePreview && !isClickedOnColorSelector)
             {
                 try
                 {
@@ -170,10 +183,13 @@ public class UpgradeManager : MonoBehaviour
     {
         Vector2 tempFingerPos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
         Vector2 currentPlayerPos = playerSkin.transform.position;
-        
+
+        bool isClickedInsidePreview = ClickedInsideArea(tempFingerPos, previewMovementAreaScale, previewMovementArea);
+        bool isClickedOnColorSelector = ClickedInsideArea(tempFingerPos, colorSelectorAreaScale, colorSelectorArea);
+
         if (Input.GetMouseButtonDown(0))
         {
-            if(ClickedInsidePreviewArea(tempFingerPos))
+            if (isClickedInsidePreview && !isClickedOnColorSelector)
             {
                 if (DoubleClickedOnPlayer(tempFingerPos))
                 {
@@ -238,7 +254,10 @@ public class UpgradeManager : MonoBehaviour
         playerStats.upgradesList[selectedUpgradeIndexForPreview] = currentUpgrade;
 
         UpdateUiData(currentUpgrade);
-        UpdateColorOfSkin(currentUpgrade);
+        if (currentUpgrade.ApplicableOn == ObjectsDescription.Player)
+            playerStats.UpdateColorOfSkin(currentUpgrade, playerSkin);
+        else if (currentUpgrade.ApplicableOn == ObjectsDescription.PlayerLauncher)
+            Debug.Log("Under Construction...");
     }
 
     public void ShowMainCanvas()
@@ -255,7 +274,10 @@ public class UpgradeManager : MonoBehaviour
         upgradeScrollerClass.UpgradeChosen(index);
         UpdateUiData(currentUpgrade);
         UpdateMaterial(currentUpgrade);
-        UpdateColorOfSkin(currentUpgrade);
+        if (currentUpgrade.ApplicableOn == ObjectsDescription.Player)
+            playerStats.UpdateColorOfSkin(currentUpgrade, playerSkin);
+        else if (currentUpgrade.ApplicableOn == ObjectsDescription.PlayerLauncher)
+            Debug.Log("Under Construction...");
     }
 
     private void UpdateMaterial(PlayerStatistics.Upgrade currentUpgrade)
@@ -319,65 +341,6 @@ public class UpgradeManager : MonoBehaviour
         }
     }
 
-
-    /*
-     * Updating the color of the skin
-     * 
-     */
-    
-    private void UpdatePlayerBasicSkinColor(GameObject mat, PlayerStatistics.Upgrade currUpgrade)
-    {
-        PlayerStatistics.CustomColor mcolor = playerStats.colorsData[currUpgrade.ParticlesColor.ToString()];
-        playerSkin.GetComponent<SpriteRenderer>().color = mcolor.ThirdColor;
-        
-        foreach (Transform child in mat.transform)
-        {
-            ParticleSystem ps = child.GetComponent<ParticleSystem>();
-            if (child.transform.name == "Player Trail" || child.transform.name == "Player Particles")
-            {
-                //Debug.Log("Updating "+ child.transform.name + "to: " + currUpgrade.ParticlesColor.ToString());
-                var col = ps.colorOverLifetime;
-                col.enabled = true;
-                Gradient grad = new Gradient();                
-                grad.SetKeys(new GradientColorKey[] { new GradientColorKey(mcolor.FirstColor, 0.0f), new GradientColorKey(mcolor.SecondColor, 1.0f) }, new GradientAlphaKey[] { new GradientAlphaKey(1.0f, 0.0f), new GradientAlphaKey(0.0f, 1.0f) });                
-                col.color = grad;
-            } else if(child.transform.name == "Player Glow")
-            {
-                ParticleSystem.MinMaxGradient grad = new ParticleSystem.MinMaxGradient(mcolor.ThirdColor, mcolor.FourthColor);
-                var main = ps.main;
-                main.startColor = grad;
-            }
-        }
-    }
-
-    private void UpdateColorOfSkin(PlayerStatistics.Upgrade currentUpgrade)
-    {
-
-        if (currentUpgrade.ApplicableOn == ObjectsDescription.Player)
-        {
-            if(currentUpgrade.UpgradeCategory == SkinCategory.PlayerBasic)
-            {
-                GameObject mat = playerSkin.transform.GetChild(0).gameObject;
-                Debug.Log("Inside basic, name of upgrade: " + mat.name);
-                UpdatePlayerBasicSkinColor(mat, currentUpgrade);
-            } else if(currentUpgrade.UpgradeCategory == SkinCategory.PlayerModerate)
-            {
-                GameObject mat = playerSkin.transform.GetChild(0).gameObject;
-                Debug.Log("Inside moderate, name of upgrade: " + mat.name);
-                UpdatePlayerBasicSkinColor(mat, currentUpgrade);
-            }
-        } else if(currentUpgrade.ApplicableOn == ObjectsDescription.PlayerLauncher)
-        {
-
-        } else if(currentUpgrade.ApplicableOn == ObjectsDescription.PlayerProjectile)
-        {
-
-        }
-    }
-
-    /*
-     * End
-     */
 
     public void SelectButtonClicked()
     {
@@ -455,6 +418,7 @@ public class UpgradeManager : MonoBehaviour
             GameObject goInstance = Instantiate(upgradesGO[i]);
             goInstance.transform.parent = transform;
             goInstance.SetActive(false);
+            goInstance.name = categoriesList[i].ToString();
             skinsAndMaterials.Add(categoriesList[i].ToString(), goInstance);
         }
     }
@@ -463,18 +427,26 @@ public class UpgradeManager : MonoBehaviour
     void Start()
     {
         Vector3[] corners = new Vector3[4];
+
         uiPreviewArea.GetComponent<RectTransform>().GetWorldCorners(corners);
         for (int i = 0; i < 4; i++)
         {
             corners[i] = mainCamera.ScreenToWorldPoint(corners[i]);
         }
+        SetPreviewMovementArea(corners[0].x, corners[3].x, corners[0].y, corners[1].y);
+
+        colorSelector.GetComponent<RectTransform>().GetWorldCorners(corners);
+        for (int i = 0; i < 4; i++)
+        {
+            corners[i] = mainCamera.ScreenToWorldPoint(corners[i]);
+        }
+        SetColorSelectorArea(corners[0].x, corners[3].x, corners[0].y, corners[1].y);
+
         playerClass = playerSkin.GetComponent<Player>();
 
         playerStats = FindObjectOfType<PlayerStatistics>();
 
         selectedUpgradeIndexForPreview = 0;
-
-        SetPreviewMovementArea(corners[0].x, corners[3].x, corners[0].y, corners[1].y);
 
         coinCostTMPro = coinTextGO.GetComponent<TextMeshProUGUI>();
         moneyCostTMPro = moneyTextGO.GetComponent<TextMeshProUGUI>();
@@ -490,7 +462,7 @@ public class UpgradeManager : MonoBehaviour
 
         UpdateMaterial(currentUpgrade);
 
-        UpdateColorOfSkin(currentUpgrade);
+        playerStats.UpdateColorOfSkin(currentUpgrade, playerSkin);
 
     }
 
@@ -506,6 +478,7 @@ public class UpgradeManager : MonoBehaviour
         }
     }
 
+    /*
     private void OnDestroy()
     {
         int numUpgrades = playerStats.upgradesList.Count;
@@ -519,4 +492,6 @@ public class UpgradeManager : MonoBehaviour
             }
         }
     }
+    */
+    
 }

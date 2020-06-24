@@ -38,6 +38,7 @@ public class Player : MonoBehaviour
 
     Rigidbody2D playerRigidBody;
     TaskHandler taskHandlerClass;
+    
 
     public PlayerState playerState;
 

@@ -69,7 +69,11 @@ MonoBehaviour:
     type: 3}
   explodeParticleSystem: {fileID: 714328453090373474, guid: 3459fb56545edd5498a036cb41891bcd,
     type: 3}
+  player: {fileID: 0}
   rippleEffectDuration: 1
   explosionEffectDuration: 1.5
   cameraShakeDuration: 0.25
   mainCamera: {fileID: 0}
+  upgradesGO:
+  - {fileID: 7386533882511071369, guid: 9ec5c661cc36d8e47a72cf2562a5a5e2, type: 3}
+  - {fileID: 2143946417511062983, guid: 3f81f5ffeb42ec141b490771d3a551b5, type: 3}

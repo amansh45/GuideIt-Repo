@@ -18,6 +18,7 @@ public class LevelController : MonoBehaviour
     TextMeshProUGUI coinsAcquiredOnScreenText;
     int coinsInScene = 0, currentCoinsAcquired = 0;
 
+
     private void Start()
     {
         slowmotionClass = slowmotion.GetComponent<Slowmotion>();
@@ -28,12 +29,6 @@ public class LevelController : MonoBehaviour
         coinsAcquiredOnScreenText.text = currentCoinsAcquired.ToString() + " / " + coinsInScene;
         playerStats = FindObjectOfType<PlayerStatistics>();
         taskHandler = FindObjectOfType<TaskHandler>();
-    }
-
-    private void Update()
-    {
-        if (!playerStats.playerStatsLoaded)
-            playerStats = FindObjectOfType<PlayerStatistics>();
     }
 
     public void CoinAcquired(float coinValue, string coinType)

@@ -225,13 +225,13 @@ public class PlayerStatistics : MonoBehaviour
     private void AddTasks()
     {
 
-        Task task = new Task(false, true, ObjectsDescription.Coin, "Collect 5 coins in any level", 0, 20, TaskTypes.Collect, TaskCategory.CountingTask);
+        Task task = new Task(false, true, ObjectsDescription.Coin, "Collect 5 coins in any level", 0, 20, TaskTypes.Collect, TaskCategory.CountingTask, 5);
         tasksList.Add(task);
-        task = new Task(false, false, ObjectsDescription.EnemyLauncher, "Destroy 4 enemy Cannons", 1, 100, TaskTypes.Destroy, TaskCategory.CountingTask);
+        task = new Task(false, false, ObjectsDescription.EnemyLauncher, "Destroy 4 enemy Cannons", 1, 100, TaskTypes.Destroy, TaskCategory.CountingTask, 4);
         tasksList.Add(task);
-        task = new Task(false, true, ObjectsDescription.Coin, "Collect 10 coins in any level", 2, 20, TaskTypes.Collect, TaskCategory.CountingTask);
+        task = new Task(false, true, ObjectsDescription.Coin, "Collect 10 coins in any level", 2, 20, TaskTypes.Collect, TaskCategory.CountingTask, 10);
         tasksList.Add(task);
-        task = new Task(false, true, ObjectsDescription.Player, "Complete Level in one go", 3, 50, TaskTypes.NoHit, TaskCategory.CountingTask);
+        task = new Task(false, true, ObjectsDescription.Player, "Complete Level in one go", 3, 50, TaskTypes.NoHit, TaskCategory.CountingTask, 1);
         tasksList.Add(task);
 
         totalTasks = tasksList.Count;
@@ -355,5 +355,68 @@ public class PlayerStatistics : MonoBehaviour
                 secondActiveTaskIndex = -1;
         }
     }
+
+    /*
+ * Updating the color of the skin
+ * 
+ */
+
+    private void UpdatePlayerSkinColor(GameObject mat, PlayerStatistics.Upgrade currUpgrade, GameObject player)
+    {
+        PlayerStatistics.CustomColor mcolor = colorsData[currUpgrade.ParticlesColor.ToString()];
+        player.GetComponent<SpriteRenderer>().color = mcolor.ThirdColor;
+
+        foreach (Transform child in mat.transform)
+        {
+            ParticleSystem ps = child.GetComponent<ParticleSystem>();
+            if (child.transform.name == "Player Trail" || child.transform.name == "Player Particles")
+            {
+                //Debug.Log("Updating "+ child.transform.name + "to: " + currUpgrade.ParticlesColor.ToString());
+                var col = ps.colorOverLifetime;
+                col.enabled = true;
+                Gradient grad = new Gradient();
+                grad.SetKeys(new GradientColorKey[] { new GradientColorKey(mcolor.FirstColor, 0.0f), new GradientColorKey(mcolor.SecondColor, 1.0f) }, new GradientAlphaKey[] { new GradientAlphaKey(1.0f, 0.0f), new GradientAlphaKey(0.0f, 1.0f) });
+                col.color = grad;
+            }
+            else if (child.transform.name == "Player Glow")
+            {
+                ParticleSystem.MinMaxGradient grad = new ParticleSystem.MinMaxGradient(mcolor.ThirdColor, mcolor.FourthColor);
+                var main = ps.main;
+                main.startColor = grad;
+            }
+        }
+    }
+
+    public void UpdateColorOfSkin(PlayerStatistics.Upgrade currentUpgrade, GameObject targetGO)
+    {
+
+        if (currentUpgrade.ApplicableOn == ObjectsDescription.Player)
+        {
+            if (currentUpgrade.UpgradeCategory == SkinCategory.PlayerBasic)
+            {
+                GameObject mat = targetGO.transform.GetChild(0).gameObject;
+                Debug.Log("Inside basic, name of upgrade: " + mat.name);
+                UpdatePlayerSkinColor(mat, currentUpgrade, targetGO);
+            }
+            else if (currentUpgrade.UpgradeCategory == SkinCategory.PlayerModerate)
+            {
+                GameObject mat = targetGO.transform.GetChild(0).gameObject;
+                Debug.Log("Inside moderate, name of upgrade: " + mat.name);
+                UpdatePlayerSkinColor(mat, currentUpgrade, targetGO);
+            }
+        }
+        else if (currentUpgrade.ApplicableOn == ObjectsDescription.PlayerLauncher)
+        {
+
+        }
+        else if (currentUpgrade.ApplicableOn == ObjectsDescription.PlayerProjectile)
+        {
+
+        }
+    }
+
+    /*
+     * End
+     */
 
 }

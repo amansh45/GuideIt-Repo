@@ -7,20 +7,14 @@ using UnityEngine.EventSystems;
 public class OnClickMenuUI : MonoBehaviour
 {
     //[SerializeField] GameObject sceneLoader;
-    //SceneLoader sceneLoaderClass;
+    SceneLoader sceneLoaderClass = null;
     LevelController levelController = null;
     MainMenuHandler menuHandlerClass = null;
     UpgradeManager upgradeManagerClass = null;
 
     private void Start()
     {
-        //sceneLoaderClass = sceneLoader.GetComponent<SceneLoader>();
-    }
-
-    public void LoadLevel()
-    {
-        //sceneLoaderClass.LoadSceneByName("Level1");
-        SceneManager.LoadScene("Level1");
+        sceneLoaderClass = FindObjectOfType<SceneLoader>();
     }
 
     public void LoadChapter()
@@ -32,14 +26,18 @@ public class OnClickMenuUI : MonoBehaviour
 
     public void LoadMainMenu()
     {
-        //sceneLoaderClass.LoadSceneByName("Main Menu");
-        SceneManager.LoadScene("Main Menu");
+        if (sceneLoaderClass == null)
+            sceneLoaderClass = FindObjectOfType<SceneLoader>();
+        sceneLoaderClass.LoadScene("Main Menu");
+        //SceneManager.LoadScene("Main Menu");
     }
 
     public void LoadSettings()
     {
-        //sceneLoaderClass.LoadSceneByName("Settings");
-        SceneManager.LoadScene("Settings");
+        if (sceneLoaderClass == null)
+            sceneLoaderClass = FindObjectOfType<SceneLoader>();
+        sceneLoaderClass.LoadScene("Settings");
+        //SceneManager.LoadScene("Settings");
     }
 
     public void OnPauseIconClick()
@@ -74,7 +72,10 @@ public class OnClickMenuUI : MonoBehaviour
 
     public void LoadUpgradeScene()
     {
-        SceneManager.LoadScene("Upgrades");
+        if (sceneLoaderClass == null)
+            sceneLoaderClass = FindObjectOfType<SceneLoader>();
+        sceneLoaderClass.LoadScene("Upgrades");
+        //SceneManager.LoadScene("Upgrades");
     }
 
     public void OnNextChapterArrowClicked()

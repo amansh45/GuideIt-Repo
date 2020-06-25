@@ -304,6 +304,8 @@ public class UpgradeManager : MonoBehaviour
         currentUpgrade = playerStats.upgradesList[selectedUpgradeIndexForPreview];
         if (currentUpgrade.IsUnlocked)
         {
+            uiPreviewArea.GetComponent<Image>().color = playerStats.HexToRGB("#30303030");
+
             unlockButtonsGO.SetActive(true);
             
             if(currentUpgrade.IsActive)
@@ -333,6 +335,7 @@ public class UpgradeManager : MonoBehaviour
             }
         } else
         {
+            uiPreviewArea.GetComponent<Image>().color = playerStats.HexToRGB("#30303082");
             unlockButtonsGO.SetActive(false);
             lockButtonsGO.SetActive(true);
             colorSelector.SetActive(false);
@@ -442,15 +445,15 @@ public class UpgradeManager : MonoBehaviour
         }
         SetColorSelectorArea(corners[0].x, corners[3].x, corners[0].y, corners[1].y);
 
+
         playerClass = playerSkin.GetComponent<Player>();
-
         playerStats = FindObjectOfType<PlayerStatistics>();
-
-        selectedUpgradeIndexForPreview = 0;
 
         coinCostTMPro = coinTextGO.GetComponent<TextMeshProUGUI>();
         moneyCostTMPro = moneyTextGO.GetComponent<TextMeshProUGUI>();
         unlockButtonTMPro = unlockTextGO.GetComponent<TextMeshProUGUI>();
+
+        selectedUpgradeIndexForPreview = 0;
 
         upgradeScrollerClass = GetComponent<UpgradeScroller>();
 

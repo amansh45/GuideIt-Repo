@@ -5,20 +5,21 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
 {
-    Animator transition;
+    public Animator transition;
     [SerializeField] float transitionTime = 1f;
 
     private void Start()
     {
-        transition = GetComponent<Animator>();
+        GameObject crossFadeCanvas = transform.GetChild(0).gameObject;
+        transition = crossFadeCanvas.GetComponent<Animator>();
     }
 
-    public void LoadSceneByName(string sceneName)
+    public void LoadScene(string sceneName)
     {
         StartCoroutine(LoadByName(sceneName));
     }
 
-    public void LoadSceneByIndex(int index)
+    public void LoadScene(int index)
     {
         StartCoroutine(LoadByIndex(index));
     }

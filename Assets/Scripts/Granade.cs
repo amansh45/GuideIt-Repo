@@ -5,7 +5,7 @@ using UnityEngine;
 public class Granade : MonoBehaviour
 {
 
-    [SerializeField] float granadeSpeed = 200f, shrinkFactorOnLaunch = 0.3f;
+    [SerializeField] float granadeSpeed = 200f, shrinkFactorOnLaunch = 0.3f, cameraShakeDuration = 0.25f;
     VFXController vfxControllerClass;
 
     bool isGranadeMoving = false;
@@ -45,7 +45,7 @@ public class Granade : MonoBehaviour
             if (other.gameObject.tag == ObjectsDescription.Player.ToString() || other.gameObject.tag == ObjectsDescription.PlayerProjectile.ToString())
             {
                 Destroy(gameObject);
-                vfxControllerClass.InitiateCameraShakeEffect();
+                vfxControllerClass.InitiateCameraShakeEffect(cameraShakeDuration);
                 vfxControllerClass.InitiateScreenRippleEffect(transform.position);
                 vfxControllerClass.InitiateExplodeEffect(transform.position);
             }
@@ -54,7 +54,7 @@ public class Granade : MonoBehaviour
         {
             if (other.gameObject.tag == ObjectsDescription.EnemyLauncher.ToString())
             {
-                vfxControllerClass.InitiateCameraShakeEffect();
+                vfxControllerClass.InitiateCameraShakeEffect(cameraShakeDuration);
                 GameObject launcher = other.transform.parent.gameObject;
                 vfxControllerClass.InitiateScreenRippleEffect(launcher.transform.position);
                 vfxControllerClass.InitiateExplodeEffect(launcher.transform.position);

@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class VFXController : MonoBehaviour
 {
-    [SerializeField] GameObject rippleEffectParticleSystem, explodeParticleSystem, player;
-    [SerializeField] float rippleEffectDuration = 1f, explosionEffectDuration = 1.5f, cameraShakeDuration = 0.25f;
+    [SerializeField] GameObject rippleEffectParticleSystem, explodeParticleSystem, deathParticleSystem, player;
+    [SerializeField] float rippleEffectDuration = 1f, explosionEffectDuration = 1.5f, deathEffectDuration = 2f;
     [SerializeField] Camera mainCamera;
 
     // Note: The sequence for declaring these should be same as that of skinCategory and also the size of the list should be the size of the skinCategory(upgradeManager)...
@@ -14,16 +14,33 @@ public class VFXController : MonoBehaviour
     ScreenRipple screenRippleClass;
     PlayerStatistics playerStats;
     Dictionary<string, GameObject> skinsAndMaterials = new Dictionary<string, GameObject>();
-    
+    CameraManager camManager;
+
     private void Start()
     {
         screenRippleClass = mainCamera.GetComponent<ScreenRipple>();
         playerStats = FindObjectOfType<PlayerStatistics>();
+        camManager = FindObjectOfType<CameraManager>();
         CreateSkinsAndMaterialsDict();
         AddSkinsToLevel();
     }
 
-    
+    private void Update()
+    {
+        if(camManager == null)
+            camManager = FindObjectOfType<CameraManager>();
+    }
+
+
+    public void PlayerDied(Vector3 position, GameObject collider, float camShakeDuration)
+    {
+        GameObject deathEffect = Instantiate(deathParticleSystem, position, transform.rotation);
+
+        Destroy(deathEffect, deathEffectDuration);
+        InitiateCameraShakeEffect(camShakeDuration);
+        InitiateScreenRippleEffect(position);
+    }
+
     public void InitiateRippleEffect(Vector3 position)
     {
         GameObject ripple = Instantiate(rippleEffectParticleSystem, position, transform.rotation);
@@ -36,10 +53,9 @@ public class VFXController : MonoBehaviour
         Destroy(explosion, explosionEffectDuration);
     }
 
-    public void InitiateCameraShakeEffect()
+    public void InitiateCameraShakeEffect(float effectDuration)
     {
-        CameraManager camManager = FindObjectOfType<CameraManager>().GetComponent<CameraManager>();
-        camManager.ShakeCamera(cameraShakeDuration);
+        camManager.ShakeCamera(effectDuration);
     }
 
     public void InitiateScreenRippleEffect(Vector3 position)

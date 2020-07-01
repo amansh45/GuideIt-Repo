@@ -11,6 +11,8 @@ public class GameLines : MonoBehaviour {
     [SerializeField] GameObject playerPrefab, levelProgressIndicator, levelController;
     [SerializeField] float progressIndicatorZAxis = -1.2f, finishLevelAfter = 1.3f;
 
+    public float levelCompleted = 0f;
+
     Vector3 bottomLeft, topLeft, bottomRight, topRight;
     Vector3 firstProgressPosition = new Vector3(0,0,0), secondProgressPosition = new Vector3(0,0,0);
     List<GameObject> gameObjectsForLineRenderer = new List<GameObject>();
@@ -19,7 +21,7 @@ public class GameLines : MonoBehaviour {
     LevelController levelControllerClass;
     bool gameRunning = false;
     float levelMaxY = 0, levelMinY = 0, playAreaMinY = 0, playAreaMaxY = 0, playerTimer = 0f;
-
+    
     public Dictionary<string, int> borderLineIndicesMapping = new Dictionary<string, int>()
     {
         {"Left",  0},
@@ -56,7 +58,11 @@ public class GameLines : MonoBehaviour {
         float topY = transform.position.y - (transform.localScale.y / 2.0f);
         topLeft = new Vector3(bottomLeftX, topY, borderZaxis);
         topRight = new Vector3(bottomRightX, topY, borderZaxis);
-        
+
+        PersistentInformation.Left = bottomLeft.x;
+        PersistentInformation.Right = bottomRight.x;
+        PersistentInformation.MarginsSet = true;
+
         RenderLine(topRight, bottomRight, borderLineIndicesMapping["Right"]);
         RenderLine(bottomLeft, bottomRight, borderLineIndicesMapping["Bottom"]);
         RenderLine(bottomLeft, topLeft, borderLineIndicesMapping["Left"]);
@@ -118,7 +124,7 @@ public class GameLines : MonoBehaviour {
 
     private void Update()
     {
-        if(gameRunning) {
+        if(gameRunning && playerPrefab != null) {
             playerTimer += Time.deltaTime;
             var prevFirstProgressPos = firstProgressInstance.transform.localPosition;
             var prevSecondProgressPos = secondProgressInstance.transform.localPosition;
@@ -127,6 +133,8 @@ public class GameLines : MonoBehaviour {
 
             // scaling player wrt the yscale of level to the screen size
             nextProgressY = (((playerY - levelMinY) * (playAreaMaxY - playAreaMinY)) / (levelMaxY - levelMinY)) + playAreaMinY;
+
+            levelCompleted = ((playerY - playAreaMinY) / (levelMaxY - levelMinY));
 
             if (nextProgressY < playAreaMinY)
                 nextProgressY = playAreaMinY;

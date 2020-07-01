@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Slowmotion : MonoBehaviour
 {
-
     [SerializeField] float slowmoSpeed = 0.1f, normalSpeed = 1f;
     [SerializeField] GameObject[] gameEntities;
     List<Animator> animators = new List<Animator>();

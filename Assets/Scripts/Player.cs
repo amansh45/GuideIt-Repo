@@ -24,6 +24,10 @@ public class Player : MonoBehaviour
 
     [SerializeField] float shootXPThreshold = 5f;
 
+    [SerializeField] float camShakeDuration = 1.5f;
+
+    [SerializeField] GameObject vfxController, levelController;
+
     float currentXP = 5f;
 
     float ballSpeed;
@@ -38,7 +42,8 @@ public class Player : MonoBehaviour
 
     Rigidbody2D playerRigidBody;
     TaskHandler taskHandlerClass;
-    
+    VFXController vfxControllerClass;
+    LevelController levelControllerClass;
 
     public PlayerState playerState;
 
@@ -53,11 +58,13 @@ public class Player : MonoBehaviour
             }
         }
         numParticles = playerParticles.Count;
-        ballSpeed = hoverSpeed;
         moveSpeed = 0.1f * runSpeed;
         playerRigidBody = GetComponent<Rigidbody2D>();
         taskHandlerClass = FindObjectOfType<TaskHandler>();
-        playerState = PlayerState.Hover;
+        playerState = PlayerState.Still;
+        vfxControllerClass = FindObjectOfType<VFXController>();
+        if(levelController != null)
+            levelControllerClass = levelController.GetComponent<LevelController>();
     }
 
     public void SetScale(float scale)
@@ -106,7 +113,7 @@ public class Player : MonoBehaviour
         Debug.Log("Collider Name: " + other.gameObject.name);
 
         if (other.gameObject.tag == ObjectsDescription.EnemyObject.ToString() || other.gameObject.tag == ObjectsDescription.EnemyLauncher.ToString())
-            Die();
+            Die(other.gameObject);
         else if (other.gameObject.tag == ObjectsDescription.FinishLine.ToString())
             LevelComplete();
         else if(other.gameObject.name == ObjectsDescription.NearMissBoundary.ToString())
@@ -129,10 +136,13 @@ public class Player : MonoBehaviour
         }
     }
 
-    void Die()
+    void Die(GameObject collider)
     {
         Debug.Log("Player Died...");
-        taskHandlerClass.ResetTasks();
+        //taskHandlerClass.ResetTasks();
+        levelControllerClass.ShowRetryCanvas(camShakeDuration);
+        Destroy(gameObject);
+        vfxControllerClass.PlayerDied(transform.position, collider, camShakeDuration);
     }
 
     void LevelComplete()

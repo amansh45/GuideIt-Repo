@@ -69,6 +69,8 @@ MonoBehaviour:
     type: 3}
   explodeParticleSystem: {fileID: 714328453090373474, guid: 3459fb56545edd5498a036cb41891bcd,
     type: 3}
+  deathParticleSystem: {fileID: 2865366064353580084, guid: 5d3a4f7c2f5c79d4d92a9843d4dfbd8a,
+    type: 3}
   player: {fileID: 0}
   rippleEffectDuration: 1
   explosionEffectDuration: 1.5

@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3234638708821167070}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.465, y: 0.022, z: 0}
+  m_LocalPosition: {x: 0.257, y: 0.022, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3234638710210536852}
@@ -90,6 +90,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3234638709327313721}
+  - component: {fileID: 3840984409178596157}
   m_Layer: 12
   m_Name: Enemy Launcher
   m_TagString: Untagged
@@ -106,13 +107,29 @@ Transform:
   m_GameObject: {fileID: 3234638709327313726}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.72, y: 25.7, z: 0}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3234638709912501430}
   - {fileID: 3234638710210536852}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3840984409178596157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3234638709327313726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3ff4943bc8afd748b1291b8b721fb40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isRotating: 0
+  isMovingHorizontal: 0
+  leftRightOffset: 0.3
+  baseScreenWidth: 5.61
 --- !u!1 &3234638709379059280
 GameObject:
   m_ObjectHideFlags: 0
@@ -220,7 +237,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3234638709912501431}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.014, y: -0.549, z: 0}
+  m_LocalPosition: {x: 0.014, y: -0.305, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3234638709327313721}
@@ -293,7 +310,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.2233334, y: 0.85}
+    oldSize: {x: 0.66727275, y: 0.46363637}
     newSize: {x: 1.2233334, y: 0.85}
     adaptiveTilingThreshold: 0.5
     drawMode: 0

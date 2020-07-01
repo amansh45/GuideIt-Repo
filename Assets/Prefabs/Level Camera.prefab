@@ -231,7 +231,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8214835303929298595}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.1000004, z: -10.61}
+  m_LocalPosition: {x: 0, y: 1.1050882, z: -10.61}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8214835303727857970}
@@ -335,8 +335,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rippleMaterial: {fileID: 2100000, guid: b10029b01a27c304b85cfd43e3ca8d9a, type: 2}
-  MaxAmount: 7
-  Friction: 0.9
+  MaxAmount: 16
+  Friction: 0.95
 --- !u!1 &8214835303981280640
 GameObject:
   m_ObjectHideFlags: 0

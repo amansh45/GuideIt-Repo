@@ -49,7 +49,7 @@ public class UpgradeManager : MonoBehaviour
     UpgradeScroller upgradeScrollerClass;
     Dictionary<string, GameObject> skinsAndMaterials = new Dictionary<string, GameObject>();
 
-    bool isShooting = false;
+    bool isShooting = false, previewHasFocus = true;
 
     private void SetPreviewMovementArea(float leftX, float rightX, float bottomY, float topY)
     {
@@ -225,6 +225,7 @@ public class UpgradeManager : MonoBehaviour
         mainCanvas.SetActive(false);
         playerSkin.SetActive(false);
         secondaryCanvas.SetActive(true);
+        previewHasFocus = false;
         foreach (Transform child in secondaryCanvasColors.transform)
         {
             if (child.gameObject.name == currentUpgrade.ParticlesColor.ToString())
@@ -254,6 +255,7 @@ public class UpgradeManager : MonoBehaviour
         playerStats.upgradesList[selectedUpgradeIndexForPreview] = currentUpgrade;
 
         UpdateUiData(currentUpgrade);
+
         if (currentUpgrade.ApplicableOn == ObjectsDescription.Player)
             playerStats.UpdateColorOfSkin(currentUpgrade, playerSkin);
         else if (currentUpgrade.ApplicableOn == ObjectsDescription.PlayerLauncher)
@@ -265,6 +267,7 @@ public class UpgradeManager : MonoBehaviour
         secondaryCanvas.SetActive(false);
         playerSkin.SetActive(true);    
         mainCanvas.SetActive(true);
+        previewHasFocus = true;
     }
 
     public void UpgradeClicked(int index)
@@ -472,7 +475,7 @@ public class UpgradeManager : MonoBehaviour
     void Update()
     {
         PlayerStatistics.Upgrade activeUpgrade = playerStats.upgradesList[selectedUpgradeIndexForPreview];
-        if (activeUpgrade.ApplicableOn == ObjectsDescription.Player)
+        if (activeUpgrade.ApplicableOn == ObjectsDescription.Player && previewHasFocus)
         {
             EnablePlayerSkinPreview();
         } else if(activeUpgrade.ApplicableOn == ObjectsDescription.PlayerLauncher)

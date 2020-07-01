@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 6122361556408094408}
   - component: {fileID: 6122361556408094410}
   - component: {fileID: 6122361556408094413}
-  - component: {fileID: 6122361556408094412}
   m_Layer: 12
   m_Name: Box
   m_TagString: EnemyObject
@@ -130,18 +129,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.67601424, y: 0.6675248}
   m_EdgeRadius: 0
---- !u!114 &6122361556408094412
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6122361556408094409}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af76dc3f8d81e1f4ab63ac56ad153065, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6728373111687260307
 GameObject:
   m_ObjectHideFlags: 0
@@ -208,6 +195,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9089513015767164992}
+  - component: {fileID: 434947130}
   m_Layer: 12
   m_Name: Box Wrapper
   m_TagString: Untagged
@@ -230,3 +218,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+--- !u!114 &434947130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9089513015767164995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3ff4943bc8afd748b1291b8b721fb40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isRotating: 1
+  isMoving: 0
+  leftRightOffset: 0.1
+  baseScreenWidth: 5.61

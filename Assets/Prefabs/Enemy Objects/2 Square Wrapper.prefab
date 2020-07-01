@@ -120,7 +120,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    oldSize: {x: 0.75, y: 0.75}
     newSize: {x: 3, y: 3}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -153,6 +153,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5161719617795137627}
+  - component: {fileID: 7071594464920212936}
   m_Layer: 12
   m_Name: 2 Square Wrapper
   m_TagString: Untagged
@@ -175,6 +176,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 360}
+--- !u!114 &7071594464920212936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5161719617795137624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3ff4943bc8afd748b1291b8b721fb40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isRotating: 1
+  placeWrtCornors: 1
+  leftRightOffset: 0.15
+  baseScreenWidth: 5.61
 --- !u!1 &7510595978817576444
 GameObject:
   m_ObjectHideFlags: 0

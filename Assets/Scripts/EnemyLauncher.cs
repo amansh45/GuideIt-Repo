@@ -20,20 +20,25 @@ public class EnemyLauncher : MonoBehaviour
     }
 
     private void Update() {
-        Vector3 target = playerPrefab.transform.position;
 
-        Vector3 objectPos = transform.position;
+        if(playerPrefab != null)
+        {
+            Vector3 target = playerPrefab.transform.position;
 
-        if(Vector3.Distance(target, objectPos) <= distanceThreshold && counter % 3 == 0) {
-            target.x = target.x - objectPos.x;
-            target.y = target.y - objectPos.y;
+            Vector3 objectPos = transform.position;
 
-            float angle = Mathf.Atan2(target.y, target.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
-            if (counter == 10)
-                counter = 1;
+            if (Vector3.Distance(target, objectPos) <= distanceThreshold && counter % 3 == 0)
+            {
+                target.x = target.x - objectPos.x;
+                target.y = target.y - objectPos.y;
+
+                float angle = Mathf.Atan2(target.y, target.x) * Mathf.Rad2Deg;
+                transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+                if (counter == 10)
+                    counter = 1;
+            }
+            counter += 1;
         }
-        counter += 1;
     }
 
     void ShootGranade()

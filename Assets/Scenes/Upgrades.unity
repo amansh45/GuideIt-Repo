@@ -1964,7 +1964,12 @@ PrefabInstance:
     - target: {fileID: 7836805310484517069, guid: 713e734d472c3b7428756c1f3a9e124a,
         type: 3}
       propertyPath: m_Name
-      value: Level Loader
+      value: Scene Loader
+      objectReference: {fileID: 0}
+    - target: {fileID: 7836805310484517069, guid: 713e734d472c3b7428756c1f3a9e124a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 713e734d472c3b7428756c1f3a9e124a, type: 3}
@@ -9489,6 +9494,9 @@ MonoBehaviour:
   runSpeed: 10
   hoverSpeed: 0
   shootXPThreshold: 5
+  camShakeDuration: 1
+  vfxController: {fileID: 0}
+  levelController: {fileID: 0}
   playerState: 0
 --- !u!4 &8682941479608577778
 Transform:

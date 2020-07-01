@@ -3,16 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class LevelController : MonoBehaviour
 {
-    [SerializeField] GameObject slowmotion, pauseCanvas, player, finishCanvas, levelCanvas;
-    [SerializeField] float onPauseSlowmoFactor = 0.05f;
+    [SerializeField] GameObject slowmotion, pauseCanvas, retryCanvas, levelCompleteSlider, levelCompletedTextGO, player, playSpace, gameLines, firstTaskGO, secondTaskGO;
+    [SerializeField] float onPauseSlowmoFactor = 0.05f, movementOffset = 2f;
     Slowmotion slowmotionClass;
     Player playerClass;
     PlayerActions playerActionsClass;
     PlayerStatistics playerStats;
     TaskHandler taskHandler;
+    PolygonCollider2D playSpaceCollider;
+    TextMeshProUGUI levelCompletedText;
+    GameLines gameLinesClass;
+    float lowerBound, prevLowerBound;
+
+    GameObject testObj = null;
 
     [SerializeField] GameObject coinsAcquired;
     TextMeshProUGUI coinsAcquiredOnScreenText;
@@ -29,6 +36,140 @@ public class LevelController : MonoBehaviour
         coinsAcquiredOnScreenText.text = currentCoinsAcquired.ToString() + " / " + coinsInScene;
         playerStats = FindObjectOfType<PlayerStatistics>();
         taskHandler = FindObjectOfType<TaskHandler>();
+        prevLowerBound = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, 0)).y;
+        playSpaceCollider = playSpace.GetComponent<PolygonCollider2D>();
+        gameLinesClass = gameLines.GetComponent<GameLines>();
+        levelCompletedText = levelCompletedTextGO.GetComponent<TextMeshProUGUI>();
+        UpdateFirstTaskOnScreen(false);
+        UpdateSecondTaskOnScreen(false);
+    }
+
+    /*
+    private void SetBoundingBox()
+    {
+        // lower bound position of camera.
+        lowerBound = Mathf.Min(lowerBound, player.transform.position.y - movementOffset);
+
+        if(testObj == null)
+        {
+            testObj = Instantiate(testPrefab, playSpaceCollider.bounds.extents, transform.rotation);
+            testObj.name = "extents_test";
+            testObj = Instantiate(testPrefab, playSpaceCollider.bounds.center, transform.rotation);
+            testObj.name = "centers_test";
+            testObj = Instantiate(testPrefab, playSpaceCollider.bounds.min, transform.rotation);
+            testObj.name = "min_test";
+            testObj = Instantiate(testPrefab, playSpaceCollider.bounds.max, transform.rotation);
+            testObj.name = "max_test";
+        }
+
+        Debug.Log(playSpaceCollider.bounds.extents);
+
+        //playSpaceCollider.bounds.extents = new Vector3(lowerBound, playSpace.transform.position.x)
+        //Debug.Log("extents : " + playSpaceCollider.bounds.extents);
+    }
+    */
+
+    private void UpdateFirstTaskOnScreen(bool isTaskCompleted)
+    {
+        int findex = playerStats.firstActiveTaskIndex;
+        PlayerStatistics.Task firstTask;
+        if (findex != -1)
+        {
+            firstTask = playerStats.tasksList[findex];
+
+            if (isTaskCompleted)
+                playerStats.playerCoins += firstTask.TaskCompletionAward;
+
+            foreach (Transform child in firstTaskGO.gameObject.transform)
+            {
+                if (child.gameObject.name == "Text")
+                {
+                    var tmpTask = child.gameObject.GetComponent<TextMeshProUGUI>();
+                    if (firstTask.CurrTaskCategory == TaskCategory.CountingTask)
+                        tmpTask.text = firstTask.TaskDescription + "\n" + firstTask.CurrentCount + " / " + firstTask.CountLimit;
+                    else
+                        tmpTask.text = firstTask.TaskDescription;
+                }
+
+                if (firstTask.IsCompleted)
+                {
+                    if (child.gameObject.name == "Completed Tag")
+                        child.gameObject.SetActive(true);
+                    if (child.gameObject.name == "Under Progress Tag")
+                        child.gameObject.SetActive(false);
+                }
+                else
+                {
+                    if (child.gameObject.name == "Completed Tag")
+                        child.gameObject.SetActive(false);
+                    if (child.gameObject.name == "Under Progress Tag")
+                        child.gameObject.SetActive(true);
+                }
+
+            }
+        }
+    }
+
+    private void UpdateSecondTaskOnScreen(bool isTaskCompleted)
+    {
+        PlayerStatistics.Task secondTask;
+        int sindex = playerStats.secondActiveTaskIndex;
+        if (sindex != -1)
+        {
+            secondTask = playerStats.tasksList[sindex];
+
+            if (isTaskCompleted)
+                playerStats.playerCoins += secondTask.TaskCompletionAward;
+
+            foreach (Transform child in secondTaskGO.transform)
+            {
+                if (child.gameObject.name == "Text")
+                {
+                    var tmpTask = child.gameObject.GetComponent<TextMeshProUGUI>();
+                    if (secondTask.CurrTaskCategory == TaskCategory.CountingTask)
+                        tmpTask.text = secondTask.TaskDescription + "\n" + secondTask.CurrentCount + " / " + secondTask.CountLimit;
+                    else
+                        tmpTask.text = secondTask.TaskDescription;
+                }
+
+                if (secondTask.IsCompleted)
+                {
+                    if (child.gameObject.name == "Completed Tag")
+                        child.gameObject.SetActive(true);
+                    if (child.gameObject.name == "Under Progress Tag")
+                        child.gameObject.SetActive(false);
+                }
+                else
+                {
+                    if (child.gameObject.name == "Completed Tag")
+                        child.gameObject.SetActive(false);
+                    if (child.gameObject.name == "Under Progress Tag")
+                        child.gameObject.SetActive(true);
+                }
+            }
+        }
+    }
+
+
+    private void Update()
+    {
+        //SetBoundingBox();
+    }
+
+    IEnumerator PlayerDeathActions(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        slowmotionClass.customSlowmo(true, onPauseSlowmoFactor);
+        retryCanvas.gameObject.SetActive(true);
+        levelCompleteSlider.GetComponent<Slider>().value = gameLinesClass.levelCompleted;
+        int completedPercentage = (int) (gameLinesClass.levelCompleted * 100f);
+        levelCompletedText.text = "Level Completed: " + completedPercentage + "%";
+        playerActionsClass.isGamePaused = true;
+    }
+
+    public void ShowRetryCanvas(float waitTime)
+    {
+        StartCoroutine(PlayerDeathActions(waitTime));
     }
 
     public void CoinAcquired(float coinValue, string coinType)
@@ -56,6 +197,7 @@ public class LevelController : MonoBehaviour
 
     public void ClickedRetryButton()
     {
+        taskHandler.ResetTasks();
         Scene scene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(scene.name);
     }

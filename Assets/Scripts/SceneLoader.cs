@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class SceneLoader : MonoBehaviour
 {
     public Animator transition;
-    [SerializeField] float transitionTime = 1f;
+    [SerializeField] float transitionTime = 0.5f;
 
     private void Start()
     {

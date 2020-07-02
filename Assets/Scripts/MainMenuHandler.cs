@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -6,13 +7,17 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuHandler : MonoBehaviour
 {
-    [SerializeField] GameObject firstTaskGO, secondTaskGO, chapterNameGO, loadIcon;
+    [SerializeField] GameObject firstTaskGO, secondTaskGO, chapterNameGO, loadIcon, upgradesIconGO, collectedCoinsPrefab;
+    [SerializeField] float spawingOffset = 0.5f;
+
     PlayerStatistics playerStats;
     string taskDescription;
     bool firstTimeLoad = true;
     TextMeshProUGUI chapterName;
     TaskHandler taskHandlerClass;
     int numChapters;
+    Vector3 firstTasksCoinPos, secondTasksCoinPos, destinationPos;
+    static System.Random random = new System.Random();
 
     private void UpdateFirstTaskOnScreen(bool isTaskCompleted)
     {
@@ -98,16 +103,63 @@ public class MainMenuHandler : MonoBehaviour
         playerStats = FindObjectOfType<PlayerStatistics>();
         chapterName = chapterNameGO.GetComponent<TextMeshProUGUI>();
         taskHandlerClass = FindObjectOfType<TaskHandler>();
+        foreach (Transform child in secondTaskGO.transform)
+        {
+            if (child.gameObject.name == "Completed Tag" || child.gameObject.name == "Under Progress Tag")
+            {
+                secondTasksCoinPos = Camera.main.ScreenToWorldPoint(child.position);
+                break;
+            }
+        }
+
+        foreach (Transform child in firstTaskGO.transform)
+        {
+            if (child.gameObject.name == "Completed Tag" || child.gameObject.name == "Under Progress Tag")
+            {
+                firstTasksCoinPos = Camera.main.ScreenToWorldPoint(child.position);
+                break;
+            }
+        }
+
+        destinationPos = Camera.main.ScreenToWorldPoint(upgradesIconGO.transform.position);
+        destinationPos.z = 0f;
     }
 
-    
+    public float GetRandomNumber(float minimum, float maximum)
+    {
+        return ((float) random.NextDouble() * (maximum - minimum) + minimum);
+    }
+
+    IEnumerator spawnCoins(Vector3 pos)
+    {
+        yield return new WaitForSeconds(GetRandomNumber(0, 0.6f));
+        GameObject instance = Instantiate(collectedCoinsPrefab, pos, transform.rotation);
+        instance.GetComponent<CollectedCoins>().destinationPos = destinationPos;
+    }
+
+    private void SpawnCoins(Vector3 spawningPos)
+    {
+        for(int i=0;i<20;i++)
+        {
+            float[] randVal = { GetRandomNumber(-1f*spawingOffset, spawingOffset), GetRandomNumber(-1f * spawingOffset, spawingOffset) };
+            Vector3 pos = new Vector3(spawningPos.x + randVal[0], spawningPos.y + randVal[1], 0f);
+            StartCoroutine(spawnCoins(pos));
+        }
+    }
+
     public void CompleteTask(int index)
     {
         playerStats.TaskCompleted(index);
         if (index == 0)
+        {
+            SpawnCoins(firstTasksCoinPos);
             UpdateFirstTaskOnScreen(true);
+        }
         else
+        {
+            SpawnCoins(secondTasksCoinPos);
             UpdateSecondTaskOnScreen(true);
+        }
         taskHandlerClass.UpdateTaskPointers();
         
     }

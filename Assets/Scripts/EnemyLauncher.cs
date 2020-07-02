@@ -61,7 +61,6 @@ public class EnemyLauncher : MonoBehaviour
 
     private void OnDestroy()
     {
-        taskHandlerClass.UpdateLevelTaskState(ObjectsDescription.EnemyLauncher, TaskTypes.Destroy, TaskCategory.CountingTask);
         if(!latestGranadeClass.isGranadeActive())
             Destroy(latestGranade);
     }

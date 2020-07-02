@@ -96,6 +96,9 @@ public class Player : MonoBehaviour
     
     void Update()
     {
+
+        Debug.Log("Player State from player: " + playerState);
+
         if (playerState == PlayerState.Run)
             ballSpeed = runSpeed;
         else if (playerState == PlayerState.Still)
@@ -104,7 +107,7 @@ public class Player : MonoBehaviour
             ballSpeed = hoverSpeed;
         else if (playerState == PlayerState.Move)
             ballSpeed = moveSpeed;
-
+        
         Move();
     }
 

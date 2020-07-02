@@ -32,7 +32,7 @@ public class UpgradeManager : MonoBehaviour
 {
     [SerializeField] Camera mainCamera;
     [SerializeField] GameObject uiPreviewArea, linePrefab, playerSkin, playerLauncher, coinTextGO, moneyTextGO, lockButtonsGO, unlockButtonsGO, unlockTextGO;
-    [SerializeField] GameObject colorSelector;
+    [SerializeField] GameObject colorSelector, numCoinsTextGO;
     [SerializeField] float thresholdDistanceBetweenCheckpoints = 0.3f, thresholdDoubleClickTime = 0.3f, thresholdBetweenDClickAndPlayer = 0.5f;
     [SerializeField] GameObject mainCanvas, secondaryCanvas, secondaryCanvasColors;
 
@@ -40,7 +40,7 @@ public class UpgradeManager : MonoBehaviour
     [SerializeField] List<GameObject> upgradesGO;
 
     int selectedUpgradeIndexForPreview;
-    TextMeshProUGUI coinCostTMPro, moneyCostTMPro, unlockButtonTMPro;
+    TextMeshProUGUI coinCostTMPro, moneyCostTMPro, unlockButtonTMPro, numCoinsTMPro;
     GameObject previewMovementArea, currentLine, previousFingerPosition, playerLauncherInstance, colorSelectorArea;
     Vector3 previewMovementAreaScale, colorSelectorAreaScale;
     Player playerClass;
@@ -391,6 +391,7 @@ public class UpgradeManager : MonoBehaviour
             {
                 PlayerStatistics.SkinColorStuff skinColorData = currentUpgrade.ColorStuff[currentUpgrade.ParticlesColor.ToString()];
                 playerStats.playerCoins -= skinColorData.CoinCost;
+                numCoinsTMPro.text = playerStats.playerCoins.ToString();
                 skinColorData.IsUnlocked = true;
                 currentUpgrade.ColorStuff[currentUpgrade.ParticlesColor.ToString()] = skinColorData;
             } else
@@ -403,6 +404,7 @@ public class UpgradeManager : MonoBehaviour
             if(fromCoin)
             {
                 playerStats.playerCoins -= currentUpgrade.CoinCost;
+                numCoinsTMPro.text = playerStats.playerCoins.ToString();
                 currentUpgrade.IsUnlocked = true;
             } else
             {
@@ -455,6 +457,8 @@ public class UpgradeManager : MonoBehaviour
         coinCostTMPro = coinTextGO.GetComponent<TextMeshProUGUI>();
         moneyCostTMPro = moneyTextGO.GetComponent<TextMeshProUGUI>();
         unlockButtonTMPro = unlockTextGO.GetComponent<TextMeshProUGUI>();
+        numCoinsTMPro = numCoinsTextGO.GetComponent<TextMeshProUGUI>();
+        numCoinsTMPro.text = playerStats.playerCoins.ToString();
 
         selectedUpgradeIndexForPreview = 0;
 

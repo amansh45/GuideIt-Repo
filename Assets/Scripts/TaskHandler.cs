@@ -33,7 +33,7 @@ public class TaskHandler : MonoBehaviour
     */
 
     PlayerStatistics playerStats;
-    PlayerStatistics.Task firstTask, secondTask;
+    public PlayerStatistics.Task firstTask, secondTask;
     //public Dictionary<string, Dictionary<string, int>> levelCountTasks = new Dictionary<string, Dictionary<string, int>>();
     bool firstTimeLoad = true;
     PlayerStatistics.Task firstTaskBackup, secondTaskBackup;

@@ -7860,6 +7860,10 @@ MonoBehaviour:
   secondTaskGO: {fileID: 2002697967}
   chapterNameGO: {fileID: 1190491650}
   loadIcon: {fileID: 246540087}
+  upgradesIconGO: {fileID: 373318496}
+  collectedCoinsPrefab: {fileID: 3155607798403130243, guid: 8fa8b85dcaa727a4eabf58351a161918,
+    type: 3}
+  spawingOffset: 0.3
 --- !u!4 &1981511333
 Transform:
   m_ObjectHideFlags: 0
@@ -8388,6 +8392,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Scene Loader
+      objectReference: {fileID: 0}
+    - target: {fileID: 7836805310484517069, guid: 713e734d472c3b7428756c1f3a9e124a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 713e734d472c3b7428756c1f3a9e124a, type: 3}

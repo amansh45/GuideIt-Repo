@@ -11,11 +11,13 @@ public class Granade : MonoBehaviour
     bool isGranadeMoving = false;
     float startScale = 0f, scaleFactor = 0.01f;
     Rigidbody2D granadeRigidBody;
+    TaskHandler taskHandlerClass;
 
     private void Start()
     {
         transform.localScale = new Vector3(startScale, startScale, startScale);
         vfxControllerClass = FindObjectOfType<VFXController>().GetComponent<VFXController>();
+        taskHandlerClass = FindObjectOfType<TaskHandler>();
         granadeRigidBody = GetComponent<Rigidbody2D>();
     }
 
@@ -58,6 +60,7 @@ public class Granade : MonoBehaviour
                 GameObject launcher = other.transform.parent.gameObject;
                 vfxControllerClass.InitiateScreenRippleEffect(launcher.transform.position);
                 vfxControllerClass.InitiateExplodeEffect(launcher.transform.position);
+                taskHandlerClass.UpdateLevelTaskState(ObjectsDescription.EnemyLauncher, TaskTypes.Destroy, TaskCategory.CountingTask);
                 Destroy(launcher);
                 Destroy(gameObject);
             }

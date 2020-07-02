@@ -20,6 +20,7 @@ public class LevelController : MonoBehaviour
     float lowerBound, prevLowerBound;
 
     GameObject testObj = null;
+    bool isPlayerStillBeforePause = false;
 
     [SerializeField] GameObject coinsAcquired;
     TextMeshProUGUI coinsAcquiredOnScreenText;
@@ -40,8 +41,6 @@ public class LevelController : MonoBehaviour
         playSpaceCollider = playSpace.GetComponent<PolygonCollider2D>();
         gameLinesClass = gameLines.GetComponent<GameLines>();
         levelCompletedText = levelCompletedTextGO.GetComponent<TextMeshProUGUI>();
-        UpdateFirstTaskOnScreen(false);
-        UpdateSecondTaskOnScreen(false);
     }
 
     /*
@@ -75,7 +74,7 @@ public class LevelController : MonoBehaviour
         PlayerStatistics.Task firstTask;
         if (findex != -1)
         {
-            firstTask = playerStats.tasksList[findex];
+            firstTask = taskHandler.firstTask;
 
             if (isTaskCompleted)
                 playerStats.playerCoins += firstTask.TaskCompletionAward;
@@ -91,21 +90,6 @@ public class LevelController : MonoBehaviour
                         tmpTask.text = firstTask.TaskDescription;
                 }
 
-                if (firstTask.IsCompleted)
-                {
-                    if (child.gameObject.name == "Completed Tag")
-                        child.gameObject.SetActive(true);
-                    if (child.gameObject.name == "Under Progress Tag")
-                        child.gameObject.SetActive(false);
-                }
-                else
-                {
-                    if (child.gameObject.name == "Completed Tag")
-                        child.gameObject.SetActive(false);
-                    if (child.gameObject.name == "Under Progress Tag")
-                        child.gameObject.SetActive(true);
-                }
-
             }
         }
     }
@@ -116,7 +100,7 @@ public class LevelController : MonoBehaviour
         int sindex = playerStats.secondActiveTaskIndex;
         if (sindex != -1)
         {
-            secondTask = playerStats.tasksList[sindex];
+            secondTask = taskHandler.secondTask;
 
             if (isTaskCompleted)
                 playerStats.playerCoins += secondTask.TaskCompletionAward;
@@ -131,21 +115,7 @@ public class LevelController : MonoBehaviour
                     else
                         tmpTask.text = secondTask.TaskDescription;
                 }
-
-                if (secondTask.IsCompleted)
-                {
-                    if (child.gameObject.name == "Completed Tag")
-                        child.gameObject.SetActive(true);
-                    if (child.gameObject.name == "Under Progress Tag")
-                        child.gameObject.SetActive(false);
-                }
-                else
-                {
-                    if (child.gameObject.name == "Completed Tag")
-                        child.gameObject.SetActive(false);
-                    if (child.gameObject.name == "Under Progress Tag")
-                        child.gameObject.SetActive(true);
-                }
+                
             }
         }
     }
@@ -181,18 +151,35 @@ public class LevelController : MonoBehaviour
 
     public void ClickedPauseButton()
     {
-        playerClass.playerState = PlayerState.Still;
+        if (playerClass.playerState == PlayerState.Still)
+        {
+            isPlayerStillBeforePause = true;
+        }
+        else
+        {
+            playerClass.playerState = PlayerState.Still;
+            isPlayerStillBeforePause = false;
+        }
+
         slowmotionClass.customSlowmo(true, onPauseSlowmoFactor);
         pauseCanvas.gameObject.SetActive(true);
+        UpdateFirstTaskOnScreen(false);
+        UpdateSecondTaskOnScreen(false);
         playerActionsClass.isGamePaused = true;
     }
 
     public void ClickedResumeButton()
     {
-        playerClass.playerState = PlayerState.Hover;
         slowmotionClass.customSlowmo(false, onPauseSlowmoFactor);
         pauseCanvas.gameObject.SetActive(false);
         playerActionsClass.isGamePaused = false;
+        if (!isPlayerStillBeforePause)
+        {
+            playerClass.playerState = PlayerState.Hover;
+            Debug.Log("Player was not still before pause..");
+        }
+        else
+            playerClass.playerState = PlayerState.Still;
     }
 
     public void ClickedRetryButton()

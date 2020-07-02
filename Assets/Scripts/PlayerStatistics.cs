@@ -44,7 +44,6 @@ public class PlayerStatistics : MonoBehaviour
             CurrentCount = 0;
         }
 
-
     }
 
     public struct CustomColor
@@ -225,7 +224,7 @@ public class PlayerStatistics : MonoBehaviour
     private void AddTasks()
     {
 
-        Task task = new Task(false, true, ObjectsDescription.Coin, "Collect 5 coins in any level", 0, 20, TaskTypes.Collect, TaskCategory.CountingTask, 5);
+        Task task = new Task(true, true, ObjectsDescription.Coin, "Collect 5 coins in any level", 0, 20, TaskTypes.Collect, TaskCategory.CountingTask, 5);
         tasksList.Add(task);
         task = new Task(false, false, ObjectsDescription.EnemyLauncher, "Destroy 4 enemy Cannons", 1, 100, TaskTypes.Destroy, TaskCategory.CountingTask, 4);
         tasksList.Add(task);

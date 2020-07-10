@@ -43,7 +43,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0345a37e1ff60dc4089d456e287514b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activeUpgrades: 
   firstActiveTaskIndex: 0
   secondActiveTaskIndex: 1
   tasksCompleted: 0
@@ -52,15 +51,4 @@ MonoBehaviour:
   highestLevel: 0
   playerCoins: 0
   playerStatsLoaded: 0
-  levelsInChapter: 01000000
-  playerBasic: {fileID: 7386533882511071369, guid: 9ec5c661cc36d8e47a72cf2562a5a5e2,
-    type: 3}
-  launcherBasic: {fileID: 0}
-  bulletBasic: {fileID: 0}
-  playerModerate: {fileID: 2143946417511062983, guid: 3f81f5ffeb42ec141b490771d3a551b5,
-    type: 3}
-  launcherModerate: {fileID: 0}
-  bulletModerate: {fileID: 0}
-  playerAdvance: {fileID: 0}
-  launcherAdvance: {fileID: 0}
-  bulletAdvance: {fileID: 0}
+  levelsInChapter: 02000000

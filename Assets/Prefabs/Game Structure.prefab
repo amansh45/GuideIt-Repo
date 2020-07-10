@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2705887151364670105}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 8.46, z: 0}
+  m_LocalPosition: {x: 0, y: 11.51, z: 0}
   m_LocalScale: {x: 8, y: 0.25, z: 1}
   m_Children:
   - {fileID: 2705887152331328449}
@@ -47,20 +47,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lineDash: {fileID: 6469378857003161759, guid: 1a9a6090a90ac1b4ba4ba82743397cf9,
     type: 3}
+  sparksPrefab: {fileID: 2922667914580548422, guid: 163ebc05065fdfe458cbeeda9b574c82,
+    type: 3}
   screenBorderOffset: 0.2
   spaceBetweenLine: 0.2
   singleDashLength: 0.2
   singleDashWidth: 0.1
   borderZaxis: 0
-  mainCamera: {fileID: 0}
   borderWidth: 0.025
+  sparkSpeed: 600
   color: {r: 1, g: 1, b: 1, a: 1}
   playerPrefab: {fileID: 0}
   levelProgressIndicator: {fileID: 490738820208185190, guid: 87be9092d80137745b952e2c13a9fd1c,
     type: 3}
   levelController: {fileID: 0}
+  mainCamera: {fileID: 0}
   progressIndicatorZAxis: -1.2
   finishLevelAfter: 1.3
+  levelCompleted: 0
 --- !u!61 &2705887151364670108
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -145,8 +149,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2705887152038979093}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.6, z: 1}
-  m_LocalScale: {x: 6.250029, y: 10.124917, z: 1}
+  m_LocalPosition: {x: 0, y: 4.053, z: 1}
+  m_LocalScale: {x: 6.250029, y: 12.398838, z: 1}
   m_Children: []
   m_Father: {fileID: 2705887151442966566}
   m_RootOrder: 1

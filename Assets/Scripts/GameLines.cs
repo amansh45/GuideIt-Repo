@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class GameLines : MonoBehaviour {
 
-    [SerializeField] GameObject lineDash;
+    [SerializeField] GameObject lineDash, sparksPrefab;
     [SerializeField] float screenBorderOffset = 0.2f, spaceBetweenLine = 0.2f, singleDashLength = 0.2f, singleDashWidth = 0.1f, borderZaxis;
     [SerializeField] float borderWidth = 0.025f;
     [SerializeField] Color color = Color.white;
     [SerializeField] GameObject playerPrefab, levelProgressIndicator, levelController;
+    [SerializeField] Camera mainCamera;
     [SerializeField] float progressIndicatorZAxis = -1.2f, finishLevelAfter = 1.3f;
 
     public float levelCompleted = 0f;
@@ -18,6 +19,7 @@ public class GameLines : MonoBehaviour {
     List<GameObject> gameObjectsForLineRenderer = new List<GameObject>();
     List<LineRenderer> lineRenderersList = new List<LineRenderer>();
     GameObject finishParticle, playSpace, firstProgressInstance, secondProgressInstance;
+    Rigidbody2D firstSparkRigidBody, secondSparkRigidBody;
     LevelController levelControllerClass;
     bool gameRunning = false;
     float levelMaxY = 0, levelMinY = 0, playAreaMinY = 0, playAreaMaxY = 0, playerTimer = 0f;
@@ -98,10 +100,24 @@ public class GameLines : MonoBehaviour {
     {
         levelControllerClass = levelController.GetComponent<LevelController>();
     }
+    
+    void SpawnSparks()
+    {
+        Vector3 cameraBottomLeft = mainCamera.ViewportToWorldPoint(new Vector3(0, 0, 0));
+        Vector3 cameraBottomRight = mainCamera.ViewportToWorldPoint(new Vector3(1, 0, 0));
+        cameraBottomRight.z = topLeft.z;
+        cameraBottomLeft.z = topLeft.z;
+        GameObject firstSpark = Instantiate(sparksPrefab, cameraBottomLeft, transform.rotation);
+        GameObject secondSpark = Instantiate(sparksPrefab, cameraBottomRight, transform.rotation);
+        firstSpark.GetComponent<Spark>().SetParams(true, topLeft.y);
+        secondSpark.GetComponent<Spark>().SetParams(false, topLeft.y);
+    }
+    
 
     void LevelComplete() {
-        Debug.Log("Time Taken: " + playerTimer);
         gameRunning = false;
+        Debug.Log("Time Taken: " + playerTimer);
+        SpawnSparks();
         finishParticle.SetActive(true);
         Destroy(gameObjectsForLineRenderer[borderLineIndicesMapping["Top"]]);
         float currentVal = topLeft.x + 0.1f;
@@ -152,6 +168,7 @@ public class GameLines : MonoBehaviour {
         secondProgressInstance.transform.parent = progressParent.transform;
         firstProgressInstance.transform.position = new Vector3(first_x, y, progressIndicatorZAxis);
         playAreaMinY = firstProgressInstance.transform.localPosition.y;
+        
 
         // for converting maxY as the localPosition wrt the scrollobject
         secondProgressInstance.transform.position = new Vector3(second_x, globalPlayAreaMaxY, progressIndicatorZAxis);

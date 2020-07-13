@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class LevelComplete : MonoBehaviour
 {
@@ -78,6 +79,38 @@ public class LevelComplete : MonoBehaviour
 
             firstTimeLoad = false;
         }
+    }
+
+    public void LoadNextLevel()
+    {
+        string levelName = PersistentInformation.LevelIdentifier;
+        string[] levelIdentity = levelName.Split('.');
+        int currentChapterIndex = int.Parse(levelIdentity[0]);
+        int currentLevelIndex = int.Parse(levelIdentity[1]);
+
+        if (currentLevelIndex == playerStats.chaptersList[currentChapterIndex].LevelsInChapter.Count - 1)
+        {
+            if (currentChapterIndex == playerStats.chaptersList.Count - 1)
+            {
+
+            }
+            else
+            {
+                SceneManager.LoadScene((currentChapterIndex + 1).ToString() + ".0");
+            }
+
+        }
+        else
+        {
+            SceneManager.LoadScene(currentChapterIndex.ToString() + "." + (currentLevelIndex + 1).ToString());
+        }
+    }
+
+    public void RetryCurrentLevel()
+    {
+        string levelName = PersistentInformation.LevelIdentifier;
+        Debug.Log("Hi" + levelName);
+        SceneManager.LoadScene(levelName);
     }
 
 }

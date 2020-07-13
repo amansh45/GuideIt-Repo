@@ -11,6 +11,7 @@ public class GameLines : MonoBehaviour {
     [SerializeField] GameObject playerPrefab, levelProgressIndicator, levelController;
     [SerializeField] Camera mainCamera;
     [SerializeField] float progressIndicatorZAxis = -1.2f, finishLevelAfter = 1.3f;
+    [SerializeField] float extraOffsetForCollider = 0.2f;
 
     public float levelCompleted = 0f;
 
@@ -21,8 +22,9 @@ public class GameLines : MonoBehaviour {
     GameObject finishParticle, playSpace, firstProgressInstance, secondProgressInstance;
     Rigidbody2D firstSparkRigidBody, secondSparkRigidBody;
     LevelController levelControllerClass;
+    PlayerActions playerActions;
     bool gameRunning = false;
-    float levelMaxY = 0, levelMinY = 0, playAreaMinY = 0, playAreaMaxY = 0, playerTimer = 0f;
+    float levelMaxY = 0, levelMinY = 0, playAreaMinY = 0, playAreaMaxY = 0, playerTimer = 0f, yAxisForBorder;
     
     public Dictionary<string, int> borderLineIndicesMapping = new Dictionary<string, int>()
     {
@@ -51,15 +53,20 @@ public class GameLines : MonoBehaviour {
     }
     
 
-    public void DrawBorderLines(float bottomLeftX, float bottomLeftY, float bottomRightX, float zAxisBorder)
+    public void DrawBorderLines(float bottomLeftX, float bottomLeftY, float bottomRightX, float topMargin, float zAxisBorder)
     {
         borderZaxis = zAxisBorder;
         bottomLeft = new Vector3(bottomLeftX, bottomLeftY, borderZaxis);
         bottomRight = new Vector3(bottomRightX, bottomLeftY, borderZaxis);
-
-        float topY = transform.position.y - (transform.localScale.y / 2.0f);
-        topLeft = new Vector3(bottomLeftX, topY, borderZaxis);
-        topRight = new Vector3(bottomRightX, topY, borderZaxis);
+        
+        SpriteRenderer playSpaceRenderer = playSpace.GetComponent<SpriteRenderer>();
+        float playSpaceYBound = playSpaceRenderer.bounds.max.y;
+        float newYForCollider = playSpaceYBound - topMargin - extraOffsetForCollider + (transform.localScale.y / 2.0f);
+        transform.position = new Vector3(transform.position.x, newYForCollider, transform.position.z);
+        
+        yAxisForBorder = transform.position.y - (transform.localScale.y / 2.0f);
+        topLeft = new Vector3(bottomLeftX, yAxisForBorder, borderZaxis);
+        topRight = new Vector3(bottomRightX, yAxisForBorder, borderZaxis);
 
         PersistentInformation.Left = bottomLeft.x;
         PersistentInformation.Right = bottomRight.x;
@@ -69,7 +76,7 @@ public class GameLines : MonoBehaviour {
         RenderLine(bottomLeft, bottomRight, borderLineIndicesMapping["Bottom"]);
         RenderLine(bottomLeft, topLeft, borderLineIndicesMapping["Left"]);
         RenderLine(topLeft, topRight, borderLineIndicesMapping["Top"]);
-        levelMaxY = topY;
+        levelMaxY = yAxisForBorder;
         levelMinY = bottomLeftY;
     }
 
@@ -99,18 +106,21 @@ public class GameLines : MonoBehaviour {
     private void Start()
     {
         levelControllerClass = levelController.GetComponent<LevelController>();
+        playerActions = playerPrefab.GetComponent<PlayerActions>();
     }
-    
-    void SpawnSparks()
+
+    GameObject firstSpark, secondSpark;
+
+    public void SpawnSparks()
     {
         Vector3 cameraBottomLeft = mainCamera.ViewportToWorldPoint(new Vector3(0, 0, 0));
         Vector3 cameraBottomRight = mainCamera.ViewportToWorldPoint(new Vector3(1, 0, 0));
         cameraBottomRight.z = topLeft.z;
         cameraBottomLeft.z = topLeft.z;
-        GameObject firstSpark = Instantiate(sparksPrefab, cameraBottomLeft, transform.rotation);
-        GameObject secondSpark = Instantiate(sparksPrefab, cameraBottomRight, transform.rotation);
-        firstSpark.GetComponent<Spark>().SetParams(true, topLeft.y);
-        secondSpark.GetComponent<Spark>().SetParams(false, topLeft.y);
+        firstSpark = Instantiate(sparksPrefab, cameraBottomLeft, transform.rotation);
+        secondSpark = Instantiate(sparksPrefab, cameraBottomRight, transform.rotation);
+        firstSpark.GetComponent<Spark>().SetParams(true, yAxisForBorder);
+        secondSpark.GetComponent<Spark>().SetParams(false, yAxisForBorder);
     }
     
 
@@ -140,7 +150,7 @@ public class GameLines : MonoBehaviour {
 
     private void Update()
     {
-        if(gameRunning && playerPrefab != null) {
+        if(gameRunning && playerPrefab != null && !playerActions.isGamePaused) {
             playerTimer += Time.deltaTime;
             var prevFirstProgressPos = firstProgressInstance.transform.localPosition;
             var prevSecondProgressPos = secondProgressInstance.transform.localPosition;

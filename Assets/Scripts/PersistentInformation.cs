@@ -12,4 +12,6 @@ public static class PersistentInformation
 
     public static bool MarginsSet { get; set; }
 
+    public static string LevelIdentifier { get; set; }
+
 }

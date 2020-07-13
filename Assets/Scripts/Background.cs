@@ -75,7 +75,7 @@ public class Background : MonoBehaviour {
 
         // top border
         InstantiateBorder(backgroundQuad.transform.position.x, 
-            (topRight.y - (topMargin / 2.0f) + extraOffset),
+            (topRight.y - (topMargin/2.0f) + extraOffset),
             borderZAxis,
             cameraWidth,
             topMargin,
@@ -84,7 +84,9 @@ public class Background : MonoBehaviour {
 
 
         // draw border lines
-        borderLines.DrawBorderLines(bottomLeft.x + borderSize, bottomLeft.y + borderSize, bottomRight.x - borderSize, borderZAxis);
+        borderLines.DrawBorderLines(bottomLeft.x + borderSize, bottomLeft.y + borderSize, bottomRight.x - borderSize,
+            topMargin - extraOffset,
+            borderZAxis);
 
         borderLines.ShowLevelProgress(bottomLeft.x + (borderSize / 2.0f), 
             bottomRight.x - (borderSize / 2.0f), 

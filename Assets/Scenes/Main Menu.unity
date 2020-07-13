@@ -7864,6 +7864,11 @@ MonoBehaviour:
   collectedCoinsPrefab: {fileID: 3155607798403130243, guid: 8fa8b85dcaa727a4eabf58351a161918,
     type: 3}
   spawingOffset: 0.3
+  chapterIcons:
+  - {fileID: 1552946410}
+  - {fileID: 1330632201}
+  - {fileID: 1782561192}
+  - {fileID: 231629597}
 --- !u!4 &1981511333
 Transform:
   m_ObjectHideFlags: 0
@@ -8392,6 +8397,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Scene Loader
+      objectReference: {fileID: 0}
+    - target: {fileID: 7836805310484517069, guid: 713e734d472c3b7428756c1f3a9e124a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 713e734d472c3b7428756c1f3a9e124a, type: 3}

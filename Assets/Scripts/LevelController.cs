@@ -41,6 +41,7 @@ public class LevelController : MonoBehaviour
         playSpaceCollider = playSpace.GetComponent<PolygonCollider2D>();
         gameLinesClass = gameLines.GetComponent<GameLines>();
         levelCompletedText = levelCompletedTextGO.GetComponent<TextMeshProUGUI>();
+        PersistentInformation.LevelIdentifier = gameObject.scene.name;
     }
 
     /*
@@ -239,32 +240,6 @@ public class LevelController : MonoBehaviour
         UpdateAndUnlockNextLevel(currentChapterIndex, currentLevelIndex, timeTaken);
         
         SceneManager.LoadScene("Level Complete");
-
-    }
-
-    public void LoadNextLevel()
-    {
-        string levelName = gameObject.scene.name;
-        string[] levelIdentity = levelName.Split('.');
-        int currentChapterIndex = int.Parse(levelIdentity[0]);
-        int currentLevelIndex = int.Parse(levelIdentity[1]);
-
-        if (currentLevelIndex == playerStats.chaptersList[currentChapterIndex].LevelsInChapter.Count - 1)
-        {
-            if (currentChapterIndex == playerStats.chaptersList.Count - 1)
-            {
-
-            }
-            else
-            {
-                SceneManager.LoadScene((currentChapterIndex + 1).ToString() + ".0");
-            }
-
-        }
-        else
-        {
-            SceneManager.LoadScene(currentChapterIndex.ToString() + "." + (currentLevelIndex + 1).ToString());
-        }
 
     }
 

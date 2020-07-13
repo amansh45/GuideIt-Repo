@@ -11,6 +11,7 @@ public class OnClickMenuUI : MonoBehaviour
     LevelController levelController = null;
     MainMenuHandler menuHandlerClass = null;
     UpgradeManager upgradeManagerClass = null;
+    LevelComplete levelComplete = null;
 
     private void Start()
     {
@@ -94,9 +95,17 @@ public class OnClickMenuUI : MonoBehaviour
 
     public void OnLoadNextLevelClicked()
     {
-        if (levelController == null)
-            levelController = FindObjectOfType<LevelController>();
-        levelController.LoadNextLevel();
+        if (levelComplete == null)
+            levelComplete = FindObjectOfType<LevelComplete>();
+        levelComplete.LoadNextLevel();
+    }
+
+    public void OnClickRetryAfterLevelComplete()
+    {
+        Debug.Log("Calling Level Complete");
+        if (levelComplete == null)
+            levelComplete = FindObjectOfType<LevelComplete>();
+        levelComplete.RetryCurrentLevel();
     }
 
     public void OnLevelSelected()

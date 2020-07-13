@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2922667914580548419}
   - component: {fileID: -6013470469251951812}
   - component: {fileID: -6101565729321605172}
-  - component: {fileID: 1905674584}
+  - component: {fileID: 1826655368}
   m_Layer: 0
   m_Name: Spark
   m_TagString: Untagged
@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 2922667914580548422}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -121,7 +121,7 @@ MonoBehaviour:
   upSprite: {fileID: 21300000, guid: 471fc05ad8d98374a995ada126364347, type: 3}
   leftSprite: {fileID: 21300000, guid: f1b6aa501d9a52147b13cc7088731d23, type: 3}
   rightSprite: {fileID: 21300000, guid: 816c26cac706b8341bbc156ed8307f27, type: 3}
-  sparkSpeed: 1200
+  sparkSpeed: 1400
   cornerOffset: 0.09
 --- !u!58 &-6101565729321605172
 CircleCollider2D:
@@ -139,7 +139,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!96 &1905674584
+--- !u!96 &1826655368
 TrailRenderer:
   serializedVersion: 2
   m_ObjectHideFlags: 0
@@ -147,7 +147,7 @@ TrailRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2922667914580548422}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -158,7 +158,7 @@ TrailRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -179,10 +179,10 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 5
+  m_Time: 0.05
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 1
+    widthMultiplier: 0.2
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -195,6 +195,15 @@ TrailRenderer:
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1
+        value: 0.2571429
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4

@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MainMenuHandler : MonoBehaviour
 {
     [SerializeField] GameObject firstTaskGO, secondTaskGO, chapterNameGO, loadIcon, upgradesIconGO, collectedCoinsPrefab;
     [SerializeField] float spawingOffset = 0.5f;
+    [SerializeField] List<GameObject> chapterIcons;
 
     PlayerStatistics playerStats;
     string taskDescription;
@@ -18,6 +20,8 @@ public class MainMenuHandler : MonoBehaviour
     int numChapters;
     Vector3 firstTasksCoinPos, secondTasksCoinPos, destinationPos;
     static System.Random random = new System.Random();
+    List<Color> chapterIconColors = new List<Color>();
+    List<Image> chapterIconsImage = new List<Image>();
 
     private void UpdateFirstTaskOnScreen(bool isTaskCompleted)
     {
@@ -123,6 +127,13 @@ public class MainMenuHandler : MonoBehaviour
 
         destinationPos = Camera.main.ScreenToWorldPoint(upgradesIconGO.transform.position);
         destinationPos.z = 0f;
+        
+        for(int i=0;i<chapterIcons.Count;i++)
+        {
+            var x = chapterIcons[i].GetComponent<Image>();
+            chapterIconsImage.Add(x);
+        }
+
     }
 
     public float GetRandomNumber(float minimum, float maximum)
@@ -165,7 +176,8 @@ public class MainMenuHandler : MonoBehaviour
     }
 
     private void UpdateIcons() {
-        if (playerStats.chaptersList[PersistentInformation.CurrentChapter].IsLocked)
+        int currChapter = PersistentInformation.CurrentChapter;
+        if (playerStats.chaptersList[currChapter].IsLocked)
         {
             foreach(Transform child in loadIcon.transform)
             {
@@ -190,6 +202,17 @@ public class MainMenuHandler : MonoBehaviour
                     child.gameObject.GetComponent<Animator>().enabled = true;
             }
         }
+
+        for(int i=0;i<currChapter;i++)
+        {
+            chapterIconsImage[i].color = chapterIconColors[currChapter];
+        }
+
+        for(int i=currChapter+1;i<chapterIcons.Count;i++)
+        {
+            chapterIconsImage[i].color = Color.white;
+        }
+
     }
 
     void Update()
@@ -199,6 +222,10 @@ public class MainMenuHandler : MonoBehaviour
 
         if (firstTimeLoad && playerStats.playerStatsLoaded)
         {
+            chapterIconColors.Add(playerStats.HexToRGB("#FF7D1E"));
+            chapterIconColors.Add(playerStats.HexToRGB("#1E31FF"));
+            chapterIconColors.Add(playerStats.HexToRGB("#FF0F00"));
+            chapterIconColors.Add(playerStats.HexToRGB("#FF00EC"));
             UpdateFirstTaskOnScreen(false);
             UpdateSecondTaskOnScreen(false);
             numChapters = playerStats.chaptersList.Count;

@@ -42,8 +42,10 @@ public class Spark : MonoBehaviour
         if(isActive)
         {
             float movementThisFrame = sparkSpeed * Time.deltaTime;
-            if (transform.position.y <= destination)
+            if (transform.position.y < destination)
                 sparkRigidbody.velocity = new Vector2(0, movementThisFrame);
+            else if(transform.position.y > destination)
+                transform.position = new Vector3(transform.position.x, destination, transform.position.z);
             else
             {
                 if(isLeftSpark)

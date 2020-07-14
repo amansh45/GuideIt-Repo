@@ -27,10 +27,15 @@ public class OnClickMenuUI : MonoBehaviour
 
     public void LoadMainMenu()
     {
+        if (levelController == null)
+            levelController = FindObjectOfType<LevelController>();
+
+        if (levelController != null)
+            levelController.ExecuteResetTaskRequest();
+
         if (sceneLoaderClass == null)
             sceneLoaderClass = FindObjectOfType<SceneLoader>();
         sceneLoaderClass.LoadScene("Main Menu");
-        //SceneManager.LoadScene("Main Menu");
     }
 
     public void LoadSettings()
@@ -38,7 +43,6 @@ public class OnClickMenuUI : MonoBehaviour
         if (sceneLoaderClass == null)
             sceneLoaderClass = FindObjectOfType<SceneLoader>();
         sceneLoaderClass.LoadScene("Settings");
-        //SceneManager.LoadScene("Settings");
     }
 
     public void OnPauseIconClick()
@@ -76,7 +80,6 @@ public class OnClickMenuUI : MonoBehaviour
         if (sceneLoaderClass == null)
             sceneLoaderClass = FindObjectOfType<SceneLoader>();
         sceneLoaderClass.LoadScene("Upgrades");
-        //SceneManager.LoadScene("Upgrades");
     }
 
     public void OnNextChapterArrowClicked()

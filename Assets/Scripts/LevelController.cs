@@ -183,6 +183,11 @@ public class LevelController : MonoBehaviour
             playerClass.playerState = PlayerState.Still;
     }
 
+    public void ExecuteResetTaskRequest()
+    {
+        taskHandler.ResetTasks();
+    }
+
     public void ClickedRetryButton()
     {
         taskHandler.ResetTasks();

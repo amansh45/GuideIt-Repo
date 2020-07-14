@@ -224,11 +224,11 @@ public class PlayerStatistics : MonoBehaviour
     private void AddTasks()
     {
 
-        Task task = new Task(true, true, ObjectsDescription.Coin, "Collect 5 coins in any level", 0, 20, TaskTypes.Collect, TaskCategory.CountingTask, 5);
+        Task task = new Task(false, true, ObjectsDescription.Coin, "Collect 5 coins in any level", 0, 20, TaskTypes.Collect, TaskCategory.CountingTask, 5);
         tasksList.Add(task);
         task = new Task(false, false, ObjectsDescription.EnemyLauncher, "Destroy 4 enemy Cannons", 1, 100, TaskTypes.Destroy, TaskCategory.CountingTask, 4);
         tasksList.Add(task);
-        task = new Task(false, true, ObjectsDescription.Coin, "Collect 10 coins in any level", 2, 20, TaskTypes.Collect, TaskCategory.CountingTask, 10);
+        task = new Task(false, false, ObjectsDescription.Coin, "Collect 20 coins in total", 2, 20, TaskTypes.Collect, TaskCategory.CountingTask, 20);
         tasksList.Add(task);
         task = new Task(false, true, ObjectsDescription.Player, "Complete Level in one go", 3, 50, TaskTypes.NoHit, TaskCategory.CountingTask, 1);
         tasksList.Add(task);

@@ -109,7 +109,6 @@ public class LevelComplete : MonoBehaviour
     public void RetryCurrentLevel()
     {
         string levelName = PersistentInformation.LevelIdentifier;
-        Debug.Log("Hi" + levelName);
         SceneManager.LoadScene(levelName);
     }
 

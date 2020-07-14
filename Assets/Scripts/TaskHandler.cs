@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 
 // types of tasks.
 public enum TaskTypes
@@ -86,32 +86,33 @@ public class TaskHandler : MonoBehaviour
         }
     }
 
+    private bool IsLevelEligibleToExecuteTask(string sceneName)
+    {
+        string[] levelChapterIndex = sceneName.Split('.');
+        PlayerStatistics.Level levelData = playerStats.chaptersList[int.Parse(levelChapterIndex[0])].LevelsInChapter[int.Parse(levelChapterIndex[1])];
+        return !levelData.IsPlayed;
+    }
+
+    private bool UpdateCameFromLevel(string sceneName)
+    {
+        return sceneName.Contains(".");
+    }
+
     // real time updation will be done by mainmenuhandler or levelcontroller
     // level needs to be completed for updating the task
     // after level complete levelTask will be completed fully or not at all
     // after level complete gameTask can be completed partially.
-    
     public void UpdateLevelTaskState(ObjectsDescription objectType, TaskTypes taskType, TaskCategory taskCategory)
     {
+        Scene scene = SceneManager.GetActiveScene();
+        string sceneName = scene.name;
+        if (UpdateCameFromLevel(sceneName) && !IsLevelEligibleToExecuteTask(sceneName))
+            return;
+
         string objectStr = objectType.ToString();
         string taskTypeStr = taskType.ToString();
         if (taskCategory == TaskCategory.CountingTask)
         {
-            /*
-            Dictionary<string, int> tasksForObject;
-            if (levelCountTasks.ContainsKey(objectStr))
-            {
-                tasksForObject = levelCountTasks[objectStr];
-                if(tasksForObject.ContainsKey(taskTypeStr))
-                    levelCountTasks[objectStr][taskTypeStr] += 1;
-                else
-                    levelCountTasks[objectStr].Add(taskTypeStr, 1);
-            } else {
-                Dictionary<string, int> task = new Dictionary<string, int>();
-                task.Add(taskTypeStr, 1);
-                levelCountTasks.Add(objectStr, task);
-            }
-            */
             if(firstTask.AssociatedWith == objectType && firstTask.CurrTaskType == taskType && firstTask.CurrTaskCategory == taskCategory)
             {
                 if (firstTask.CurrentCount < firstTask.CountLimit)
@@ -119,7 +120,6 @@ public class TaskHandler : MonoBehaviour
                 
                 if(firstTask.CurrentCount == firstTask.CountLimit)
                     firstTask.IsCompleted = true;
-                Debug.Log(firstTask.TaskDescription +" progress: " + firstTask.CurrentCount);
             }
 
             if (secondTask.AssociatedWith == objectType && secondTask.CurrTaskType == taskType && secondTask.CurrTaskCategory == taskCategory)
@@ -129,7 +129,6 @@ public class TaskHandler : MonoBehaviour
                 
                 if(secondTask.CurrentCount == secondTask.CountLimit)
                     secondTask.IsCompleted = true;
-                Debug.Log(secondTask.TaskDescription + " progress: " + secondTask.CurrentCount);
             }
             
         }
@@ -153,7 +152,5 @@ public class TaskHandler : MonoBehaviour
         else
             playerStats.tasksList[playerStats.secondActiveTaskIndex] = secondTask;
     }
-
-
-
+    
 }

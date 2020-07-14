@@ -20,7 +20,7 @@ public class MainMenuHandler : MonoBehaviour
     int numChapters;
     Vector3 firstTasksCoinPos, secondTasksCoinPos, destinationPos;
     static System.Random random = new System.Random();
-    List<Color> chapterIconColors = new List<Color>();
+    List<Color[]> chapterIconColors = new List<Color[]>();
     List<Image> chapterIconsImage = new List<Image>();
 
     private void UpdateFirstTaskOnScreen(bool isTaskCompleted)
@@ -203,9 +203,12 @@ public class MainMenuHandler : MonoBehaviour
             }
         }
 
-        for(int i=0;i<currChapter;i++)
+        Debug.Log(currChapter);
+
+        int k = 0;
+        for(int i=0;i<=currChapter;i++)
         {
-            chapterIconsImage[i].color = chapterIconColors[currChapter];
+            chapterIconsImage[i].color = chapterIconColors[currChapter][k++];
         }
 
         for(int i=currChapter+1;i<chapterIcons.Count;i++)
@@ -215,6 +218,18 @@ public class MainMenuHandler : MonoBehaviour
 
     }
 
+    private void InitializeChapterIconColors()
+    {
+        Color[] fColorsList = { playerStats.HexToRGB("#FFFF62") };
+        chapterIconColors.Add(fColorsList);
+        Color[] sColorsList = { playerStats.HexToRGB("#A564FF"), playerStats.HexToRGB("#8832FF") };
+        chapterIconColors.Add(sColorsList);
+        Color[] tColorsList = { playerStats.HexToRGB("#FFC886"), playerStats.HexToRGB("#FFB051"), playerStats.HexToRGB("#FFA232") };
+        chapterIconColors.Add(tColorsList);
+        Color[] foColorsList = { playerStats.HexToRGB("#BBF1FF"), playerStats.HexToRGB("#75E2FF"), playerStats.HexToRGB("#51DAFF"), playerStats.HexToRGB("#2DD2FF") };
+        chapterIconColors.Add(foColorsList);
+    }
+
     void Update()
     {
         if (!playerStats.playerStatsLoaded)
@@ -222,10 +237,7 @@ public class MainMenuHandler : MonoBehaviour
 
         if (firstTimeLoad && playerStats.playerStatsLoaded)
         {
-            chapterIconColors.Add(playerStats.HexToRGB("#FF7D1E"));
-            chapterIconColors.Add(playerStats.HexToRGB("#1E31FF"));
-            chapterIconColors.Add(playerStats.HexToRGB("#FF0F00"));
-            chapterIconColors.Add(playerStats.HexToRGB("#FF00EC"));
+            InitializeChapterIconColors();
             UpdateFirstTaskOnScreen(false);
             UpdateSecondTaskOnScreen(false);
             numChapters = playerStats.chaptersList.Count;

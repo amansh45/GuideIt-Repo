@@ -2264,11 +2264,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Box Wrapper
       objectReference: {fileID: 0}
-    - target: {fileID: 9089513015767164995, guid: 221ce7e384e6e7f41be160aac4526c77,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 221ce7e384e6e7f41be160aac4526c77, type: 3}
 --- !u!4 &434947128 stripped
@@ -5888,11 +5883,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Blade Wrapper (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 3608964236608183296, guid: 4948a6519d8e41d47ae40a69babce2dd,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3608964236608183297, guid: 4948a6519d8e41d47ae40a69babce2dd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7044,11 +7034,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: 2 Square Wrapper
       objectReference: {fileID: 0}
-    - target: {fileID: 5161719617795137624, guid: dffc3b4460c4f944ebf2a7fe42cd81d8,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5161719617795137627, guid: dffc3b4460c4f944ebf2a7fe42cd81d8,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7103,11 +7088,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 360
-      objectReference: {fileID: 0}
-    - target: {fileID: 7071594464920212936, guid: dffc3b4460c4f944ebf2a7fe42cd81d8,
-        type: 3}
-      propertyPath: placeWrtCornors
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dffc3b4460c4f944ebf2a7fe42cd81d8, type: 3}
@@ -7416,11 +7396,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Enemy Launcher
-      objectReference: {fileID: 0}
-    - target: {fileID: 3234638709327313726, guid: aba16a075dddf394db5d01432d51dd83,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9157052779365979969, guid: aba16a075dddf394db5d01432d51dd83,
         type: 3}

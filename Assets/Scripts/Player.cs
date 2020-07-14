@@ -97,8 +97,6 @@ public class Player : MonoBehaviour
     void Update()
     {
 
-        Debug.Log("Player State from player: " + playerState);
-
         if (playerState == PlayerState.Run)
             ballSpeed = runSpeed;
         else if (playerState == PlayerState.Still)
@@ -113,7 +111,6 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("Collider Name: " + other.gameObject.name);
 
         if (other.gameObject.tag == ObjectsDescription.EnemyObject.ToString() || other.gameObject.tag == ObjectsDescription.EnemyLauncher.ToString())
             Die(other.gameObject);

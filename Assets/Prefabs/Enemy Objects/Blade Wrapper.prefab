@@ -120,7 +120,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.81, y: 1.8925}
+    oldSize: {x: 0.648, y: 1.514}
     newSize: {x: 1.08, y: 2.5233333}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -128,10 +128,10 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -0.020973086, y: -0.8819895}
-      - {x: 0.27789056, y: 0.0016107559}
-      - {x: -0.014992595, y: 0.86306477}
-      - {x: -0.30404067, y: -0.017765999}
+    - - {x: -0.016428113, y: -0.68655205}
+      - {x: 0.21425998, y: -0.030204773}
+      - {x: -0.0013574362, y: 0.681262}
+      - {x: -0.23131979, y: -0.008675575}
 --- !u!1 &3608964236608183296
 GameObject:
   m_ObjectHideFlags: 0
@@ -177,7 +177,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isRotating: 1
-  isMoving: 0
+  placeWrtCornors: 0
   leftRightOffset: 0.15
   baseScreenWidth: 5.61
 --- !u!1 &7446464646346560257
@@ -236,8 +236,8 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -0.009944677, y: 0.9825678}
-      - {x: -0.3866818, y: 0.030607224}
-      - {x: -0.19272625, y: -0.5469303}
-      - {x: -0.017345428, y: -1.0303383}
-      - {x: 0.35975766, y: 0.005381584}
+    - - {x: -0.009944677, y: 0.800766}
+      - {x: -0.33214116, y: 0.016971588}
+      - {x: -0.12909555, y: -0.5105696}
+      - {x: -0.0082553625, y: -0.8076296}
+      - {x: 0.309762, y: -0.0082530975}

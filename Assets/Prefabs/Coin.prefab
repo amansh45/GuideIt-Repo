@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 929961085189442442}
   - component: {fileID: 929961085189442443}
   - component: {fileID: 929961085189442440}
+  - component: {fileID: 1042463795}
   m_Layer: 13
   m_Name: Coin
   m_TagString: Coin
@@ -128,6 +129,23 @@ PolygonCollider2D:
       - {x: -0.0036954284, y: 0.16857433}
       - {x: -0.17522976, y: -0.00329113}
       - {x: -0.0009854138, y: -0.17467308}
+--- !u!114 &1042463795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 929961085189442446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3ff4943bc8afd748b1291b8b721fb40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isRotating: 0
+  placeWrtCornors: 1
+  isCoin: 1
+  leftRightOffset: 0.3
+  baseScreenWidth: 5.61
 --- !u!1001 &7782668432763110566
 PrefabInstance:
   m_ObjectHideFlags: 0

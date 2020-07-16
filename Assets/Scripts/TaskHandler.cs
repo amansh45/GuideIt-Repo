@@ -136,8 +136,11 @@ public class TaskHandler : MonoBehaviour
 
     public void ResetTasks()
     {
-        playerStats.tasksList[playerStats.firstActiveTaskIndex] = firstTask = firstTaskBackup;
-        playerStats.tasksList[playerStats.secondActiveTaskIndex] = secondTask = secondTaskBackup;
+        if(!playerStats.tasksList[playerStats.firstActiveTaskIndex].IsCompleted)
+            playerStats.tasksList[playerStats.firstActiveTaskIndex] = firstTask = firstTaskBackup;
+
+        if(!playerStats.tasksList[playerStats.secondActiveTaskIndex].IsCompleted)
+            playerStats.tasksList[playerStats.secondActiveTaskIndex] = secondTask = secondTaskBackup;
     }
 
     public void FinalizeTasks()
@@ -145,12 +148,19 @@ public class TaskHandler : MonoBehaviour
         if (firstTask.IsLevelTask && !firstTask.IsCompleted)
             firstTask = firstTaskBackup;
         else
+        {
             playerStats.tasksList[playerStats.firstActiveTaskIndex] = firstTask;
-
+            firstTaskBackup = firstTask;
+        }
+        
         if (secondTask.IsLevelTask && !secondTask.IsCompleted)
             secondTask = secondTaskBackup;
         else
+        {
             playerStats.tasksList[playerStats.secondActiveTaskIndex] = secondTask;
+            secondTaskBackup = secondTask;
+        }
+            
     }
     
 }

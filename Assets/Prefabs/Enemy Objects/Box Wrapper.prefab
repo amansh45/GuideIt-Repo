@@ -94,7 +94,7 @@ Animator:
   m_GameObject: {fileID: 6122361556408094409}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: f8eb06033bc241f4aabdd29f5040d7be, type: 2}
+  m_Controller: {fileID: 9100000, guid: 9628e44c5735e3d418ec8fd47a07fdc1, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -231,6 +231,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isRotating: 1
-  placeWrtCornors: 0
+  placeWrtCornors: 1
+  isCoinOrPlayer: 0
+  scalingRequired: 0
   leftRightOffset: 0.1
-  baseScreenWidth: 5.61
+  baseScreenWidth: 5.635593

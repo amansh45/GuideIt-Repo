@@ -7,6 +7,7 @@ public class EnemyLauncher : MonoBehaviour
 
     [SerializeField] GameObject granadePrefab, playerPrefab;
     [SerializeField] float distanceThreshold = 3f;
+    [SerializeField] bool aimAtPlayer = false;
 
     float initializationFactor = 1f, spawnScaleFactor = 0f;
     Granade latestGranadeClass;
@@ -21,7 +22,7 @@ public class EnemyLauncher : MonoBehaviour
 
     private void Update() {
 
-        if(playerPrefab != null)
+        if(playerPrefab != null && aimAtPlayer)
         {
             Vector3 target = playerPrefab.transform.position;
 

@@ -8,9 +8,10 @@ public class EnemyLauncher : MonoBehaviour
     [SerializeField] float stillDistanceThreshold = 3f;
     [SerializeField] bool aimAtPlayer = false;
     [SerializeField] bool isBlinking = false;
+    [SerializeField] bool isUpShootingLauncher = false;
     [SerializeField] float blinkDistanceThreshold = 0.5f;
 
-    float initializationFactor = 1f, spawnScaleFactor = 0f;
+    float screenCenter, initializationFactor = 1f, spawnScaleFactor = 0f;
     Granade latestGranadeClass;
     GameObject latestGranade;
     TaskHandler taskHandlerClass;
@@ -19,6 +20,9 @@ public class EnemyLauncher : MonoBehaviour
 
     private void Start()
     {
+        var bottomLeft = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, 0));
+        var bottomRight = Camera.main.ViewportToWorldPoint(new Vector3(1, 0, 0));
+        screenCenter = (bottomLeft.x + bottomRight.x)/2f;
         taskHandlerClass = FindObjectOfType<TaskHandler>();
         anim = GetComponent<Animator>();
         if(isBlinking)
@@ -50,7 +54,6 @@ public class EnemyLauncher : MonoBehaviour
             float targetY = playerPrefab.transform.position.y;
 
             float objectY = transform.position.y;
-
             
             if (Mathf.Abs(objectY - targetY) <= blinkDistanceThreshold)
             {
@@ -61,7 +64,6 @@ public class EnemyLauncher : MonoBehaviour
 
     void ShootGranade()
     {
-        latestGranadeClass.transform.rotation = transform.rotation;
         latestGranadeClass.setGranadeSpeed(initializationFactor);
         latestGranadeClass.MoveGranade();
     }
@@ -69,8 +71,16 @@ public class EnemyLauncher : MonoBehaviour
     void InitiateGranade()
     {
         latestGranade = Instantiate(granadePrefab, transform.position, transform.rotation) as GameObject;
+        if (isUpShootingLauncher)
+        {
+            if(transform.position.x < screenCenter)
+                latestGranade.transform.Rotate(0, 0, -90f, Space.World);
+            else
+                latestGranade.transform.Rotate(0, 0, 90f, Space.World);
+                
+        }
+            
         latestGranadeClass = latestGranade.GetComponent<Granade>();
-        Debug.Log("Granade Initiated....");
     }
 
     public void SetSlowmoForGranadeLauncher(float slowmoFactor)

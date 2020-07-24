@@ -190,8 +190,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isRotating: 1
   placeWrtCornors: 1
+  isCoinOrPlayer: 0
+  scalingRequired: 0
   leftRightOffset: 0.15
-  baseScreenWidth: 5.61
+  baseScreenWidth: 5.635593
 --- !u!1 &7510595978817576444
 GameObject:
   m_ObjectHideFlags: 0

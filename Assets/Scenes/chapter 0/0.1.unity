@@ -5369,6 +5369,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1553537297963963046, guid: 09667c1915698df40a923655d00cb2c8,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 9610310910250a14c8797759e6469d88, type: 2}
+    - target: {fileID: 1553537297963963047, guid: 09667c1915698df40a923655d00cb2c8,
+        type: 3}
+      propertyPath: isBlinking
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1553537297963963047, guid: 09667c1915698df40a923655d00cb2c8,
+        type: 3}
+      propertyPath: playerPrefab
+      value: 
+      objectReference: {fileID: 158589551}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 09667c1915698df40a923655d00cb2c8, type: 3}
 --- !u!50 &1875083106237215318

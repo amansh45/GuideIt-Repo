@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class InitiateFall : MonoBehaviour
 {
-    [SerializeField] GameObject playerPrefab;
+    public GameObject playerPrefab;
     [SerializeField] float thresholdDistance = 10f;
     bool isFalling = false;
 

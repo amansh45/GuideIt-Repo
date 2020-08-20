@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class PlaceObjects : MonoBehaviour
 {
-    [SerializeField] bool isRotating = false, placeWrtCornors = false, isCoinOrPlayer = false, scalingRequired = false;
-    [SerializeField] float leftRightOffset = 0.1f, baseScreenWidth = 5.61f;
+    public bool isRotating = false, placeWrtCornors = false, isCoinOrPlayer = false, scalingRequired = false;
+    public float leftRightOffset = 0f, baseScreenWidth = 5.635593f, dynamicWidthForScaling = 0.0f;
 
     bool isFirstTimeLoad = true, objectInLeftHalf;
     float leftMost = int.MaxValue, rightMost = int.MinValue, coverage = int.MinValue;
@@ -25,7 +25,13 @@ public class PlaceObjects : MonoBehaviour
         
 
         if (scalingRequired)
-            gameObject.transform.localScale = new Vector3(width / baseScreenWidth, width / baseScreenWidth, width / baseScreenWidth);
+        {
+            if(dynamicWidthForScaling == 0.0f)
+                gameObject.transform.localScale = new Vector3(width / baseScreenWidth, width / baseScreenWidth, width / baseScreenWidth);
+            else
+                gameObject.transform.localScale = new Vector3(dynamicWidthForScaling / baseScreenWidth, dynamicWidthForScaling / baseScreenWidth, dynamicWidthForScaling / baseScreenWidth);
+        }
+            
 
         if(!isCoinOrPlayer)
         {

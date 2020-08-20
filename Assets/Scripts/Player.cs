@@ -113,10 +113,11 @@ public class Player : MonoBehaviour
     {
 
         if (other.gameObject.tag == ObjectsDescription.EnemyObject.ToString() || other.gameObject.tag == ObjectsDescription.EnemyLauncher.ToString())
-            Die(other.gameObject);
+            //Debug.Log("death");
+                Die(other.gameObject);
         else if (other.gameObject.tag == ObjectsDescription.FinishLine.ToString())
             LevelComplete();
-        else if(other.gameObject.name == ObjectsDescription.NearMissBoundary.ToString())
+        else if (other.gameObject.name == ObjectsDescription.NearMissBoundary.ToString())
         {
             if (other.gameObject.transform.parent.name == ObjectsDescription.Blade.ToString())
             {

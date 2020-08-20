@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class PlayerStatistics : MonoBehaviour
 {
+
+
     public struct Task
     {
         public bool IsCompleted, IsLevelTask;
@@ -45,6 +47,7 @@ public class PlayerStatistics : MonoBehaviour
         }
 
     }
+
 
     public struct CustomColor
     {

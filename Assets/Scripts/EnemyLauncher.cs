@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class EnemyLauncher : MonoBehaviour
 {
-    [SerializeField] GameObject granadePrefab, playerPrefab;
+    [SerializeField] GameObject granadePrefab;
+    public GameObject playerPrefab;
     [SerializeField] float stillDistanceThreshold = 3f;
-    [SerializeField] bool aimAtPlayer = false;
-    [SerializeField] bool isBlinking = false;
-    [SerializeField] bool isUpShootingLauncher = false;
+    public bool aimAtPlayer = false;
+    public bool isBlinking = false;
+    public bool isUpShootingLauncher = false;
     [SerializeField] float blinkDistanceThreshold = 0.5f;
 
     float screenCenter, initializationFactor = 1f, spawnScaleFactor = 0f;
@@ -27,6 +28,17 @@ public class EnemyLauncher : MonoBehaviour
         anim = GetComponent<Animator>();
         if(isBlinking)
             anim.enabled = false;
+
+        if(!isBlinking)
+        {
+            foreach(Transform child in transform)
+            {
+                if(child.gameObject.name == "Head")
+                {
+                    child.GetChild(0).gameObject.SetActive(false);
+                }
+            }
+        }
     }
 
     private void Update() {

@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 2355911545546198017}
   - component: {fileID: 2355911545546198016}
   - component: {fileID: 842293967}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Head
-  m_TagString: Untagged
+  m_TagString: EnemyObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -167,9 +167,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2355911546221399001}
   - component: {fileID: 2355911546221399000}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Up Still Cannon Wrapper
-  m_TagString: Untagged
+  m_TagString: EnemyObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -208,6 +208,7 @@ MonoBehaviour:
   scalingRequired: 1
   leftRightOffset: 0
   baseScreenWidth: 5.635593
+  dynamicWidthForScaling: 0
 --- !u!1 &2355911547056278120
 GameObject:
   m_ObjectHideFlags: 0
@@ -219,9 +220,9 @@ GameObject:
   - component: {fileID: 2355911547056278123}
   - component: {fileID: 2355911547056278122}
   - component: {fileID: 2092659669}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Body
-  m_TagString: Untagged
+  m_TagString: EnemyObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

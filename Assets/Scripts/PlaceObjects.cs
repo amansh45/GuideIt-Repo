@@ -88,8 +88,6 @@ public class PlaceObjects : MonoBehaviour
 
                 newPosition.x -= leftRightOffset;
             }
-            
-            Debug.Log("From " + gameObject.name + newPosition);
 
             if(leftMost < PersistentInformation.Left || rightMost > PersistentInformation.Right || placeWrtCornors)
                 transform.position = newPosition;

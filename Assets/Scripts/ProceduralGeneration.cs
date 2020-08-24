@@ -30,7 +30,7 @@ public class ProceduralGeneration : MonoBehaviour
     }
     
     [SerializeField] GameObject coinsPrefab, playerGO;
-    [SerializeField] RuntimeAnimatorController snappingAnimationController, l2rAnimationController, stillCannonAnimationController, blinkingCannonAnimationController;
+    [SerializeField] RuntimeAnimatorController snappingAnimationController, rotateAnimationController, l2rAnimationController, stillCannonAnimationController, blinkingCannonAnimationController;
 
     Dictionary<string, GameObject> objectsDict = new Dictionary<string, GameObject>();
     float screenWidth, screenCenterXPoint;
@@ -38,7 +38,7 @@ public class ProceduralGeneration : MonoBehaviour
     void CreateDictionary()
     {
         objectsDict.Add("square", enemyObjects.square); //
-        objectsDict.Add("bigBox", enemyObjects.bigBox); 
+        objectsDict.Add("bigBox", enemyObjects.bigBox); //
         objectsDict.Add("sphere", enemyObjects.sphere); //
         objectsDict.Add("blade", enemyObjects.blade); //
         objectsDict.Add("box", enemyObjects.box); // 
@@ -48,10 +48,35 @@ public class ProceduralGeneration : MonoBehaviour
         objectsDict.Add("saw", enemyObjects.saw); 
         objectsDict.Add("stillCannon", enemyObjects.stillCannon); //
         objectsDict.Add("upCannon", enemyObjects.upCannon); //
-        objectsDict.Add("stillPlatform", enemyObjects.stillPlatform);
+        objectsDict.Add("stillPlatform", enemyObjects.stillPlatform); //
         objectsDict.Add("sphereSupportingPlatform", enemyObjects.sphereSupportingPlatform); //
     }
 
+
+    public int GetRandomWeightedIndex(float[] weights)
+    {
+        float weightSum = 0f;
+        int elementCount = weights.Length;
+        for (int i = 0; i < elementCount; ++i)
+        {
+            weightSum += weights[i];
+        }
+
+        int index = 0;
+        int lastIndex = elementCount - 1;
+        float randomWeight = UnityEngine.Random.Range(0, weightSum);
+        while (index < lastIndex)
+        {
+            if (randomWeight < weights[index])
+            {
+                return index;
+            }
+
+            randomWeight -= weights[index++];
+        }
+
+        return index;
+    }
 
 
     void UpdatePlaceObjectScriptParams(GameObject go, bool isRotating, bool placeWrtCorners, bool isCoinOrPlayer, bool scalingRequired, float dynamicWidthForScaling)
@@ -72,13 +97,16 @@ public class ProceduralGeneration : MonoBehaviour
         GameObject fourth = objectsDict[objectType];
 
         Vector3 fPos = new Vector3((screenCenterXPoint / 2f) - 0.5f, spawningYCoordinate, 0);
-        Vector3 sPos = new Vector3((screenCenterXPoint / 2f) + 0.5f, spawningYCoordinate + yDistanceBetweenObjects, 0);
-
         GameObject firstGO = Instantiate(first, fPos, Quaternion.Euler(new Vector3(0, 0, 0)));
-        GameObject secondGO = Instantiate(second, sPos, Quaternion.Euler(new Vector3(0, 180, 360)));
         Animator firstAnimator = firstGO.GetComponentInChildren<Animator>();
-        Animator secondAnimator = secondGO.GetComponentInChildren<Animator>();
         UpdatePlaceObjectScriptParams(firstGO, false, true, false, true, 0);
+
+        if (count == 1)
+            return;
+
+        Vector3 sPos = new Vector3((screenCenterXPoint / 2f) + 0.5f, spawningYCoordinate + yDistanceBetweenObjects, 0);
+        GameObject secondGO = Instantiate(second, sPos, Quaternion.Euler(new Vector3(0, 180, 360)));
+        Animator secondAnimator = secondGO.GetComponentInChildren<Animator>();
         UpdatePlaceObjectScriptParams(secondGO, false, true, false, true, 0);
 
         firstAnimator.runtimeAnimatorController = (animatorIndex == 0) ? l2rAnimationController : snappingAnimationController;
@@ -104,9 +132,9 @@ public class ProceduralGeneration : MonoBehaviour
     }
 
 
-    void PlaceMovingObjects(float yAxis, int count, string objectType)
+    float PlaceMovingObjects(float yAxis, int count, string objectType)
     {
-        float yDistanceBetweenObjects = UnityEngine.Random.Range(0.75f, 1.25f);
+        float yDistanceBetweenObjects = (objectType == "blade") ? 2f : UnityEngine.Random.Range(0.75f, 1.25f);
         float xDistanceBetweenObjects = (screenWidth < 4.75f) ? 0.65f : UnityEngine.Random.Range(0.75f, 1.25f);
         GameObject first = objectsDict[objectType];
         GameObject second = objectsDict[objectType];
@@ -115,8 +143,13 @@ public class ProceduralGeneration : MonoBehaviour
         
         // for integer minVal is inclusive and maxVal is exclusive
         int animatorIndex = UnityEngine.Random.Range(0, 2);
+        float dynamicWidthForScaling = 4f;
 
-        if (count == 2)
+        if (count == 1)
+        {
+            CreateL2RAnimation(animatorIndex, count, objectType, yDistanceBetweenObjects, yAxis);
+            return yAxis;
+        } else if (count == 2)
         {
             /*
              * movement = 0 for L2R movement
@@ -124,10 +157,12 @@ public class ProceduralGeneration : MonoBehaviour
              * movement = 3 for vertical movement
              */
 
-            int movement = UnityEngine.Random.Range(0, 4);
+            int movement = GetRandomWeightedIndex(new float[] { 0.5f, 0.2f, 0.2f, 0.1f });
+            
             if (movement == 0)
             {
                 CreateL2RAnimation(animatorIndex, count, objectType, yDistanceBetweenObjects, yAxis);
+                return yAxis + yDistanceBetweenObjects;
             }  else if (movement == 1 || movement == 2)
             {
                 int alignment = UnityEngine.Random.Range(15, 35);
@@ -153,7 +188,6 @@ public class ProceduralGeneration : MonoBehaviour
                 UpdatePlaceObjectScriptParams(secondGO, false, true, false, true, 0);
             } else if(movement == 3)
             {
-                float dynamicWidthForScaling = 4f;
                 Vector3 fPos = new Vector3((screenCenterXPoint / 2f) - xDistanceBetweenObjects, yAxis + dynamicWidthForScaling/2.8f, 0);
                 Vector3 sPos = new Vector3((screenCenterXPoint / 2f) + xDistanceBetweenObjects, yAxis - dynamicWidthForScaling/2.8f, 0);
                 GameObject firstGO = Instantiate(first, fPos, Quaternion.Euler(new Vector3(0, 0, -90)));
@@ -165,16 +199,17 @@ public class ProceduralGeneration : MonoBehaviour
                 firstAnimator.runtimeAnimatorController = (animatorIndex == 0) ? l2rAnimationController : snappingAnimationController;
                 secondAnimator.runtimeAnimatorController = (animatorIndex == 0) ? l2rAnimationController : snappingAnimationController;
             }
+            return yAxis + dynamicWidthForScaling;
         } else if(count == 3)
         {
 
-            int movement = UnityEngine.Random.Range(0, 2);
+            int movement = GetRandomWeightedIndex(new float[] { 0.7f, 0.3f });
             if (movement == 0)
             {
                 CreateL2RAnimation(animatorIndex, count, objectType, yDistanceBetweenObjects, yAxis);
+                return yAxis + (2f * yDistanceBetweenObjects);
             } else if(movement == 1)
             {
-                float dynamicWidthForScaling = 4f;
                 Vector3 fPos = new Vector3((screenCenterXPoint / 2f), yAxis + dynamicWidthForScaling / 2.8f, 0);
                 Vector3 sPos = new Vector3((screenCenterXPoint / 2f) - xDistanceBetweenObjects, yAxis - dynamicWidthForScaling / 2.8f, 0);
                 Vector3 tPos = new Vector3((screenCenterXPoint / 2f) + xDistanceBetweenObjects, yAxis - dynamicWidthForScaling / 2.8f, 0);
@@ -191,16 +226,16 @@ public class ProceduralGeneration : MonoBehaviour
                 secondAnimator.runtimeAnimatorController = (animatorIndex == 0) ? l2rAnimationController : snappingAnimationController;
                 thirdAnimator.runtimeAnimatorController = (animatorIndex == 0) ? l2rAnimationController : snappingAnimationController;
             }
-
-        } else if(count == 4)
+            return yAxis + dynamicWidthForScaling;
+        } else
         {
-            int movement = UnityEngine.Random.Range(0, 2);
+            int movement = GetRandomWeightedIndex(new float[] { 0.7f, 0.3f });
             if (movement == 0)
             {
                 CreateL2RAnimation(animatorIndex, count, objectType, yDistanceBetweenObjects, yAxis);
+                return (yAxis + 3*yDistanceBetweenObjects);
             } else if(movement == 1)
             {
-                float dynamicWidthForScaling = 4f;
                 Vector3 fPos = new Vector3((screenCenterXPoint / 2f) - (1.5f) * xDistanceBetweenObjects, yAxis + dynamicWidthForScaling / 2.8f, 0);
                 Vector3 sPos = new Vector3((screenCenterXPoint / 2f) - (0.5f) * xDistanceBetweenObjects, yAxis - dynamicWidthForScaling / 2.8f, 0);
                 Vector3 tPos = new Vector3((screenCenterXPoint / 2f) + (0.5f) * xDistanceBetweenObjects, yAxis + dynamicWidthForScaling / 2.8f, 0);
@@ -222,10 +257,52 @@ public class ProceduralGeneration : MonoBehaviour
                 thirdAnimator.runtimeAnimatorController = (animatorIndex == 0) ? l2rAnimationController : snappingAnimationController;
                 fourthAnimator.runtimeAnimatorController = (animatorIndex == 0) ? l2rAnimationController : snappingAnimationController;
             }
+            return yAxis + dynamicWidthForScaling;
         }
     }
 
-    void PlaceLauncher(float yAxis)
+    /*
+     * xPosition = center means object shall be placed in center
+     * xPosition = left means object shall be placed in right
+     * xPosition = right means object shall be placed in left
+     * xPosition = 2.54 means object shall be placed at position 2.54
+     */
+    void PlaceRotatingObjects(float yAxis, string objectType, string xPosition)
+    {
+        GameObject gameObject = objectsDict[objectType];
+        
+        float scaleFactor = (screenWidth < 4.75f) ? 0.9f : UnityEngine.Random.Range(1, 1.25f);
+
+        if (xPosition == "center")
+        {
+            Vector3 objPos = new Vector3(0, yAxis, 0);
+            gameObject = Instantiate(gameObject, objPos, transform.rotation);
+            gameObject.transform.localScale = new Vector3(scaleFactor, scaleFactor, scaleFactor);
+            UpdatePlaceObjectScriptParams(gameObject, true, false, false, false, 0);
+        } else if(xPosition == "left")
+        {
+            Vector3 objPos = new Vector3(-1, yAxis, 0);
+            gameObject = Instantiate(gameObject, objPos, transform.rotation);
+            gameObject.transform.localScale = new Vector3(scaleFactor, scaleFactor, scaleFactor);
+            UpdatePlaceObjectScriptParams(gameObject, true, true, false, false, 0);
+        } else if(xPosition == "right") {
+            Vector3 objPos = new Vector3(1, yAxis, 0);
+            gameObject = Instantiate(gameObject, objPos, transform.rotation);
+            gameObject.transform.localScale = new Vector3(scaleFactor, scaleFactor, scaleFactor);
+            UpdatePlaceObjectScriptParams(gameObject, true, true, false, false, 0);
+        } else
+        {
+            Debug.Log("explicit position is: " + float.Parse(xPosition));
+            Vector3 objPos = new Vector3(float.Parse(xPosition), yAxis, 0);
+            gameObject = Instantiate(gameObject, objPos, transform.rotation);
+            gameObject.transform.localScale = new Vector3(scaleFactor, scaleFactor, scaleFactor);
+            UpdatePlaceObjectScriptParams(gameObject, true, false, false, false, 0);
+        }
+
+        gameObject.transform.GetChild(0).gameObject.GetComponent<Animator>().runtimeAnimatorController = rotateAnimationController;
+    }
+
+    float PlaceLauncher(float yAxis, int count)
     {
         GameObject launcher = objectsDict["launcher"];
         float xCoordinate = (UnityEngine.Random.Range(0, 2) == 0) ? (screenCenterXPoint / 2f) - 0.5f : (screenCenterXPoint / 2f) + 0.5f;
@@ -235,16 +312,60 @@ public class ProceduralGeneration : MonoBehaviour
         EnemyLauncher enemyLauncher = launcherObj.GetComponentInChildren<EnemyLauncher>();
         enemyLauncher.aimAtPlayer = true;
         enemyLauncher.playerPrefab = playerGO;
+
+        if (count == 1)
+            return yAxis;
+
+        if(count == 2 || count == 3)
+        {
+            float newXCoordinate;
+            if (xCoordinate < screenCenterXPoint/2f )
+            {
+                newXCoordinate = (screenCenterXPoint / 2f) + 0.5f;
+            } else
+            {
+                newXCoordinate = (screenCenterXPoint / 2f) - 0.5f;
+            }
+
+            launcherPos.x = newXCoordinate;
+            launcherPos.y = yAxis + 1f;
+            launcherObj = Instantiate(launcher, launcherPos, transform.rotation);
+            UpdatePlaceObjectScriptParams(launcherObj, false, true, false, false, 0);
+            enemyLauncher = launcherObj.GetComponentInChildren<EnemyLauncher>();
+            enemyLauncher.aimAtPlayer = true;
+            enemyLauncher.playerPrefab = playerGO;
+
+        }
+
+        if (count == 2)
+            return yAxis + 1f;
+
+        if(count == 3)
+        {
+            launcherPos.x = xCoordinate;
+            launcherPos.y = yAxis + 2f;
+            launcherObj = Instantiate(launcher, launcherPos, transform.rotation);
+            UpdatePlaceObjectScriptParams(launcherObj, false, true, false, false, 0);
+            enemyLauncher = launcherObj.GetComponentInChildren<EnemyLauncher>();
+            enemyLauncher.aimAtPlayer = true;
+            enemyLauncher.playerPrefab = playerGO;
+        }
+
+        return yAxis + 2f;
+
     }
 
-    void PlaceHorizontalPlatform(float yAxis, int count)
+    float PlaceHorizontalPlatform(float yAxis, int count)
     {
         GameObject fHorizontalPlatform = objectsDict["hPlatform"];
         Vector3 platformPos = new Vector3(0, yAxis, 0);
         float alignment = (UnityEngine.Random.Range(-30, 30));
         Instantiate(fHorizontalPlatform, platformPos, Quaternion.Euler(new Vector3(0, 0, alignment)));
 
-        if(count == 3 || count ==4)
+        if (count == 2)
+            return yAxis + 5f;
+
+        if (count == 3 || count ==4)
         {
             GameObject sHorizontalPlatform = objectsDict["hPlatform"];
             platformPos.y += 3.51f;
@@ -258,8 +379,10 @@ public class ProceduralGeneration : MonoBehaviour
                         child.gameObject.SetActive(false);
                     }
                 }
+                return yAxis + 7.5f;
             }
         }
+        return yAxis + 10f;
     }
 
     void PlaceGrinder(float yAxis)
@@ -367,6 +490,204 @@ public class ProceduralGeneration : MonoBehaviour
         Instantiate(stillPlatform, stillPlatformPos, transform.rotation);
     }
 
+    float PlaceBigBox(float yAxis, int count)
+    {
+        string[] rotatingObjects = { "blade", "box", "square" };
+        if (count == 2)
+        {
+            GameObject bigBoxWrapper = objectsDict["bigBox"];
+
+            Vector3 wrapperPos = new Vector3(0, yAxis, 0);
+            bigBoxWrapper = Instantiate(bigBoxWrapper, wrapperPos, transform.rotation);
+
+            int boxPlacementCombinations = 3;
+            GameObject fBox = bigBoxWrapper.transform.GetChild(0).gameObject;
+            GameObject sBox = bigBoxWrapper.transform.GetChild(1).gameObject;
+
+            if (boxPlacementCombinations == 0)
+            {
+                fBox.transform.localPosition = new Vector3(-4.2f, 2f, 0);
+                sBox.transform.localPosition = new Vector3(4.2f, -2f, 0);
+
+                bigBoxWrapper.transform.rotation = (UnityEngine.Random.Range(0,2) == 0) ? Quaternion.Euler(new Vector3(0, 0, 26f)) : Quaternion.Euler(new Vector3(0, 0, -26f));
+            }
+            else if (boxPlacementCombinations == 1)
+            {
+                bigBoxWrapper.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
+                fBox.transform.rotation = sBox.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 45f));
+
+                int objectRequired = (UnityEngine.Random.Range(0, 2));
+
+                if(objectRequired == 0)
+                {
+                    fBox.transform.localPosition = new Vector3(-6.05f, 0, 0);
+                    sBox.transform.localPosition = new Vector3(6.05f, 0, 0);
+                } else
+                {
+                    fBox.transform.localPosition = new Vector3(-7.5f, 0, 0);
+                    sBox.transform.localPosition = new Vector3(7.5f, 0, 0);
+                    PlaceRotatingObjects(yAxis, "blade", "center");
+                }
+            }
+            else if (boxPlacementCombinations == 2)
+            {
+                fBox.transform.localPosition = new Vector3(-5f, 0, 0);
+                sBox.transform.localPosition = new Vector3(5f, 0, 0);
+
+                var rend = fBox.transform.GetComponent<SpriteRenderer>();
+
+                float minBound = rend.bounds.min.y;
+                float maxBound = rend.bounds.max.y;
+
+                PlaceRotatingObjects((minBound + 3*maxBound)/4f, rotatingObjects[UnityEngine.Random.Range(0,3)], "center");
+
+                PlaceRotatingObjects((3*minBound + maxBound)/4f, rotatingObjects[UnityEngine.Random.Range(0, 3)], "center");
+            }
+            else if (boxPlacementCombinations == 3)
+            {
+                bigBoxWrapper.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+                fBox.transform.localPosition = new Vector3(-7.3f, 0, 0);
+                sBox.transform.localPosition = new Vector3(7.3f, 0, 0);
+
+                var fRend = fBox.transform.GetComponent<SpriteRenderer>();
+                var sRend = sBox.transform.GetComponent<SpriteRenderer>();
+
+                Vector3 topRightArea = fRend.bounds.max;
+                Vector3 bottomLeftArea = sRend.bounds.min;
+
+                // Need to place moving object....
+
+
+            }
+
+            return yAxis + 5f;
+        }
+        else
+        {
+            GameObject bigBoxWrapperOne = objectsDict["bigBox"];
+            GameObject bigBoxWrapperTwo = objectsDict["bigBox"];
+
+            int objectRequired = (UnityEngine.Random.Range(0, 2));
+
+            
+            Vector3 wrapperPos = new Vector3(0, yAxis, 0);
+            bigBoxWrapperOne = Instantiate(bigBoxWrapperOne, wrapperPos, transform.rotation);
+            wrapperPos = new Vector3(0, yAxis + 5f, 0);
+            bigBoxWrapperTwo = Instantiate(bigBoxWrapperTwo, wrapperPos, transform.rotation);
+
+            bigBoxWrapperOne.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
+            bigBoxWrapperTwo.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
+
+            GameObject fBox = bigBoxWrapperOne.transform.GetChild(0).gameObject;
+            GameObject sBox = bigBoxWrapperOne.transform.GetChild(1).gameObject;
+
+            fBox.transform.rotation = sBox.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 45f));
+            fBox.transform.localPosition = (objectRequired == 0) ? new Vector3(-6.05f, 0, 0) : new Vector3(-7.5f, 0, 0);
+            sBox.transform.localPosition = (objectRequired == 0) ? new Vector3(6.05f, 0, 0) : new Vector3(7.5f, 0, 0);
+
+            fBox = bigBoxWrapperTwo.transform.GetChild(0).gameObject;
+            sBox = bigBoxWrapperTwo.transform.GetChild(1).gameObject;
+
+            fBox.transform.rotation = sBox.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 45f));
+            fBox.transform.localPosition = (objectRequired == 0) ? new Vector3(-6.05f, 0, 0) : new Vector3(-7.5f, 0, 0);
+            sBox.transform.localPosition = (objectRequired == 0) ? new Vector3(6.05f, 0, 0) : new Vector3(7.5f, 0, 0);
+
+            if(objectRequired == 1)
+            {
+                PlaceRotatingObjects(yAxis, "blade", "center");
+                PlaceRotatingObjects(yAxis + 5f, "blade", "center");
+            }
+
+            return yAxis + 10f;
+        }
+    }
+
+    private float GenerateRotatingObjectCombinations(float yAxis, int numOfRotatingObjects, string objectType)
+    {
+        float margin = 2f;
+        if (numOfRotatingObjects == 1)
+            PlaceRotatingObjects(yAxis, objectType, "center");
+        else if(numOfRotatingObjects == 2)
+        {
+            float xAxis = (screenWidth < 4.75f) ? UnityEngine.Random.Range(0.5f, 3f) : UnityEngine.Random.Range(1.3f, 3f);
+            PlaceRotatingObjects(yAxis, objectType, xAxis.ToString());
+            PlaceRotatingObjects(yAxis, objectType, (-1f * xAxis).ToString());
+            return yAxis;
+        } else if(numOfRotatingObjects == 3)
+        {
+            float xAxis = (screenWidth < 4.75f) ? UnityEngine.Random.Range(1f, 3f) : UnityEngine.Random.Range(1.3f, 3f);
+            PlaceRotatingObjects(yAxis, objectType, "center");
+            int placementCombination = UnityEngine.Random.Range(0, 3);
+            if(placementCombination == 0)
+            {
+                PlaceRotatingObjects(yAxis + margin, objectType, xAxis.ToString());
+                PlaceRotatingObjects(yAxis + margin, objectType, (-1f * xAxis).ToString());
+            } else if(placementCombination == 1)
+            {
+                PlaceRotatingObjects(yAxis - margin, objectType, xAxis.ToString());
+                PlaceRotatingObjects(yAxis - margin, objectType, (-1f * xAxis).ToString());
+            } else if(placementCombination == 2)
+            {
+                PlaceRotatingObjects(yAxis, objectType, xAxis.ToString());
+                PlaceRotatingObjects(yAxis, objectType, (-1f * xAxis).ToString());
+                return yAxis;
+            }
+        } else if(numOfRotatingObjects == 4)
+        {
+            int placementCombination = UnityEngine.Random.Range(0, 2);
+
+            if(placementCombination == 0)
+            {
+                float firstxAxis = (screenWidth < 4.75f) ? UnityEngine.Random.Range(0.5f, 1f) : UnityEngine.Random.Range(1.3f, 1.8f);
+                float secondxAxis = (screenWidth < 4.75f) ? UnityEngine.Random.Range(1.2f, 3f) : UnityEngine.Random.Range(2f, 3f);
+
+                int topOrDown = UnityEngine.Random.Range(0, 2);
+
+                PlaceRotatingObjects(yAxis, objectType, firstxAxis.ToString());
+                PlaceRotatingObjects(yAxis, objectType, (-1f * firstxAxis).ToString());
+
+                if(topOrDown == 0)
+                {
+                    PlaceRotatingObjects(yAxis + margin, objectType, secondxAxis.ToString());
+                    PlaceRotatingObjects(yAxis + margin, objectType, (-1f * secondxAxis).ToString());
+                } else
+                {
+                    PlaceRotatingObjects(yAxis - margin, objectType, secondxAxis.ToString());
+                    PlaceRotatingObjects(yAxis - margin, objectType, (-1f * secondxAxis).ToString());
+                }
+            } else if(placementCombination == 1)
+            {
+                float xAxis = (screenWidth < 4.75f) ? UnityEngine.Random.Range(1.3f, 3f) : UnityEngine.Random.Range(2f, 3f);
+                PlaceRotatingObjects(yAxis, objectType, xAxis.ToString());
+                PlaceRotatingObjects(yAxis, objectType, (-1f * xAxis).ToString());
+
+                PlaceRotatingObjects(yAxis + margin, objectType, "center");
+                PlaceRotatingObjects(yAxis - margin, objectType, "center");
+            }
+
+        } else if(numOfRotatingObjects == 5)
+        {
+            float xAxis = (screenWidth < 4.75f) ? UnityEngine.Random.Range(1.3f, 3f) : UnityEngine.Random.Range(2f, 3f);
+            int placementCombination = UnityEngine.Random.Range(0, 2);
+            if(placementCombination == 0)
+            {
+                PlaceRotatingObjects(yAxis, objectType, "center");
+                PlaceRotatingObjects(yAxis, objectType, xAxis.ToString());
+                PlaceRotatingObjects(yAxis, objectType, (-1f * xAxis).ToString());
+                PlaceRotatingObjects(yAxis + margin, objectType, "center");
+                PlaceRotatingObjects(yAxis - margin, objectType, "center");
+            } else if(placementCombination == 1)
+            {
+                PlaceRotatingObjects(yAxis + margin, objectType, xAxis.ToString());
+                PlaceRotatingObjects(yAxis + margin, objectType, (-1f * xAxis).ToString());
+                PlaceRotatingObjects(yAxis, objectType, "center");
+                PlaceRotatingObjects(yAxis - margin, objectType, xAxis.ToString());
+                PlaceRotatingObjects(yAxis - margin, objectType, (-1f * xAxis).ToString());
+            }
+        }
+        return yAxis + margin;
+    }
+
 
     void Start()
     {
@@ -375,94 +696,65 @@ public class ProceduralGeneration : MonoBehaviour
         screenWidth = bottomRight.x - bottomLeft.x;
         screenCenterXPoint = (bottomRight.x + bottomLeft.x) / 2f;
         CreateDictionary();
-        Vector3 spawningPos = transform.position;
 
-        /*
-        for (int i=12;i>=0;i--)
+        int numOfObjects = UnityEngine.Random.Range(7, 15);
+
+        float yAxis = transform.position.y + 10f;
+
+        for (int i=0;i<numOfObjects;i++)
         {
-            spawningPos.y += 10f;
-            GameObject currObject = Instantiate(objectsDict.Values.ElementAt(i), spawningPos, transform.rotation);
+            int objectIndex = UnityEngine.Random.Range(0, 12);
+            string objectType = objectsDict.Keys.ElementAt(objectIndex);
+            //string objectType = "stillPlatform";
+            if (objectType == "square")
+            {
+                int count = GetRandomWeightedIndex(new float[] { 0.5f, 0.3f, 0.2f });
+                yAxis = PlaceMovingObjects(yAxis, count + 2, objectType);
+            } else if (objectType == "bigBox")
+            {
+                int numOfBoxes = UnityEngine.Random.Range(0, 2);
+                yAxis = PlaceBigBox(yAxis, (numOfBoxes + 1) * 2);
+            } else if (objectType == "sphere")
+            {
+                PlaceBigSphere(yAxis);
+            } else if (objectType == "blade" || objectType == "box")
+            {
+                int rotateOrMove = (objectType == "blade") ? GetRandomWeightedIndex(new float[] { 0.7f, 0.3f }) : GetRandomWeightedIndex(new float[] { 0.4f, 0.6f });
+                if (rotateOrMove == 0)
+                {
+                    int numOfRotatingObjects = UnityEngine.Random.Range(1, 6);
+                    yAxis = GenerateRotatingObjectCombinations(yAxis, numOfRotatingObjects, objectType);
+                } else
+                {
+                    int count = GetRandomWeightedIndex(new float[] { 0.5f, 0.3f, 0.2f });
+                    yAxis = PlaceMovingObjects(yAxis, count + 2, objectType);
+                }
+            } else if(objectType == "launcher")
+            {
+                int numOfLaunchers = GetRandomWeightedIndex(new float[] { 0.1f, 0.55f, 0.35f });
+                yAxis = PlaceLauncher(yAxis, numOfLaunchers + 1);
+            } else if(objectType == "grinder")
+            {
+                PlaceGrinder(yAxis);
+            } else if(objectType == "hPlatform")
+            {
+                int numOfPlatforms = GetRandomWeightedIndex(new float[] { 0.0f, 0.5f, 0.35f, 0.15f });
+                yAxis = PlaceHorizontalPlatform(yAxis, numOfPlatforms + 1);
+            } else if(objectType == "saw")
+            {
+                //PlaceRotatingObjects(yAxis, objectType, "center");
+            } else if(objectType == "stillCannon")
+            {
+                PlaceStillCannon(yAxis);
+            } else if(objectType == "upCannon")
+            {
+                PlaceUpCannon(yAxis);
+            } else if(objectType == "stillPlatform")
+            {
+                PlaceStillPlatform(yAxis);
+            }
+            yAxis += 5f;
         }
-        */
-
-
-        PlaceStillPlatform(transform.position.y + 5f);
-        PlaceStillPlatform(transform.position.y + 15f);
-        PlaceStillPlatform(transform.position.y + 20f);
-        PlaceStillPlatform(transform.position.y + 25f);
-
-
-        /*
-
-        PlaceBigSphere(transform.position.y + 5f);
-
-        PlaceBigSphere(transform.position.y + 15f);
-        PlaceBigSphere(transform.position.y + 20f);
-        PlaceBigSphere(transform.position.y + 25f);
-        PlaceBigSphere(transform.position.y + 30f);
-
-
-        
-
-        PlaceUpCannon(transform.position.y + 5f);
-        PlaceUpCannon(transform.position.y + 15f);
-        PlaceUpCannon(transform.position.y + 20f);
-        PlaceUpCannon(transform.position.y + 25f);
-
-
-
-        PlaceStillCannon(transform.position.y + 5f, 0);
-        PlaceStillCannon(transform.position.y + 10f, 0);
-        PlaceStillCannon(transform.position.y + 15f, 1);
-        PlaceStillCannon(transform.position.y + 20f, 1);
-
-
-
-        
-
-        PlaceGrinder(transform.position.y + 5f);
-        PlaceGrinder(transform.position.y + 15f);
-        PlaceGrinder(transform.position.y + 20f);
-        PlaceGrinder(transform.position.y + 25f);
-
-        
-        
-        
-        PlaceHorizontalPlatform(transform.position.y + 5f, 2);
-        PlaceHorizontalPlatform(transform.position.y + 15f, 3);
-        PlaceHorizontalPlatform(transform.position.y + 30f, 4);
-
-        
-        
-        PlaceMovingObjects(transform.position.y + 3f, 2, 0, "square");
-        PlaceMovingObjects(transform.position.y + 2 * 5f, 2, 1, "square");
-        PlaceMovingObjects(transform.position.y + 3 * 5f, 2, 2, "square");
-        PlaceMovingObjects(transform.position.y + 4 * 5f, 2, 3, "square");
-        PlaceMovingObjects(transform.position.y + 5 * 5f, 3, 0, "square");
-        PlaceMovingObjects(transform.position.y + 6 * 5f, 3, 1, "square");
-        PlaceMovingObjects(transform.position.y + 7 * 5f, 4, 0, "square");
-        PlaceMovingObjects(transform.position.y + 8 * 5f, 4, 1, "square");
-
-
-        PlaceMovingObjects(transform.position.y + 9 * 5f, 2, 0, "box");
-        PlaceMovingObjects(transform.position.y + 10 * 5f, 2, 1, "box");
-        PlaceMovingObjects(transform.position.y + 11 * 5f, 2, 2, "box");
-        PlaceMovingObjects(transform.position.y + 12 * 5f, 2, 3, "box");
-        PlaceMovingObjects(transform.position.y + 13 * 5f, 3, 0, "box");
-        PlaceMovingObjects(transform.position.y + 14 * 5f, 3, 1, "box");
-        PlaceMovingObjects(transform.position.y + 15 * 5f, 4, 0, "box");
-        PlaceMovingObjects(transform.position.y + 16 * 5f, 4, 1, "box");
-
-        PlaceMovingObjects(transform.position.y + 17 * 5f, 2, 0, "blade");
-        PlaceMovingObjects(transform.position.y + 18 * 5f, 2, 1, "blade");
-        PlaceMovingObjects(transform.position.y + 19 * 5f, 2, 2, "blade");
-        PlaceMovingObjects(transform.position.y + 20 * 5f, 2, 3, "blade");
-        PlaceMovingObjects(transform.position.y + 21 * 5f, 3, 0, "blade");
-        PlaceMovingObjects(transform.position.y + 22 * 5f, 3, 1, "blade");
-        PlaceMovingObjects(transform.position.y + 23 * 5f, 4, 0, "blade");
-        PlaceMovingObjects(transform.position.y + 24 * 5f, 4, 1, "blade");
-
-        */
 
     }
 

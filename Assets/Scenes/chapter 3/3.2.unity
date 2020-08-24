@@ -1208,8 +1208,6 @@ MonoBehaviour:
       type: 3}
     hPlatform: {fileID: 4707258787373216651, guid: 4e95e469302e8264e9e63154b8320c88,
       type: 3}
-    hPlatformComponent: {fileID: 2461916363321304944, guid: 59ec7b6300d264644a8ad149582e6f1c,
-      type: 3}
     saw: {fileID: 6888472139141832504, guid: 8dbc7154852396c42bf0af49811bcdb6, type: 3}
     stillCannon: {fileID: 1553537297963963040, guid: 09667c1915698df40a923655d00cb2c8,
       type: 3}
@@ -1222,6 +1220,8 @@ MonoBehaviour:
   coinsPrefab: {fileID: 0}
   playerGO: {fileID: 158589551}
   snappingAnimationController: {fileID: 9100000, guid: f8eb06033bc241f4aabdd29f5040d7be,
+    type: 2}
+  rotateAnimationController: {fileID: 9100000, guid: 9628e44c5735e3d418ec8fd47a07fdc1,
     type: 2}
   l2rAnimationController: {fileID: 9100000, guid: 4a274fe358224b74399e388c8e489462,
     type: 2}
@@ -4916,12 +4916,12 @@ PrefabInstance:
     - target: {fileID: 2705887152038979094, guid: 4af0d4ece932e974caa2a43e79a97050,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 87.05
+      value: 107.08
       objectReference: {fileID: 0}
     - target: {fileID: 2705887152038979094, guid: 4af0d4ece932e974caa2a43e79a97050,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 142.28455
+      value: 173.63084
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4af0d4ece932e974caa2a43e79a97050, type: 3}
@@ -5717,7 +5717,7 @@ PrefabInstance:
     - target: {fileID: 8214835303929298594, guid: c05b2577605141c4c8ce7605566df30b,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.98789215
+      value: 0.9562607
       objectReference: {fileID: 0}
     - target: {fileID: 8214835303981280642, guid: c05b2577605141c4c8ce7605566df30b,
         type: 3}

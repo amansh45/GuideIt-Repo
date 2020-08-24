@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Analytics;
+using UnityEngine.Assertions.Must;
 using UnityEngine.UIElements;
 
 public class ProceduralGeneration : MonoBehaviour
@@ -31,6 +32,9 @@ public class ProceduralGeneration : MonoBehaviour
     
     [SerializeField] GameObject coinsPrefab, playerGO;
     [SerializeField] RuntimeAnimatorController snappingAnimationController, rotateAnimationController, l2rAnimationController, stillCannonAnimationController, blinkingCannonAnimationController;
+    [SerializeField] GameObject playSpaceGO;
+
+    public bool hasLevelGenerationCompleted = false;
 
     Dictionary<string, GameObject> objectsDict = new Dictionary<string, GameObject>();
     float screenWidth, screenCenterXPoint;
@@ -292,7 +296,6 @@ public class ProceduralGeneration : MonoBehaviour
             UpdatePlaceObjectScriptParams(gameObject, true, true, false, false, 0);
         } else
         {
-            Debug.Log("explicit position is: " + float.Parse(xPosition));
             Vector3 objPos = new Vector3(float.Parse(xPosition), yAxis, 0);
             gameObject = Instantiate(gameObject, objPos, transform.rotation);
             gameObject.transform.localScale = new Vector3(scaleFactor, scaleFactor, scaleFactor);
@@ -697,7 +700,7 @@ public class ProceduralGeneration : MonoBehaviour
         screenCenterXPoint = (bottomRight.x + bottomLeft.x) / 2f;
         CreateDictionary();
 
-        int numOfObjects = UnityEngine.Random.Range(7, 15);
+        int numOfObjects = UnityEngine.Random.Range(7, 8);
 
         float yAxis = transform.position.y + 10f;
 
@@ -754,6 +757,35 @@ public class ProceduralGeneration : MonoBehaviour
                 PlaceStillPlatform(yAxis);
             }
             yAxis += 5f;
+        }
+
+        SetPlaySpaceAtRuntime(yAxis);
+
+        hasLevelGenerationCompleted = true;
+
+    }
+
+    private void SetPlaySpaceAtRuntime(float yAxis)
+    {
+        var rend = playSpaceGO.GetComponent<SpriteRenderer>();
+
+        float initialBound = rend.bounds.min.y;
+        float minBound;
+        float maxBound = rend.bounds.max.y;
+        Vector3 prevPlaySpaceScale = playSpaceGO.transform.localScale;
+
+        while (maxBound < yAxis)
+        {
+            playSpaceGO.transform.localScale = new Vector3(prevPlaySpaceScale.x, prevPlaySpaceScale.y + 0.1f, prevPlaySpaceScale.z);
+            minBound = rend.bounds.min.y;
+
+            while(minBound < initialBound)
+            {
+                playSpaceGO.transform.position = new Vector3(playSpaceGO.transform.position.x, playSpaceGO.transform.position.y + 0.1f, playSpaceGO.transform.position.z);
+                minBound = rend.bounds.min.y;
+            }
+            maxBound = rend.bounds.max.y;
+            prevPlaySpaceScale = playSpaceGO.transform.localScale;
         }
 
     }

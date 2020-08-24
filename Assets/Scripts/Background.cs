@@ -11,6 +11,9 @@ public class Background : MonoBehaviour {
     [SerializeField] GameObject playerPrefab;
 
     PlayerActions playerActionsClass;
+    ProceduralGeneration proceduralGeneration;
+
+    bool firstTime = true;
 
     [System.Serializable]
     public struct BackgroundMaterial
@@ -108,10 +111,18 @@ public class Background : MonoBehaviour {
         borderLines = FindObjectOfType<GameLines>().GetComponent<GameLines>();
         playerActionsClass = playerPrefab.GetComponent<PlayerActions>();
         currentActiveBackgroundIndex = 0;
-        FrameBordersPlayerAreaAndLevelProgress();
+        proceduralGeneration = FindObjectOfType<ProceduralGeneration>();
+        if(proceduralGeneration == null)
+            FrameBordersPlayerAreaAndLevelProgress();
     }
 
     void Update() {
+        if(proceduralGeneration != null && proceduralGeneration.hasLevelGenerationCompleted && firstTime)
+        {
+            FrameBordersPlayerAreaAndLevelProgress();
+            firstTime = false;
+        }
+
         transform.position = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y, 0.5f);
     }
 }

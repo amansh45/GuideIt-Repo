@@ -1229,6 +1229,8 @@ MonoBehaviour:
     type: 2}
   blinkingCannonAnimationController: {fileID: 9100000, guid: d8ed75ed83eee5f4aa9c00b6c4c6db5b,
     type: 2}
+  playSpaceGO: {fileID: 174109983}
+  hasLevelGenerationCompleted: 0
 --- !u!4 &395943676
 Transform:
   m_ObjectHideFlags: 0
@@ -4916,12 +4918,12 @@ PrefabInstance:
     - target: {fileID: 2705887152038979094, guid: 4af0d4ece932e974caa2a43e79a97050,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 107.08
+      value: 11.59
       objectReference: {fileID: 0}
     - target: {fileID: 2705887152038979094, guid: 4af0d4ece932e974caa2a43e79a97050,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 173.63084
+      value: 24.184406
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4af0d4ece932e974caa2a43e79a97050, type: 3}
@@ -5717,7 +5719,12 @@ PrefabInstance:
     - target: {fileID: 8214835303929298594, guid: c05b2577605141c4c8ce7605566df30b,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.9562607
+      value: 1.1119804
+      objectReference: {fileID: 0}
+    - target: {fileID: 8214835303929298594, guid: c05b2577605141c4c8ce7605566df30b,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8214835303981280642, guid: c05b2577605141c4c8ce7605566df30b,
         type: 3}

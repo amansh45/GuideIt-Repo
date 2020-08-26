@@ -6,6 +6,70 @@ using UnityEngine;
 
 public class PlayerStatistics : MonoBehaviour
 {
+    public struct PlaceObjectScriptParams
+    {
+        public bool IsRotating;
+        public bool PlaceWrtCorners;
+        public bool IsCoinOrPlayer;
+        public bool ScalingRequired;
+        public float DynamicWidthForScaling;
+
+        public PlaceObjectScriptParams(bool isRotating, bool placeWrtCorners, bool isCoinOrPlayer, bool scalingRequired, float dynamicWidthForScaling)
+        {
+            IsRotating = isRotating;
+            PlaceWrtCorners = placeWrtCorners;
+            IsCoinOrPlayer = isCoinOrPlayer;
+            ScalingRequired = scalingRequired;
+            DynamicWidthForScaling = dynamicWidthForScaling;
+        }
+
+    }
+
+    public struct EnemyLauncherScriptParams
+    {
+        public bool AimAtPlayer;
+        public bool IsBlinking;
+
+        public EnemyLauncherScriptParams(bool aimAtPlayer, bool isBlinking)
+        {
+            AimAtPlayer = aimAtPlayer;
+            IsBlinking = isBlinking;
+        }
+    }
+
+    public struct ObjectsData
+    {
+        public string ObjectType;
+        public Vector3 ObjectPosition;
+        public Vector3? ObjectScale;
+        public Vector3 ObjectRotation;
+        public PlaceObjectScriptParams? ScriptParams;
+        public bool IsAnimationChangeRequired;
+        public EnemyLauncherScriptParams? LauncherScriptParams;
+        public RuntimeAnimatorController AnimatorController;
+
+        public ObjectsData(string objectType, Vector3 objectPosition, Vector3? objectScale, Vector3 objectRotation, 
+            PlaceObjectScriptParams? scriptParams, bool isAnimationChangeRequired, 
+            RuntimeAnimatorController animationController, EnemyLauncherScriptParams? launcherScriptParams)
+        {
+            ObjectType = objectType;
+            ObjectPosition = objectPosition;
+            ObjectScale = objectScale;
+            ObjectRotation = objectRotation;
+            ScriptParams = scriptParams;
+            IsAnimationChangeRequired = isAnimationChangeRequired;
+            AnimatorController = animationController;
+            LauncherScriptParams = launcherScriptParams;
+        }
+    }
+
+    public List<ObjectsData> listOfObjects = new List<ObjectsData>();
+    public bool prevProceduralLevelFailed = false;
+
+    public void AddObjectToSaveList(ObjectsData objectsData)
+    {
+        listOfObjects.Add(objectsData);
+    }
 
 
     public struct Task

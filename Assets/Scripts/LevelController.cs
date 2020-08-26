@@ -140,6 +140,9 @@ public class LevelController : MonoBehaviour
 
     public void ShowRetryCanvas(float waitTime)
     {
+        ProceduralGeneration pg = FindObjectOfType<ProceduralGeneration>();
+        if (pg != null)
+            playerStats.prevProceduralLevelFailed = true;
         StartCoroutine(PlayerDeathActions(waitTime));
     }
 

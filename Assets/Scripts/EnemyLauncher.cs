@@ -102,7 +102,7 @@ public class EnemyLauncher : MonoBehaviour
 
     private void OnDestroy()
     {
-        if(!latestGranadeClass.isGranadeActive())
+        if(latestGranadeClass != null && !latestGranadeClass.isGranadeActive())
             Destroy(latestGranade);
     }
 

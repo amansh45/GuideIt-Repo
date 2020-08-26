@@ -11,51 +11,14 @@ using UnityEngine.UIElements;
 
 public class ProceduralGeneration : MonoBehaviour
 {
-    [SerializeField] Objects enemyObjects;
-    [System.Serializable]
-    public struct Objects
-    {
-        public GameObject square;
-        public GameObject bigBox;
-        public GameObject sphere;
-        public GameObject blade;
-        public GameObject box;
-        public GameObject launcher;
-        public GameObject grinder;
-        public GameObject hPlatform;
-        public GameObject saw;
-        public GameObject stillCannon;
-        public GameObject upCannon;
-        public GameObject stillPlatform;
-        public GameObject sphereSupportingPlatform;
-    }
     
     [SerializeField] GameObject coinsPrefab, playerGO;
     [SerializeField] RuntimeAnimatorController snappingAnimationController, rotateAnimationController, l2rAnimationController, stillCannonAnimationController, blinkingCannonAnimationController;
-    [SerializeField] GameObject playSpaceGO;
 
     public bool hasLevelGenerationCompleted = false;
 
-    Dictionary<string, GameObject> objectsDict = new Dictionary<string, GameObject>();
     float screenWidth, screenCenterXPoint;
-
-    void CreateDictionary()
-    {
-        objectsDict.Add("square", enemyObjects.square); //
-        objectsDict.Add("bigBox", enemyObjects.bigBox); //
-        objectsDict.Add("sphere", enemyObjects.sphere); //
-        objectsDict.Add("blade", enemyObjects.blade); //
-        objectsDict.Add("box", enemyObjects.box); // 
-        objectsDict.Add("launcher", enemyObjects.launcher); //
-        objectsDict.Add("grinder", enemyObjects.grinder); //
-        objectsDict.Add("hPlatform", enemyObjects.hPlatform); //
-        objectsDict.Add("saw", enemyObjects.saw); 
-        objectsDict.Add("stillCannon", enemyObjects.stillCannon); //
-        objectsDict.Add("upCannon", enemyObjects.upCannon); //
-        objectsDict.Add("stillPlatform", enemyObjects.stillPlatform); //
-        objectsDict.Add("sphereSupportingPlatform", enemyObjects.sphereSupportingPlatform); //
-    }
-
+    PlayerStatistics playerStats;
 
     public int GetRandomWeightedIndex(float[] weights)
     {
@@ -83,46 +46,57 @@ public class ProceduralGeneration : MonoBehaviour
     }
 
 
-    void UpdatePlaceObjectScriptParams(GameObject go, bool isRotating, bool placeWrtCorners, bool isCoinOrPlayer, bool scalingRequired, float dynamicWidthForScaling)
-    {
-        PlaceObjects placeObjects = go.GetComponent<PlaceObjects>();
-        placeObjects.isRotating = isRotating;
-        placeObjects.placeWrtCornors = placeWrtCorners;
-        placeObjects.scalingRequired = scalingRequired;
-        placeObjects.isCoinOrPlayer = isCoinOrPlayer;
-        placeObjects.dynamicWidthForScaling = dynamicWidthForScaling;
-    }
-
     void CreateL2RAnimation(int animatorIndex, int count, string objectType, float yDistanceBetweenObjects, float spawningYCoordinate)
     {
-        GameObject first = objectsDict[objectType];
-        GameObject second = objectsDict[objectType];
-        GameObject third = objectsDict[objectType];
-        GameObject fourth = objectsDict[objectType];
+        GameObject first = proceduralHelper.objectsDict[objectType];
+        GameObject second = proceduralHelper.objectsDict[objectType];
+        GameObject third = proceduralHelper.objectsDict[objectType];
+        GameObject fourth = proceduralHelper.objectsDict[objectType];
 
         Vector3 fPos = new Vector3((screenCenterXPoint / 2f) - 0.5f, spawningYCoordinate, 0);
         GameObject firstGO = Instantiate(first, fPos, Quaternion.Euler(new Vector3(0, 0, 0)));
+
         Animator firstAnimator = firstGO.GetComponentInChildren<Animator>();
-        UpdatePlaceObjectScriptParams(firstGO, false, true, false, true, 0);
+        firstAnimator.runtimeAnimatorController = (animatorIndex == 0) ? l2rAnimationController : snappingAnimationController;
+        proceduralHelper.UpdatePlaceObjectScriptParams(firstGO, false, true, false, true, 0);
+
+
+        PlayerStatistics.ObjectsData currObjectData = new PlayerStatistics.ObjectsData(objectType, fPos, null, new Vector3(0, 0, 0),
+            new PlayerStatistics.PlaceObjectScriptParams(false, true, false, true, 0), true, firstAnimator.runtimeAnimatorController, null);
+        playerStats.AddObjectToSaveList(currObjectData);
+
+
 
         if (count == 1)
             return;
 
+
+
         Vector3 sPos = new Vector3((screenCenterXPoint / 2f) + 0.5f, spawningYCoordinate + yDistanceBetweenObjects, 0);
         GameObject secondGO = Instantiate(second, sPos, Quaternion.Euler(new Vector3(0, 180, 360)));
         Animator secondAnimator = secondGO.GetComponentInChildren<Animator>();
-        UpdatePlaceObjectScriptParams(secondGO, false, true, false, true, 0);
-
-        firstAnimator.runtimeAnimatorController = (animatorIndex == 0) ? l2rAnimationController : snappingAnimationController;
+        proceduralHelper.UpdatePlaceObjectScriptParams(secondGO, false, true, false, true, 0);
         secondAnimator.runtimeAnimatorController = (animatorIndex == 0) ? l2rAnimationController : snappingAnimationController;
 
-        if(count  == 3 || count == 4)
+
+        currObjectData = new PlayerStatistics.ObjectsData(objectType, sPos, null, new Vector3(0, 180, 360),
+            new PlayerStatistics.PlaceObjectScriptParams(false, true, false, true, 0), true, secondAnimator.runtimeAnimatorController, null);
+        playerStats.AddObjectToSaveList(currObjectData);
+
+
+
+        if (count  == 3 || count == 4)
         {
             Vector3 tPos = new Vector3((screenCenterXPoint / 2f) - 0.5f, spawningYCoordinate + 2 * yDistanceBetweenObjects, 0);
             GameObject thirdGO = Instantiate(third, tPos, Quaternion.Euler(new Vector3(0, 0, 0)));
             Animator thirdAnimator = thirdGO.GetComponentInChildren<Animator>();
-            UpdatePlaceObjectScriptParams(thirdGO, false, true, false, true, 0);
+            proceduralHelper.UpdatePlaceObjectScriptParams(thirdGO, false, true, false, true, 0);
             thirdAnimator.runtimeAnimatorController = (animatorIndex == 0) ? l2rAnimationController : snappingAnimationController;
+
+
+            currObjectData = new PlayerStatistics.ObjectsData(objectType, tPos, null, new Vector3(0, 0, 0),
+                new PlayerStatistics.PlaceObjectScriptParams(false, true, false, true, 0), true, thirdAnimator.runtimeAnimatorController, null);
+            playerStats.AddObjectToSaveList(currObjectData);
         }
 
         if(count == 4)
@@ -130,8 +104,13 @@ public class ProceduralGeneration : MonoBehaviour
             Vector3 foPos = new Vector3((screenCenterXPoint / 2f) + 0.5f, spawningYCoordinate + 3 * yDistanceBetweenObjects, 0);
             GameObject fourthGO = Instantiate(fourth, foPos, Quaternion.Euler(new Vector3(0, 180, 360)));
             Animator fourthAnimator = fourthGO.GetComponentInChildren<Animator>();
-            UpdatePlaceObjectScriptParams(fourthGO, false, true, false, true, 0);
+            proceduralHelper.UpdatePlaceObjectScriptParams(fourthGO, false, true, false, true, 0);
             fourthAnimator.runtimeAnimatorController = (animatorIndex == 0) ? l2rAnimationController : snappingAnimationController;
+
+
+            currObjectData = new PlayerStatistics.ObjectsData(objectType, foPos, null, new Vector3(0, 180, 360),
+                new PlayerStatistics.PlaceObjectScriptParams(false, true, false, true, 0), true, fourthAnimator.runtimeAnimatorController, null);
+            playerStats.AddObjectToSaveList(currObjectData);
         }
     }
 
@@ -140,10 +119,10 @@ public class ProceduralGeneration : MonoBehaviour
     {
         float yDistanceBetweenObjects = (objectType == "blade") ? 2f : UnityEngine.Random.Range(0.75f, 1.25f);
         float xDistanceBetweenObjects = (screenWidth < 4.75f) ? 0.65f : UnityEngine.Random.Range(0.75f, 1.25f);
-        GameObject first = objectsDict[objectType];
-        GameObject second = objectsDict[objectType];
-        GameObject third = objectsDict[objectType];
-        GameObject fourth = objectsDict[objectType];
+        GameObject first = proceduralHelper.objectsDict[objectType];
+        GameObject second = proceduralHelper.objectsDict[objectType];
+        GameObject third = proceduralHelper.objectsDict[objectType];
+        GameObject fourth = proceduralHelper.objectsDict[objectType];
         
         // for integer minVal is inclusive and maxVal is exclusive
         int animatorIndex = UnityEngine.Random.Range(0, 2);
@@ -162,7 +141,6 @@ public class ProceduralGeneration : MonoBehaviour
              */
 
             int movement = GetRandomWeightedIndex(new float[] { 0.5f, 0.2f, 0.2f, 0.1f });
-            
             if (movement == 0)
             {
                 CreateL2RAnimation(animatorIndex, count, objectType, yDistanceBetweenObjects, yAxis);
@@ -188,20 +166,62 @@ public class ProceduralGeneration : MonoBehaviour
                 Animator secondAnimator = secondGO.GetComponentInChildren<Animator>();
                 firstAnimator.runtimeAnimatorController = (animatorIndex == 0) ? l2rAnimationController : snappingAnimationController;
                 secondAnimator.runtimeAnimatorController = (animatorIndex == 0) ? l2rAnimationController : snappingAnimationController;
-                UpdatePlaceObjectScriptParams(firstGO, false, true, false, true, 0);
-                UpdatePlaceObjectScriptParams(secondGO, false, true, false, true, 0);
+                proceduralHelper.UpdatePlaceObjectScriptParams(firstGO, false, true, false, true, 0);
+                proceduralHelper.UpdatePlaceObjectScriptParams(secondGO, false, true, false, true, 0);
+
+
+
+
+                if(movement == 1)
+                {
+                    PlayerStatistics.ObjectsData currObjectData = new PlayerStatistics.ObjectsData(objectType, fPos, null, new Vector3(0, 0, (-1) * alignment),
+                        new PlayerStatistics.PlaceObjectScriptParams(false, true, false, true, 0), true, firstAnimator.runtimeAnimatorController, null);
+                    playerStats.AddObjectToSaveList(currObjectData);
+
+                    currObjectData = new PlayerStatistics.ObjectsData(objectType, sPos, null, new Vector3(0, 0, 180 - alignment),
+                        new PlayerStatistics.PlaceObjectScriptParams(false, true, false, true, 0), true, secondAnimator.runtimeAnimatorController, null);
+                    playerStats.AddObjectToSaveList(currObjectData);
+                } else
+                {
+                    PlayerStatistics.ObjectsData currObjectData = new PlayerStatistics.ObjectsData(objectType, fPos, null, new Vector3(0, 0, alignment),
+                        new PlayerStatistics.PlaceObjectScriptParams(false, true, false, true, 0), true, firstAnimator.runtimeAnimatorController, null);
+                    playerStats.AddObjectToSaveList(currObjectData);
+
+                    currObjectData = new PlayerStatistics.ObjectsData(objectType, sPos, null, new Vector3(0, 0, (-1) * (180 - alignment)),
+                        new PlayerStatistics.PlaceObjectScriptParams(false, true, false, true, 0), true, secondAnimator.runtimeAnimatorController, null);
+                    playerStats.AddObjectToSaveList(currObjectData);
+                }
+
             } else if(movement == 3)
             {
                 Vector3 fPos = new Vector3((screenCenterXPoint / 2f) - xDistanceBetweenObjects, yAxis + dynamicWidthForScaling/2.8f, 0);
                 Vector3 sPos = new Vector3((screenCenterXPoint / 2f) + xDistanceBetweenObjects, yAxis - dynamicWidthForScaling/2.8f, 0);
                 GameObject firstGO = Instantiate(first, fPos, Quaternion.Euler(new Vector3(0, 0, -90)));
                 GameObject secondGO = Instantiate(second, sPos, Quaternion.Euler(new Vector3(0, 0, 90)));
-                UpdatePlaceObjectScriptParams(firstGO, true, false, false, true, dynamicWidthForScaling);
-                UpdatePlaceObjectScriptParams(secondGO, true, false, false, true, dynamicWidthForScaling);
+                proceduralHelper.UpdatePlaceObjectScriptParams(firstGO, true, false, false, true, dynamicWidthForScaling);
+                proceduralHelper.UpdatePlaceObjectScriptParams(secondGO, true, false, false, true, dynamicWidthForScaling);
                 Animator firstAnimator = firstGO.GetComponentInChildren<Animator>();
                 Animator secondAnimator = secondGO.GetComponentInChildren<Animator>();
                 firstAnimator.runtimeAnimatorController = (animatorIndex == 0) ? l2rAnimationController : snappingAnimationController;
                 secondAnimator.runtimeAnimatorController = (animatorIndex == 0) ? l2rAnimationController : snappingAnimationController;
+                
+
+
+                PlayerStatistics.ObjectsData currObjectData = new PlayerStatistics.ObjectsData(objectType, fPos, null, new Vector3(0, 0, -90),
+                        new PlayerStatistics.PlaceObjectScriptParams(true, false, false, true, dynamicWidthForScaling), true, firstAnimator.runtimeAnimatorController, null);
+                playerStats.AddObjectToSaveList(currObjectData);
+
+                currObjectData = new PlayerStatistics.ObjectsData(objectType, sPos, null, new Vector3(0, 0, 90),
+                    new PlayerStatistics.PlaceObjectScriptParams(true, false, false, true, dynamicWidthForScaling), true, secondAnimator.runtimeAnimatorController, null);
+                playerStats.AddObjectToSaveList(currObjectData);
+
+
+
+                float xCoordinate = (UnityEngine.Random.Range(0, 2) == 0) ? -1.9f : 1.9f;
+
+                float offset = 1f;
+                PlaceStillPlatform(yAxis + dynamicWidthForScaling / 2.8f + offset, xCoordinate);
+                PlaceStillPlatform(yAxis - dynamicWidthForScaling / 2.8f - offset, (-1f) * xCoordinate);
             }
             return yAxis + dynamicWidthForScaling;
         } else if(count == 3)
@@ -220,15 +240,37 @@ public class ProceduralGeneration : MonoBehaviour
                 GameObject firstGO = Instantiate(first, fPos, Quaternion.Euler(new Vector3(0, 0, -90)));
                 GameObject secondGO = Instantiate(second, sPos, Quaternion.Euler(new Vector3(0, 0, 90)));
                 GameObject thirdGO = Instantiate(third, tPos, Quaternion.Euler(new Vector3(0, 0, 90)));
-                UpdatePlaceObjectScriptParams(firstGO, true, false, false, true, dynamicWidthForScaling);
-                UpdatePlaceObjectScriptParams(secondGO, true, false, false, true, dynamicWidthForScaling);
-                UpdatePlaceObjectScriptParams(thirdGO, true, false, false, true, dynamicWidthForScaling);
+                proceduralHelper.UpdatePlaceObjectScriptParams(firstGO, true, false, false, true, dynamicWidthForScaling);
+                proceduralHelper.UpdatePlaceObjectScriptParams(secondGO, true, false, false, true, dynamicWidthForScaling);
+                proceduralHelper.UpdatePlaceObjectScriptParams(thirdGO, true, false, false, true, dynamicWidthForScaling);
                 Animator firstAnimator = firstGO.GetComponentInChildren<Animator>();
                 Animator secondAnimator = secondGO.GetComponentInChildren<Animator>();
                 Animator thirdAnimator = thirdGO.GetComponentInChildren<Animator>();
                 firstAnimator.runtimeAnimatorController = (animatorIndex == 0) ? l2rAnimationController : snappingAnimationController;
                 secondAnimator.runtimeAnimatorController = (animatorIndex == 0) ? l2rAnimationController : snappingAnimationController;
                 thirdAnimator.runtimeAnimatorController = (animatorIndex == 0) ? l2rAnimationController : snappingAnimationController;
+
+
+
+
+                PlayerStatistics.ObjectsData currObjectData = new PlayerStatistics.ObjectsData(objectType, fPos, null, new Vector3(0, 0, -90),
+                        new PlayerStatistics.PlaceObjectScriptParams(true, false, false, true, dynamicWidthForScaling), true, firstAnimator.runtimeAnimatorController, null);
+                playerStats.AddObjectToSaveList(currObjectData);
+
+                currObjectData = new PlayerStatistics.ObjectsData(objectType, sPos, null, new Vector3(0, 0, 90),
+                    new PlayerStatistics.PlaceObjectScriptParams(true, false, false, true, dynamicWidthForScaling), true, secondAnimator.runtimeAnimatorController, null);
+                playerStats.AddObjectToSaveList(currObjectData);
+
+                currObjectData = new PlayerStatistics.ObjectsData(objectType, tPos, null, new Vector3(0, 0, 90),
+                    new PlayerStatistics.PlaceObjectScriptParams(true, false, false, true, dynamicWidthForScaling), true, thirdAnimator.runtimeAnimatorController, null);
+                playerStats.AddObjectToSaveList(currObjectData);
+
+                float xCoordinate = (UnityEngine.Random.Range(0, 2) == 0) ? -1.9f : 1.9f;
+
+                float offset = 1f;
+                PlaceStillPlatform(yAxis + dynamicWidthForScaling / 2.8f + offset, xCoordinate);
+                PlaceStillPlatform(yAxis - dynamicWidthForScaling / 2.8f - offset, (-1f) * xCoordinate);
+
             }
             return yAxis + dynamicWidthForScaling;
         } else
@@ -248,10 +290,10 @@ public class ProceduralGeneration : MonoBehaviour
                 GameObject secondGO = Instantiate(second, sPos, Quaternion.Euler(new Vector3(0, 0, 90)));
                 GameObject thirdGO = Instantiate(third, tPos, Quaternion.Euler(new Vector3(0, 0, -90)));
                 GameObject fourthGO = Instantiate(fourth, foPos, Quaternion.Euler(new Vector3(0, 0, 90)));
-                UpdatePlaceObjectScriptParams(firstGO, true, false, false, true, dynamicWidthForScaling);
-                UpdatePlaceObjectScriptParams(secondGO, true, false, false, true, dynamicWidthForScaling);
-                UpdatePlaceObjectScriptParams(thirdGO, true, false, false, true, dynamicWidthForScaling);
-                UpdatePlaceObjectScriptParams(fourthGO, true, false, false, true, dynamicWidthForScaling);
+                proceduralHelper.UpdatePlaceObjectScriptParams(firstGO, true, false, false, true, dynamicWidthForScaling);
+                proceduralHelper.UpdatePlaceObjectScriptParams(secondGO, true, false, false, true, dynamicWidthForScaling);
+                proceduralHelper.UpdatePlaceObjectScriptParams(thirdGO, true, false, false, true, dynamicWidthForScaling);
+                proceduralHelper.UpdatePlaceObjectScriptParams(fourthGO, true, false, false, true, dynamicWidthForScaling);
                 Animator firstAnimator = firstGO.GetComponentInChildren<Animator>();
                 Animator secondAnimator = secondGO.GetComponentInChildren<Animator>();
                 Animator thirdAnimator = thirdGO.GetComponentInChildren<Animator>();
@@ -260,6 +302,33 @@ public class ProceduralGeneration : MonoBehaviour
                 secondAnimator.runtimeAnimatorController = (animatorIndex == 0) ? l2rAnimationController : snappingAnimationController;
                 thirdAnimator.runtimeAnimatorController = (animatorIndex == 0) ? l2rAnimationController : snappingAnimationController;
                 fourthAnimator.runtimeAnimatorController = (animatorIndex == 0) ? l2rAnimationController : snappingAnimationController;
+
+
+
+
+
+                PlayerStatistics.ObjectsData currObjectData = new PlayerStatistics.ObjectsData(objectType, fPos, null, new Vector3(0, 0, -90),
+                        new PlayerStatistics.PlaceObjectScriptParams(true, false, false, true, dynamicWidthForScaling), true, firstAnimator.runtimeAnimatorController, null);
+                playerStats.AddObjectToSaveList(currObjectData);
+
+                currObjectData = new PlayerStatistics.ObjectsData(objectType, sPos, null, new Vector3(0, 0, 90),
+                    new PlayerStatistics.PlaceObjectScriptParams(true, false, false, true, dynamicWidthForScaling), true, secondAnimator.runtimeAnimatorController, null);
+                playerStats.AddObjectToSaveList(currObjectData);
+
+                currObjectData = new PlayerStatistics.ObjectsData(objectType, tPos, null, new Vector3(0, 0, -90),
+                    new PlayerStatistics.PlaceObjectScriptParams(true, false, false, true, dynamicWidthForScaling), true, thirdAnimator.runtimeAnimatorController, null);
+                playerStats.AddObjectToSaveList(currObjectData);
+
+                currObjectData = new PlayerStatistics.ObjectsData(objectType, foPos, null, new Vector3(0, 0, 90),
+                    new PlayerStatistics.PlaceObjectScriptParams(true, false, false, true, dynamicWidthForScaling), true, fourthAnimator.runtimeAnimatorController, null);
+                playerStats.AddObjectToSaveList(currObjectData);
+
+
+                float xCoordinate = (UnityEngine.Random.Range(0, 2) == 0) ? -1.9f : 1.9f;
+
+                float offset = 1f;
+                PlaceStillPlatform(yAxis + dynamicWidthForScaling / 2.8f + offset, xCoordinate);
+                PlaceStillPlatform(yAxis - dynamicWidthForScaling / 2.8f - offset, (-1f) * xCoordinate);
             }
             return yAxis + dynamicWidthForScaling;
         }
@@ -273,48 +342,72 @@ public class ProceduralGeneration : MonoBehaviour
      */
     void PlaceRotatingObjects(float yAxis, string objectType, string xPosition)
     {
-        GameObject gameObject = objectsDict[objectType];
+        GameObject gameObject = proceduralHelper.objectsDict[objectType];
         
         float scaleFactor = (screenWidth < 4.75f) ? 0.9f : UnityEngine.Random.Range(1, 1.25f);
 
+        Vector3 objPos;
+        PlayerStatistics.ObjectsData currObjectData;
+
         if (xPosition == "center")
         {
-            Vector3 objPos = new Vector3(0, yAxis, 0);
+            objPos = new Vector3(0, yAxis, 0);
             gameObject = Instantiate(gameObject, objPos, transform.rotation);
             gameObject.transform.localScale = new Vector3(scaleFactor, scaleFactor, scaleFactor);
-            UpdatePlaceObjectScriptParams(gameObject, true, false, false, false, 0);
+            proceduralHelper.UpdatePlaceObjectScriptParams(gameObject, true, false, false, false, 0);
+
+            currObjectData = new PlayerStatistics.ObjectsData(objectType, objPos, new Vector3(scaleFactor, scaleFactor, scaleFactor), new Vector3(0, 0, 0),
+                    new PlayerStatistics.PlaceObjectScriptParams(true, false, false, false, 0), true, rotateAnimationController, null);
         } else if(xPosition == "left")
         {
-            Vector3 objPos = new Vector3(-1, yAxis, 0);
+            objPos = new Vector3(-1, yAxis, 0);
             gameObject = Instantiate(gameObject, objPos, transform.rotation);
             gameObject.transform.localScale = new Vector3(scaleFactor, scaleFactor, scaleFactor);
-            UpdatePlaceObjectScriptParams(gameObject, true, true, false, false, 0);
+            proceduralHelper.UpdatePlaceObjectScriptParams(gameObject, true, true, false, false, 0);
+
+            currObjectData = new PlayerStatistics.ObjectsData(objectType, objPos, new Vector3(scaleFactor, scaleFactor, scaleFactor), new Vector3(0, 0, 0),
+                    new PlayerStatistics.PlaceObjectScriptParams(true, true, false, false, 0), true, rotateAnimationController, null);
         } else if(xPosition == "right") {
-            Vector3 objPos = new Vector3(1, yAxis, 0);
+            objPos = new Vector3(1, yAxis, 0);
             gameObject = Instantiate(gameObject, objPos, transform.rotation);
             gameObject.transform.localScale = new Vector3(scaleFactor, scaleFactor, scaleFactor);
-            UpdatePlaceObjectScriptParams(gameObject, true, true, false, false, 0);
+            proceduralHelper.UpdatePlaceObjectScriptParams(gameObject, true, true, false, false, 0);
+
+            currObjectData = new PlayerStatistics.ObjectsData(objectType, objPos, new Vector3(scaleFactor, scaleFactor, scaleFactor), new Vector3(0, 0, 0),
+                    new PlayerStatistics.PlaceObjectScriptParams(true, true, false, false, 0), true, rotateAnimationController, null);
         } else
         {
-            Vector3 objPos = new Vector3(float.Parse(xPosition), yAxis, 0);
+            objPos = new Vector3(float.Parse(xPosition), yAxis, 0);
             gameObject = Instantiate(gameObject, objPos, transform.rotation);
             gameObject.transform.localScale = new Vector3(scaleFactor, scaleFactor, scaleFactor);
-            UpdatePlaceObjectScriptParams(gameObject, true, false, false, false, 0);
+            proceduralHelper.UpdatePlaceObjectScriptParams(gameObject, true, false, false, false, 0);
+
+            currObjectData = new PlayerStatistics.ObjectsData(objectType, objPos, new Vector3(scaleFactor, scaleFactor, scaleFactor), new Vector3(0, 0, 0),
+                    new PlayerStatistics.PlaceObjectScriptParams(true, false, false, false, 0), true, rotateAnimationController, null);
         }
 
-        gameObject.transform.GetChild(0).gameObject.GetComponent<Animator>().runtimeAnimatorController = rotateAnimationController;
+        Animator objAnimator = gameObject.GetComponentInChildren<Animator>();
+        objAnimator.runtimeAnimatorController = rotateAnimationController;
+
+        playerStats.AddObjectToSaveList(currObjectData);
+
     }
 
     float PlaceLauncher(float yAxis, int count)
     {
-        GameObject launcher = objectsDict["launcher"];
+        GameObject launcher = proceduralHelper.objectsDict["launcher"];
         float xCoordinate = (UnityEngine.Random.Range(0, 2) == 0) ? (screenCenterXPoint / 2f) - 0.5f : (screenCenterXPoint / 2f) + 0.5f;
         Vector3 launcherPos = new Vector3(xCoordinate, yAxis, 0);
         GameObject launcherObj = Instantiate(launcher, launcherPos, transform.rotation);
-        UpdatePlaceObjectScriptParams(launcherObj, false, true, false, false, 0);
+        proceduralHelper.UpdatePlaceObjectScriptParams(launcherObj, false, true, false, false, 0);
         EnemyLauncher enemyLauncher = launcherObj.GetComponentInChildren<EnemyLauncher>();
         enemyLauncher.aimAtPlayer = true;
         enemyLauncher.playerPrefab = playerGO;
+
+        PlayerStatistics.ObjectsData currObjectData = new PlayerStatistics.ObjectsData("launcher", launcherPos, null, new Vector3(0, 0, 0),
+                    new PlayerStatistics.PlaceObjectScriptParams(false, true, false, false, 0), false, rotateAnimationController, 
+                    new PlayerStatistics.EnemyLauncherScriptParams(true, false));
+        playerStats.AddObjectToSaveList(currObjectData);
 
         if (count == 1)
             return yAxis;
@@ -333,11 +426,16 @@ public class ProceduralGeneration : MonoBehaviour
             launcherPos.x = newXCoordinate;
             launcherPos.y = yAxis + 1f;
             launcherObj = Instantiate(launcher, launcherPos, transform.rotation);
-            UpdatePlaceObjectScriptParams(launcherObj, false, true, false, false, 0);
+            proceduralHelper.UpdatePlaceObjectScriptParams(launcherObj, false, true, false, false, 0);
             enemyLauncher = launcherObj.GetComponentInChildren<EnemyLauncher>();
             enemyLauncher.aimAtPlayer = true;
             enemyLauncher.playerPrefab = playerGO;
 
+
+            currObjectData = new PlayerStatistics.ObjectsData("launcher", launcherPos, null, new Vector3(0, 0, 0),
+                    new PlayerStatistics.PlaceObjectScriptParams(false, true, false, false, 0), false, rotateAnimationController,
+                    new PlayerStatistics.EnemyLauncherScriptParams(true, false));
+            playerStats.AddObjectToSaveList(currObjectData);
         }
 
         if (count == 2)
@@ -348,10 +446,15 @@ public class ProceduralGeneration : MonoBehaviour
             launcherPos.x = xCoordinate;
             launcherPos.y = yAxis + 2f;
             launcherObj = Instantiate(launcher, launcherPos, transform.rotation);
-            UpdatePlaceObjectScriptParams(launcherObj, false, true, false, false, 0);
+            proceduralHelper.UpdatePlaceObjectScriptParams(launcherObj, false, true, false, false, 0);
             enemyLauncher = launcherObj.GetComponentInChildren<EnemyLauncher>();
             enemyLauncher.aimAtPlayer = true;
             enemyLauncher.playerPrefab = playerGO;
+
+            currObjectData = new PlayerStatistics.ObjectsData("launcher", launcherPos, null, new Vector3(0, 0, 0),
+                    new PlayerStatistics.PlaceObjectScriptParams(false, true, false, false, 0), false, rotateAnimationController,
+                    new PlayerStatistics.EnemyLauncherScriptParams(true, false));
+            playerStats.AddObjectToSaveList(currObjectData);
         }
 
         return yAxis + 2f;
@@ -360,17 +463,21 @@ public class ProceduralGeneration : MonoBehaviour
 
     float PlaceHorizontalPlatform(float yAxis, int count)
     {
-        GameObject fHorizontalPlatform = objectsDict["hPlatform"];
+        GameObject fHorizontalPlatform = proceduralHelper.objectsDict["hPlatform"];
         Vector3 platformPos = new Vector3(0, yAxis, 0);
         float alignment = (UnityEngine.Random.Range(-30, 30));
         Instantiate(fHorizontalPlatform, platformPos, Quaternion.Euler(new Vector3(0, 0, alignment)));
+
+        PlayerStatistics.ObjectsData currObjectData = new PlayerStatistics.ObjectsData("hPlatform", platformPos, null, new Vector3(0, 0, alignment),
+                    null, false, rotateAnimationController, null);
+        playerStats.AddObjectToSaveList(currObjectData);
 
         if (count == 2)
             return yAxis + 5f;
 
         if (count == 3 || count ==4)
         {
-            GameObject sHorizontalPlatform = objectsDict["hPlatform"];
+            GameObject sHorizontalPlatform = proceduralHelper.objectsDict["hPlatform"];
             platformPos.y += 3.51f;
             sHorizontalPlatform = Instantiate(sHorizontalPlatform, platformPos, Quaternion.Euler(new Vector3(0, 0, alignment)));
             if(count == 3)
@@ -382,23 +489,37 @@ public class ProceduralGeneration : MonoBehaviour
                         child.gameObject.SetActive(false);
                     }
                 }
+
+                currObjectData = new PlayerStatistics.ObjectsData("hPlatform:", platformPos, null, new Vector3(0, 0, alignment),
+                            null, false, rotateAnimationController, null);
+                playerStats.AddObjectToSaveList(currObjectData);
+
                 return yAxis + 7.5f;
             }
         }
+
+
+        currObjectData = new PlayerStatistics.ObjectsData("hPlatform", platformPos, null, new Vector3(0, 0, alignment),
+                    null, false, rotateAnimationController, null);
+        playerStats.AddObjectToSaveList(currObjectData);
         return yAxis + 10f;
     }
 
     void PlaceGrinder(float yAxis)
     {
-        GameObject fHorizontalPlatform = objectsDict["grinder"];
+        GameObject fHorizontalPlatform = proceduralHelper.objectsDict["grinder"];
         Vector3 platformPos = new Vector3(0, yAxis, 0);
         float alignment = (UnityEngine.Random.Range(-30, 30));
         Instantiate(fHorizontalPlatform, platformPos, Quaternion.Euler(new Vector3(0, 0, alignment)));
+
+        PlayerStatistics.ObjectsData currObjectData = new PlayerStatistics.ObjectsData("grinder", platformPos, null, new Vector3(0, 0, alignment),
+                    null, false, rotateAnimationController, null);
+        playerStats.AddObjectToSaveList(currObjectData);
     }
 
     void PlaceStillCannon(float yAxis)
     {
-        GameObject stillCannon = objectsDict["stillCannon"];
+        GameObject stillCannon = proceduralHelper.objectsDict["stillCannon"];
 
          /* 
           * 0 is for non blinking cannon shooting in regular intervals
@@ -428,18 +549,26 @@ public class ProceduralGeneration : MonoBehaviour
         {
             enemyLauncher.isBlinking = false;
             cannonAnimator.runtimeAnimatorController = stillCannonAnimationController;
+
+            PlayerStatistics.ObjectsData currObjectData = new PlayerStatistics.ObjectsData("stillCannon", cannonPos, null, new Vector3(0, 0, alignment),
+                    null, true, stillCannonAnimationController, new PlayerStatistics.EnemyLauncherScriptParams(false, false));
+            playerStats.AddObjectToSaveList(currObjectData);
         } else
         {
             enemyLauncher.isBlinking = true;
             enemyLauncher.playerPrefab = playerGO;
             cannonAnimator.runtimeAnimatorController = blinkingCannonAnimationController;
+
+            PlayerStatistics.ObjectsData currObjectData = new PlayerStatistics.ObjectsData("stillCannon", cannonPos, null, new Vector3(0, 0, alignment),
+                null, true, blinkingCannonAnimationController, new PlayerStatistics.EnemyLauncherScriptParams(false, true));
+            playerStats.AddObjectToSaveList(currObjectData);
         }
     }
 
 
     void PlaceUpCannon(float yAxis)
     {
-        GameObject upCannon = objectsDict["upCannon"];
+        GameObject upCannon = proceduralHelper.objectsDict["upCannon"];
 
         /*
          * 0 is for cannon position in left
@@ -452,15 +581,24 @@ public class ProceduralGeneration : MonoBehaviour
         Vector3 cannonPos = new Vector3(xCoordinate, yAxis, 0);
 
         if (leftOrRight == 1)
+        {
             Instantiate(upCannon, cannonPos, Quaternion.Euler(new Vector3(180, 0, 180)));
-        else
+            PlayerStatistics.ObjectsData currObjectData = new PlayerStatistics.ObjectsData("upCannon", cannonPos, null, new Vector3(180, 0, 180),
+                null, false, blinkingCannonAnimationController, null);
+            playerStats.AddObjectToSaveList(currObjectData);
+        } else
+        {
             Instantiate(upCannon, cannonPos, transform.rotation);
+            PlayerStatistics.ObjectsData currObjectData = new PlayerStatistics.ObjectsData("upCannon", cannonPos, null, new Vector3(0, 0, 0),
+                null, false, blinkingCannonAnimationController, null);
+            playerStats.AddObjectToSaveList(currObjectData);
+        }
     }
 
     void PlaceBigSphere(float yAxis)
     {
-        GameObject bigSphere = objectsDict["sphere"];
-        GameObject sphereSupportingPlatform = objectsDict["sphereSupportingPlatform"];
+        GameObject bigSphere = proceduralHelper.objectsDict["sphere"];
+        GameObject sphereSupportingPlatform = proceduralHelper.objectsDict["sphereSupportingPlatform"];
 
         int leftOrRight = UnityEngine.Random.Range(0, 2);
 
@@ -478,19 +616,30 @@ public class ProceduralGeneration : MonoBehaviour
         bigSphere = Instantiate(bigSphere, spherePos, transform.rotation);
 
         bigSphere.GetComponent<InitiateFall>().playerPrefab = playerGO;
+
+        PlayerStatistics.ObjectsData currObjectData = new PlayerStatistics.ObjectsData("sphere", spherePos, null, new Vector3(0, 0, 0),
+            null, false, blinkingCannonAnimationController, null);
+        playerStats.AddObjectToSaveList(currObjectData);
+
+        currObjectData = new PlayerStatistics.ObjectsData("sphereSupportingPlatform", platformPos, new Vector3(1.5f,1,1), new Vector3(0, 0, platformAlignment),
+            null, false, blinkingCannonAnimationController, null);
+        playerStats.AddObjectToSaveList(currObjectData);
     }
 
-    void PlaceStillPlatform(float yAxis)
+    void PlaceStillPlatform(float yAxis, float xCoordinate)
     {
-        GameObject stillPlatform = objectsDict["stillPlatform"];
+        GameObject stillPlatform = proceduralHelper.objectsDict["stillPlatform"];
 
         int leftOrRight = UnityEngine.Random.Range(0, 2);
-
-        float xCoordinate = (leftOrRight == 0) ? -2.5f : 2.5f;
 
         Vector3 stillPlatformPos = new Vector3(xCoordinate, yAxis, 0);
 
         Instantiate(stillPlatform, stillPlatformPos, transform.rotation);
+
+
+        PlayerStatistics.ObjectsData currObjectData = new PlayerStatistics.ObjectsData("stillPlatform", stillPlatformPos, null, new Vector3(0, 0, 0),
+            null, false, blinkingCannonAnimationController, null);
+        playerStats.AddObjectToSaveList(currObjectData);
     }
 
     float PlaceBigBox(float yAxis, int count)
@@ -498,7 +647,7 @@ public class ProceduralGeneration : MonoBehaviour
         string[] rotatingObjects = { "blade", "box", "square" };
         if (count == 2)
         {
-            GameObject bigBoxWrapper = objectsDict["bigBox"];
+            GameObject bigBoxWrapper = proceduralHelper.objectsDict["bigBox"];
 
             Vector3 wrapperPos = new Vector3(0, yAxis, 0);
             bigBoxWrapper = Instantiate(bigBoxWrapper, wrapperPos, transform.rotation);
@@ -516,17 +665,18 @@ public class ProceduralGeneration : MonoBehaviour
             }
             else if (boxPlacementCombinations == 1)
             {
-                bigBoxWrapper.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
                 fBox.transform.rotation = sBox.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 45f));
 
                 int objectRequired = (UnityEngine.Random.Range(0, 2));
 
                 if(objectRequired == 0)
                 {
-                    fBox.transform.localPosition = new Vector3(-6.05f, 0, 0);
-                    sBox.transform.localPosition = new Vector3(6.05f, 0, 0);
+                    bigBoxWrapper.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+                    fBox.transform.localPosition = new Vector3(-6.1f, 0, 0);
+                    sBox.transform.localPosition = new Vector3(6.1f, 0, 0);
                 } else
                 {
+                    bigBoxWrapper.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
                     fBox.transform.localPosition = new Vector3(-7.5f, 0, 0);
                     sBox.transform.localPosition = new Vector3(7.5f, 0, 0);
                     PlaceRotatingObjects(yAxis, "blade", "center");
@@ -555,11 +705,21 @@ public class ProceduralGeneration : MonoBehaviour
                 var fRend = fBox.transform.GetComponent<SpriteRenderer>();
                 var sRend = sBox.transform.GetComponent<SpriteRenderer>();
 
-                Vector3 topRightArea = fRend.bounds.max;
-                Vector3 bottomLeftArea = sRend.bounds.min;
+                Vector3 topLeftCoordinate = fRend.bounds.max;
+                Vector3 bottomRightCoordinate = sRend.bounds.min;
+
 
                 // Need to place moving object....
 
+                int rotatingObjCombinations = UnityEngine.Random.Range(0, 4);
+
+                if(rotatingObjCombinations == 0)
+                {
+
+                }
+
+                float yForRotatingObj = (topLeftCoordinate.y + bottomRightCoordinate.y) / 2f;
+                PlaceRotatingObjects(yForRotatingObj, rotatingObjects[UnityEngine.Random.Range(0, 3)], "center");
 
             }
 
@@ -567,10 +727,10 @@ public class ProceduralGeneration : MonoBehaviour
         }
         else
         {
-            GameObject bigBoxWrapperOne = objectsDict["bigBox"];
-            GameObject bigBoxWrapperTwo = objectsDict["bigBox"];
+            GameObject bigBoxWrapperOne = proceduralHelper.objectsDict["bigBox"];
+            GameObject bigBoxWrapperTwo = proceduralHelper.objectsDict["bigBox"];
 
-            int objectRequired = (UnityEngine.Random.Range(0, 2));
+            int objectRequired = (UnityEngine.Random.Range(0, 3));
 
             
             Vector3 wrapperPos = new Vector3(0, yAxis, 0);
@@ -578,27 +738,36 @@ public class ProceduralGeneration : MonoBehaviour
             wrapperPos = new Vector3(0, yAxis + 5f, 0);
             bigBoxWrapperTwo = Instantiate(bigBoxWrapperTwo, wrapperPos, transform.rotation);
 
-            bigBoxWrapperOne.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
-            bigBoxWrapperTwo.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
-
             GameObject fBox = bigBoxWrapperOne.transform.GetChild(0).gameObject;
             GameObject sBox = bigBoxWrapperOne.transform.GetChild(1).gameObject;
 
             fBox.transform.rotation = sBox.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 45f));
-            fBox.transform.localPosition = (objectRequired == 0) ? new Vector3(-6.05f, 0, 0) : new Vector3(-7.5f, 0, 0);
-            sBox.transform.localPosition = (objectRequired == 0) ? new Vector3(6.05f, 0, 0) : new Vector3(7.5f, 0, 0);
+            fBox.transform.localPosition = (objectRequired == 0) ? new Vector3(-6.1f, 0, 0) : new Vector3(-7.5f, 0, 0);
+            sBox.transform.localPosition = (objectRequired == 0) ? new Vector3(6.1f, 0, 0) : new Vector3(7.5f, 0, 0);
 
             fBox = bigBoxWrapperTwo.transform.GetChild(0).gameObject;
             sBox = bigBoxWrapperTwo.transform.GetChild(1).gameObject;
 
             fBox.transform.rotation = sBox.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 45f));
-            fBox.transform.localPosition = (objectRequired == 0) ? new Vector3(-6.05f, 0, 0) : new Vector3(-7.5f, 0, 0);
-            sBox.transform.localPosition = (objectRequired == 0) ? new Vector3(6.05f, 0, 0) : new Vector3(7.5f, 0, 0);
+            fBox.transform.localPosition = (objectRequired == 0) ? new Vector3(-6.1f, 0, 0) : new Vector3(-7.5f, 0, 0);
+            sBox.transform.localPosition = (objectRequired == 0) ? new Vector3(6.1f, 0, 0) : new Vector3(7.5f, 0, 0);
 
-            if(objectRequired == 1)
+            if(objectRequired == 1 || objectRequired == 2)
             {
+                bigBoxWrapperOne.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
+                bigBoxWrapperTwo.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
                 PlaceRotatingObjects(yAxis, "blade", "center");
                 PlaceRotatingObjects(yAxis + 5f, "blade", "center");
+
+                if(objectRequired == 2)
+                {
+                    CreateL2RAnimation(0, UnityEngine.Random.Range(0, 2), rotatingObjects[UnityEngine.Random.Range(0, 3)], 0, yAxis + 2.5f);
+                }
+            } else
+            {
+                bigBoxWrapperOne.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+                bigBoxWrapperTwo.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+                CreateL2RAnimation(0, UnityEngine.Random.Range(0, 2), rotatingObjects[UnityEngine.Random.Range(0, 3)], 0, yAxis + 2.5f);
             }
 
             return yAxis + 10f;
@@ -692,103 +861,107 @@ public class ProceduralGeneration : MonoBehaviour
     }
 
 
+    ProceduralHelper proceduralHelper;
+
     void Start()
     {
-        var bottomLeft = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, 0));
-        var bottomRight = Camera.main.ViewportToWorldPoint(new Vector3(1, 0, 0));
-        screenWidth = bottomRight.x - bottomLeft.x;
-        screenCenterXPoint = (bottomRight.x + bottomLeft.x) / 2f;
-        CreateDictionary();
+        playerStats = FindObjectOfType<PlayerStatistics>();
+        proceduralHelper = GetComponent<ProceduralHelper>();
 
-        int numOfObjects = UnityEngine.Random.Range(7, 8);
+        if (!playerStats.prevProceduralLevelFailed)
+        { 
+            var bottomLeft = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, 0));
+            var bottomRight = Camera.main.ViewportToWorldPoint(new Vector3(1, 0, 0));
+            screenWidth = bottomRight.x - bottomLeft.x;
+            screenCenterXPoint = (bottomRight.x + bottomLeft.x) / 2f;
 
-        float yAxis = transform.position.y + 10f;
+            proceduralHelper.CreateDictionary();
 
-        for (int i=0;i<numOfObjects;i++)
-        {
-            int objectIndex = UnityEngine.Random.Range(0, 12);
-            string objectType = objectsDict.Keys.ElementAt(objectIndex);
-            //string objectType = "stillPlatform";
-            if (objectType == "square")
+            int numOfObjects = UnityEngine.Random.Range(7, 8);
+
+            float yAxis = transform.position.y + 10f;
+
+            for (int i = 0; i < numOfObjects; i++)
             {
-                int count = GetRandomWeightedIndex(new float[] { 0.5f, 0.3f, 0.2f });
-                yAxis = PlaceMovingObjects(yAxis, count + 2, objectType);
-            } else if (objectType == "bigBox")
-            {
-                int numOfBoxes = UnityEngine.Random.Range(0, 2);
-                yAxis = PlaceBigBox(yAxis, (numOfBoxes + 1) * 2);
-            } else if (objectType == "sphere")
-            {
-                PlaceBigSphere(yAxis);
-            } else if (objectType == "blade" || objectType == "box")
-            {
-                int rotateOrMove = (objectType == "blade") ? GetRandomWeightedIndex(new float[] { 0.7f, 0.3f }) : GetRandomWeightedIndex(new float[] { 0.4f, 0.6f });
-                if (rotateOrMove == 0)
-                {
-                    int numOfRotatingObjects = UnityEngine.Random.Range(1, 6);
-                    yAxis = GenerateRotatingObjectCombinations(yAxis, numOfRotatingObjects, objectType);
-                } else
+                int objectIndex = UnityEngine.Random.Range(0, 12);
+                //string objectType = proceduralHelper.objectsDict.Keys.ElementAt(objectIndex);
+                string objectType = "bigBox";
+                if (objectType == "square")
                 {
                     int count = GetRandomWeightedIndex(new float[] { 0.5f, 0.3f, 0.2f });
                     yAxis = PlaceMovingObjects(yAxis, count + 2, objectType);
                 }
-            } else if(objectType == "launcher")
-            {
-                int numOfLaunchers = GetRandomWeightedIndex(new float[] { 0.1f, 0.55f, 0.35f });
-                yAxis = PlaceLauncher(yAxis, numOfLaunchers + 1);
-            } else if(objectType == "grinder")
-            {
-                PlaceGrinder(yAxis);
-            } else if(objectType == "hPlatform")
-            {
-                int numOfPlatforms = GetRandomWeightedIndex(new float[] { 0.0f, 0.5f, 0.35f, 0.15f });
-                yAxis = PlaceHorizontalPlatform(yAxis, numOfPlatforms + 1);
-            } else if(objectType == "saw")
-            {
-                //PlaceRotatingObjects(yAxis, objectType, "center");
-            } else if(objectType == "stillCannon")
-            {
-                PlaceStillCannon(yAxis);
-            } else if(objectType == "upCannon")
-            {
-                PlaceUpCannon(yAxis);
-            } else if(objectType == "stillPlatform")
-            {
-                PlaceStillPlatform(yAxis);
+                else if (objectType == "bigBox")
+                {
+                    int numOfBoxes = UnityEngine.Random.Range(0, 2);
+                    yAxis = PlaceBigBox(yAxis, (numOfBoxes + 1) * 2);
+                }
+                else if (objectType == "sphere")
+                {
+                    PlaceBigSphere(yAxis);
+                }
+                else if (objectType == "blade" || objectType == "box")
+                {
+                    int rotateOrMove = (objectType == "blade") ? GetRandomWeightedIndex(new float[] { 0.7f, 0.3f }) : GetRandomWeightedIndex(new float[] { 0.4f, 0.6f });
+                    if (rotateOrMove == 0)
+                    {
+                        int numOfRotatingObjects = UnityEngine.Random.Range(1, 6);
+                        yAxis = GenerateRotatingObjectCombinations(yAxis, numOfRotatingObjects, objectType);
+                    }
+                    else
+                    {
+                        int count = GetRandomWeightedIndex(new float[] { 0.5f, 0.3f, 0.2f });
+                        yAxis = PlaceMovingObjects(yAxis, count + 2, objectType);
+                    }
+                }
+                else if (objectType == "launcher")
+                {
+                    int numOfLaunchers = GetRandomWeightedIndex(new float[] { 0.1f, 0.55f, 0.35f });
+                    yAxis = PlaceLauncher(yAxis, numOfLaunchers + 1);
+                }
+                else if (objectType == "grinder")
+                {
+                    PlaceGrinder(yAxis);
+                }
+                else if (objectType == "hPlatform")
+                {
+                    int numOfPlatforms = GetRandomWeightedIndex(new float[] { 0.0f, 0.5f, 0.35f, 0.15f });
+                    yAxis = PlaceHorizontalPlatform(yAxis, numOfPlatforms + 1);
+                }
+                else if (objectType == "saw")
+                {
+                    //PlaceRotatingObjects(yAxis, objectType, "center");
+                }
+                else if (objectType == "stillCannon")
+                {
+                    PlaceStillCannon(yAxis);
+                }
+                else if (objectType == "upCannon")
+                {
+                    PlaceUpCannon(yAxis);
+                }
+                else if (objectType == "stillPlatform")
+                {
+                    float xCoordinate = (UnityEngine.Random.Range(0, 2) == 0) ? -2.5f : 2.5f;
+                    PlaceStillPlatform(yAxis, xCoordinate);
+                }
+                yAxis += 5f;
             }
-            yAxis += 5f;
-        }
 
-        SetPlaySpaceAtRuntime(yAxis);
+            proceduralHelper.SetPlaySpaceAtRuntime(yAxis);
 
-        hasLevelGenerationCompleted = true;
-
-    }
-
-    private void SetPlaySpaceAtRuntime(float yAxis)
-    {
-        var rend = playSpaceGO.GetComponent<SpriteRenderer>();
-
-        float initialBound = rend.bounds.min.y;
-        float minBound;
-        float maxBound = rend.bounds.max.y;
-        Vector3 prevPlaySpaceScale = playSpaceGO.transform.localScale;
-
-        while (maxBound < yAxis)
+            hasLevelGenerationCompleted = true;
+        } else
         {
-            playSpaceGO.transform.localScale = new Vector3(prevPlaySpaceScale.x, prevPlaySpaceScale.y + 0.1f, prevPlaySpaceScale.z);
-            minBound = rend.bounds.min.y;
-
-            while(minBound < initialBound)
-            {
-                playSpaceGO.transform.position = new Vector3(playSpaceGO.transform.position.x, playSpaceGO.transform.position.y + 0.1f, playSpaceGO.transform.position.z);
-                minBound = rend.bounds.min.y;
-            }
-            maxBound = rend.bounds.max.y;
-            prevPlaySpaceScale = playSpaceGO.transform.localScale;
+            proceduralHelper.LoadLevelFromStats();
+            hasLevelGenerationCompleted = true;
+            playerStats.prevProceduralLevelFailed = false;
         }
 
+
     }
+
+    
 
     // Update is called once per frame
     void Update()

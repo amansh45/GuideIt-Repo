@@ -1174,6 +1174,7 @@ GameObject:
   m_Component:
   - component: {fileID: 395943676}
   - component: {fileID: 395943675}
+  - component: {fileID: 395943677}
   m_Layer: 0
   m_Name: ProceduralGeneration
   m_TagString: Untagged
@@ -1191,6 +1192,45 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fed6c260b0e9f6e4b8a1da175e5cb76f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coinsPrefab: {fileID: 0}
+  playerGO: {fileID: 158589551}
+  snappingAnimationController: {fileID: 9100000, guid: f8eb06033bc241f4aabdd29f5040d7be,
+    type: 2}
+  rotateAnimationController: {fileID: 9100000, guid: 9628e44c5735e3d418ec8fd47a07fdc1,
+    type: 2}
+  l2rAnimationController: {fileID: 9100000, guid: 4a274fe358224b74399e388c8e489462,
+    type: 2}
+  stillCannonAnimationController: {fileID: 9100000, guid: 9610310910250a14c8797759e6469d88,
+    type: 2}
+  blinkingCannonAnimationController: {fileID: 9100000, guid: d8ed75ed83eee5f4aa9c00b6c4c6db5b,
+    type: 2}
+  hasLevelGenerationCompleted: 0
+--- !u!4 &395943676
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 395943674}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 16
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &395943677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 395943674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bc72061ddb96134a854444d533f6dd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   enemyObjects:
@@ -1217,34 +1257,8 @@ MonoBehaviour:
       type: 3}
     sphereSupportingPlatform: {fileID: 6098295803265367988, guid: c78d1c2daee3c624da8f72dd959935ed,
       type: 3}
-  coinsPrefab: {fileID: 0}
-  playerGO: {fileID: 158589551}
-  snappingAnimationController: {fileID: 9100000, guid: f8eb06033bc241f4aabdd29f5040d7be,
-    type: 2}
-  rotateAnimationController: {fileID: 9100000, guid: 9628e44c5735e3d418ec8fd47a07fdc1,
-    type: 2}
-  l2rAnimationController: {fileID: 9100000, guid: 4a274fe358224b74399e388c8e489462,
-    type: 2}
-  stillCannonAnimationController: {fileID: 9100000, guid: 9610310910250a14c8797759e6469d88,
-    type: 2}
-  blinkingCannonAnimationController: {fileID: 9100000, guid: d8ed75ed83eee5f4aa9c00b6c4c6db5b,
-    type: 2}
   playSpaceGO: {fileID: 174109983}
-  hasLevelGenerationCompleted: 0
---- !u!4 &395943676
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 395943674}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 16
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  playerPrefab: {fileID: 158589551}
 --- !u!1 &396407423
 GameObject:
   m_ObjectHideFlags: 0
@@ -5720,6 +5734,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.y
       value: 1.1296546
+      objectReference: {fileID: 0}
+    - target: {fileID: 8214835303929298594, guid: c05b2577605141c4c8ce7605566df30b,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8214835303981280642, guid: c05b2577605141c4c8ce7605566df30b,
         type: 3}

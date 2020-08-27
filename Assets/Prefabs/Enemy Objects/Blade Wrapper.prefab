@@ -50,6 +50,7 @@ MonoBehaviour:
   scalingRequired: 1
   leftRightOffset: 0
   baseScreenWidth: 5.635593
+  dynamicWidthForScaling: 0
 --- !u!1001 &7813635340696154155
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -117,6 +118,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Blade
       objectReference: {fileID: 0}
+    - target: {fileID: 6807760571840271258, guid: 38c1255745578ba4583684630243df81,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: b8f350d6b7026a04e9d5fd56080ae559, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 38c1255745578ba4583684630243df81, type: 3}
 --- !u!4 &3186633227824484042 stripped

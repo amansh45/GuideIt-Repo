@@ -25,6 +25,27 @@ public class PlayerStatistics : MonoBehaviour
 
     }
 
+    public struct BigBoxData
+    {
+        public Vector3 FBoxPos;
+        public Vector3 SBoxPos;
+        public Vector3 FBoxRotation;
+        public Vector3 SBoxRotation;
+        public Vector3 FBoxScale;
+        public Vector3 SBoxScale;
+
+        public BigBoxData(Vector3 fBoxPos, Vector3 sBoxPos, Vector3 fBoxRotation, Vector3 sBoxRotation, Vector3 fBoxScale, Vector3 sBoxScale)
+        {
+            FBoxPos = fBoxPos;
+            SBoxPos = sBoxPos;
+            FBoxRotation = fBoxRotation;
+            SBoxRotation = sBoxRotation;
+            FBoxScale = fBoxScale;
+            SBoxScale = sBoxScale;
+        }
+
+    }
+
     public struct EnemyLauncherScriptParams
     {
         public bool AimAtPlayer;
@@ -46,11 +67,12 @@ public class PlayerStatistics : MonoBehaviour
         public PlaceObjectScriptParams? ScriptParams;
         public bool IsAnimationChangeRequired;
         public EnemyLauncherScriptParams? LauncherScriptParams;
+        public BigBoxData? BigBoxParams;
         public RuntimeAnimatorController AnimatorController;
 
         public ObjectsData(string objectType, Vector3 objectPosition, Vector3? objectScale, Vector3 objectRotation, 
             PlaceObjectScriptParams? scriptParams, bool isAnimationChangeRequired, 
-            RuntimeAnimatorController animationController, EnemyLauncherScriptParams? launcherScriptParams)
+            RuntimeAnimatorController animationController, EnemyLauncherScriptParams? launcherScriptParams, BigBoxData? bigBoxParams)
         {
             ObjectType = objectType;
             ObjectPosition = objectPosition;
@@ -60,6 +82,7 @@ public class PlayerStatistics : MonoBehaviour
             IsAnimationChangeRequired = isAnimationChangeRequired;
             AnimatorController = animationController;
             LauncherScriptParams = launcherScriptParams;
+            BigBoxParams = bigBoxParams;
         }
     }
 

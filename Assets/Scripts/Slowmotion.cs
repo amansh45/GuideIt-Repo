@@ -5,7 +5,7 @@ using UnityEngine;
 public class Slowmotion : MonoBehaviour
 {
     [SerializeField] float slowmoSpeed = 0.1f, normalSpeed = 1f;
-    [SerializeField] GameObject[] gameEntities;
+    public GameObject[] gameEntities;
     List<Animator> animators = new List<Animator>();
     List<EnemyLauncher> granadeLaunchersInScene = new List<EnemyLauncher>();
     int numGameEntities, numAnimators = 0, numLaunchers = 0;

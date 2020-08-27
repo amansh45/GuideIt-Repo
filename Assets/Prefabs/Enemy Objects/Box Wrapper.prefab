@@ -50,6 +50,7 @@ MonoBehaviour:
   scalingRequired: 0
   leftRightOffset: 0.1
   baseScreenWidth: 5.635593
+  dynamicWidthForScaling: 0
 --- !u!1001 &9182547787704950182
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -62,6 +63,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Near Miss Box GO
       objectReference: {fileID: 0}
+    - target: {fileID: 3141271641104159595, guid: f3baee857641d5c4e802ce5d0492a989,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: b8f350d6b7026a04e9d5fd56080ae559, type: 2}
     - target: {fileID: 3141271641104159597, guid: f3baee857641d5c4e802ce5d0492a989,
         type: 3}
       propertyPath: m_LocalPosition.x

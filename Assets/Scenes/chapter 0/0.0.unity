@@ -1259,6 +1259,7 @@ MonoBehaviour:
       type: 3}
   playSpaceGO: {fileID: 174109983}
   playerPrefab: {fileID: 158589551}
+  slowmotionGO: {fileID: 1235080899}
 --- !u!1 &396407423
 GameObject:
   m_ObjectHideFlags: 0
@@ -1679,12 +1680,6 @@ PrefabInstance:
 --- !u!4 &555897666 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3608964236608183297, guid: 4948a6519d8e41d47ae40a69babce2dd,
-    type: 3}
-  m_PrefabInstance: {fileID: 555897665}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &555897667 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3186633227824484044, guid: 4948a6519d8e41d47ae40a69babce2dd,
     type: 3}
   m_PrefabInstance: {fileID: 555897665}
   m_PrefabAsset: {fileID: 0}
@@ -2251,12 +2246,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1004979768}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1004979770 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6122361556408094409, guid: 221ce7e384e6e7f41be160aac4526c77,
-    type: 3}
-  m_PrefabInstance: {fileID: 1004979768}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1049681586
 GameObject:
   m_ObjectHideFlags: 0
@@ -2696,10 +2685,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slowmoSpeed: 0.5
   normalSpeed: 1
-  gameEntities:
-  - {fileID: 1004979770}
-  - {fileID: 1293216597}
-  - {fileID: 555897667}
+  gameEntities: []
 --- !u!4 &1235080901
 Transform:
   m_ObjectHideFlags: 0
@@ -2821,12 +2807,6 @@ PrefabInstance:
 --- !u!4 &1293216596 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3608964236608183297, guid: 4948a6519d8e41d47ae40a69babce2dd,
-    type: 3}
-  m_PrefabInstance: {fileID: 1293216595}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1293216597 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3186633227824484044, guid: 4948a6519d8e41d47ae40a69babce2dd,
     type: 3}
   m_PrefabInstance: {fileID: 1293216595}
   m_PrefabAsset: {fileID: 0}

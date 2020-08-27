@@ -62,7 +62,7 @@ public class ProceduralGeneration : MonoBehaviour
 
 
         PlayerStatistics.ObjectsData currObjectData = new PlayerStatistics.ObjectsData(objectType, fPos, null, new Vector3(0, 0, 0),
-            new PlayerStatistics.PlaceObjectScriptParams(false, true, false, true, 0), true, firstAnimator.runtimeAnimatorController, null);
+            new PlayerStatistics.PlaceObjectScriptParams(false, true, false, true, 0), true, firstAnimator.runtimeAnimatorController, null, null);
         playerStats.AddObjectToSaveList(currObjectData);
 
 
@@ -80,7 +80,7 @@ public class ProceduralGeneration : MonoBehaviour
 
 
         currObjectData = new PlayerStatistics.ObjectsData(objectType, sPos, null, new Vector3(0, 180, 360),
-            new PlayerStatistics.PlaceObjectScriptParams(false, true, false, true, 0), true, secondAnimator.runtimeAnimatorController, null);
+            new PlayerStatistics.PlaceObjectScriptParams(false, true, false, true, 0), true, secondAnimator.runtimeAnimatorController, null, null);
         playerStats.AddObjectToSaveList(currObjectData);
 
 
@@ -95,7 +95,7 @@ public class ProceduralGeneration : MonoBehaviour
 
 
             currObjectData = new PlayerStatistics.ObjectsData(objectType, tPos, null, new Vector3(0, 0, 0),
-                new PlayerStatistics.PlaceObjectScriptParams(false, true, false, true, 0), true, thirdAnimator.runtimeAnimatorController, null);
+                new PlayerStatistics.PlaceObjectScriptParams(false, true, false, true, 0), true, thirdAnimator.runtimeAnimatorController, null, null);
             playerStats.AddObjectToSaveList(currObjectData);
         }
 
@@ -109,7 +109,7 @@ public class ProceduralGeneration : MonoBehaviour
 
 
             currObjectData = new PlayerStatistics.ObjectsData(objectType, foPos, null, new Vector3(0, 180, 360),
-                new PlayerStatistics.PlaceObjectScriptParams(false, true, false, true, 0), true, fourthAnimator.runtimeAnimatorController, null);
+                new PlayerStatistics.PlaceObjectScriptParams(false, true, false, true, 0), true, fourthAnimator.runtimeAnimatorController, null, null);
             playerStats.AddObjectToSaveList(currObjectData);
         }
     }
@@ -175,20 +175,20 @@ public class ProceduralGeneration : MonoBehaviour
                 if(movement == 1)
                 {
                     PlayerStatistics.ObjectsData currObjectData = new PlayerStatistics.ObjectsData(objectType, fPos, null, new Vector3(0, 0, (-1) * alignment),
-                        new PlayerStatistics.PlaceObjectScriptParams(false, true, false, true, 0), true, firstAnimator.runtimeAnimatorController, null);
+                        new PlayerStatistics.PlaceObjectScriptParams(false, true, false, true, 0), true, firstAnimator.runtimeAnimatorController, null, null);
                     playerStats.AddObjectToSaveList(currObjectData);
 
                     currObjectData = new PlayerStatistics.ObjectsData(objectType, sPos, null, new Vector3(0, 0, 180 - alignment),
-                        new PlayerStatistics.PlaceObjectScriptParams(false, true, false, true, 0), true, secondAnimator.runtimeAnimatorController, null);
+                        new PlayerStatistics.PlaceObjectScriptParams(false, true, false, true, 0), true, secondAnimator.runtimeAnimatorController, null, null);
                     playerStats.AddObjectToSaveList(currObjectData);
                 } else
                 {
                     PlayerStatistics.ObjectsData currObjectData = new PlayerStatistics.ObjectsData(objectType, fPos, null, new Vector3(0, 0, alignment),
-                        new PlayerStatistics.PlaceObjectScriptParams(false, true, false, true, 0), true, firstAnimator.runtimeAnimatorController, null);
+                        new PlayerStatistics.PlaceObjectScriptParams(false, true, false, true, 0), true, firstAnimator.runtimeAnimatorController, null, null);
                     playerStats.AddObjectToSaveList(currObjectData);
 
                     currObjectData = new PlayerStatistics.ObjectsData(objectType, sPos, null, new Vector3(0, 0, (-1) * (180 - alignment)),
-                        new PlayerStatistics.PlaceObjectScriptParams(false, true, false, true, 0), true, secondAnimator.runtimeAnimatorController, null);
+                        new PlayerStatistics.PlaceObjectScriptParams(false, true, false, true, 0), true, secondAnimator.runtimeAnimatorController, null, null);
                     playerStats.AddObjectToSaveList(currObjectData);
                 }
 
@@ -208,11 +208,11 @@ public class ProceduralGeneration : MonoBehaviour
 
 
                 PlayerStatistics.ObjectsData currObjectData = new PlayerStatistics.ObjectsData(objectType, fPos, null, new Vector3(0, 0, -90),
-                        new PlayerStatistics.PlaceObjectScriptParams(true, false, false, true, dynamicWidthForScaling), true, firstAnimator.runtimeAnimatorController, null);
+                        new PlayerStatistics.PlaceObjectScriptParams(true, false, false, true, dynamicWidthForScaling), true, firstAnimator.runtimeAnimatorController, null, null);
                 playerStats.AddObjectToSaveList(currObjectData);
 
                 currObjectData = new PlayerStatistics.ObjectsData(objectType, sPos, null, new Vector3(0, 0, 90),
-                    new PlayerStatistics.PlaceObjectScriptParams(true, false, false, true, dynamicWidthForScaling), true, secondAnimator.runtimeAnimatorController, null);
+                    new PlayerStatistics.PlaceObjectScriptParams(true, false, false, true, dynamicWidthForScaling), true, secondAnimator.runtimeAnimatorController, null, null);
                 playerStats.AddObjectToSaveList(currObjectData);
 
 
@@ -254,15 +254,15 @@ public class ProceduralGeneration : MonoBehaviour
 
 
                 PlayerStatistics.ObjectsData currObjectData = new PlayerStatistics.ObjectsData(objectType, fPos, null, new Vector3(0, 0, -90),
-                        new PlayerStatistics.PlaceObjectScriptParams(true, false, false, true, dynamicWidthForScaling), true, firstAnimator.runtimeAnimatorController, null);
+                        new PlayerStatistics.PlaceObjectScriptParams(true, false, false, true, dynamicWidthForScaling), true, firstAnimator.runtimeAnimatorController, null, null);
                 playerStats.AddObjectToSaveList(currObjectData);
 
                 currObjectData = new PlayerStatistics.ObjectsData(objectType, sPos, null, new Vector3(0, 0, 90),
-                    new PlayerStatistics.PlaceObjectScriptParams(true, false, false, true, dynamicWidthForScaling), true, secondAnimator.runtimeAnimatorController, null);
+                    new PlayerStatistics.PlaceObjectScriptParams(true, false, false, true, dynamicWidthForScaling), true, secondAnimator.runtimeAnimatorController, null, null);
                 playerStats.AddObjectToSaveList(currObjectData);
 
                 currObjectData = new PlayerStatistics.ObjectsData(objectType, tPos, null, new Vector3(0, 0, 90),
-                    new PlayerStatistics.PlaceObjectScriptParams(true, false, false, true, dynamicWidthForScaling), true, thirdAnimator.runtimeAnimatorController, null);
+                    new PlayerStatistics.PlaceObjectScriptParams(true, false, false, true, dynamicWidthForScaling), true, thirdAnimator.runtimeAnimatorController, null, null);
                 playerStats.AddObjectToSaveList(currObjectData);
 
                 float xCoordinate = (UnityEngine.Random.Range(0, 2) == 0) ? -1.9f : 1.9f;
@@ -308,19 +308,19 @@ public class ProceduralGeneration : MonoBehaviour
 
 
                 PlayerStatistics.ObjectsData currObjectData = new PlayerStatistics.ObjectsData(objectType, fPos, null, new Vector3(0, 0, -90),
-                        new PlayerStatistics.PlaceObjectScriptParams(true, false, false, true, dynamicWidthForScaling), true, firstAnimator.runtimeAnimatorController, null);
+                        new PlayerStatistics.PlaceObjectScriptParams(true, false, false, true, dynamicWidthForScaling), true, firstAnimator.runtimeAnimatorController, null, null);
                 playerStats.AddObjectToSaveList(currObjectData);
 
                 currObjectData = new PlayerStatistics.ObjectsData(objectType, sPos, null, new Vector3(0, 0, 90),
-                    new PlayerStatistics.PlaceObjectScriptParams(true, false, false, true, dynamicWidthForScaling), true, secondAnimator.runtimeAnimatorController, null);
+                    new PlayerStatistics.PlaceObjectScriptParams(true, false, false, true, dynamicWidthForScaling), true, secondAnimator.runtimeAnimatorController, null, null);
                 playerStats.AddObjectToSaveList(currObjectData);
 
                 currObjectData = new PlayerStatistics.ObjectsData(objectType, tPos, null, new Vector3(0, 0, -90),
-                    new PlayerStatistics.PlaceObjectScriptParams(true, false, false, true, dynamicWidthForScaling), true, thirdAnimator.runtimeAnimatorController, null);
+                    new PlayerStatistics.PlaceObjectScriptParams(true, false, false, true, dynamicWidthForScaling), true, thirdAnimator.runtimeAnimatorController, null, null);
                 playerStats.AddObjectToSaveList(currObjectData);
 
                 currObjectData = new PlayerStatistics.ObjectsData(objectType, foPos, null, new Vector3(0, 0, 90),
-                    new PlayerStatistics.PlaceObjectScriptParams(true, false, false, true, dynamicWidthForScaling), true, fourthAnimator.runtimeAnimatorController, null);
+                    new PlayerStatistics.PlaceObjectScriptParams(true, false, false, true, dynamicWidthForScaling), true, fourthAnimator.runtimeAnimatorController, null, null);
                 playerStats.AddObjectToSaveList(currObjectData);
 
 
@@ -357,7 +357,7 @@ public class ProceduralGeneration : MonoBehaviour
             proceduralHelper.UpdatePlaceObjectScriptParams(gameObject, true, false, false, false, 0);
 
             currObjectData = new PlayerStatistics.ObjectsData(objectType, objPos, new Vector3(scaleFactor, scaleFactor, scaleFactor), new Vector3(0, 0, 0),
-                    new PlayerStatistics.PlaceObjectScriptParams(true, false, false, false, 0), true, rotateAnimationController, null);
+                    new PlayerStatistics.PlaceObjectScriptParams(true, false, false, false, 0), true, rotateAnimationController, null, null);
         } else if(xPosition == "left")
         {
             objPos = new Vector3(-1, yAxis, 0);
@@ -366,7 +366,7 @@ public class ProceduralGeneration : MonoBehaviour
             proceduralHelper.UpdatePlaceObjectScriptParams(gameObject, true, true, false, false, 0);
 
             currObjectData = new PlayerStatistics.ObjectsData(objectType, objPos, new Vector3(scaleFactor, scaleFactor, scaleFactor), new Vector3(0, 0, 0),
-                    new PlayerStatistics.PlaceObjectScriptParams(true, true, false, false, 0), true, rotateAnimationController, null);
+                    new PlayerStatistics.PlaceObjectScriptParams(true, true, false, false, 0), true, rotateAnimationController, null, null);
         } else if(xPosition == "right") {
             objPos = new Vector3(1, yAxis, 0);
             gameObject = Instantiate(gameObject, objPos, transform.rotation);
@@ -374,7 +374,7 @@ public class ProceduralGeneration : MonoBehaviour
             proceduralHelper.UpdatePlaceObjectScriptParams(gameObject, true, true, false, false, 0);
 
             currObjectData = new PlayerStatistics.ObjectsData(objectType, objPos, new Vector3(scaleFactor, scaleFactor, scaleFactor), new Vector3(0, 0, 0),
-                    new PlayerStatistics.PlaceObjectScriptParams(true, true, false, false, 0), true, rotateAnimationController, null);
+                    new PlayerStatistics.PlaceObjectScriptParams(true, true, false, false, 0), true, rotateAnimationController, null, null);
         } else
         {
             objPos = new Vector3(float.Parse(xPosition), yAxis, 0);
@@ -383,7 +383,7 @@ public class ProceduralGeneration : MonoBehaviour
             proceduralHelper.UpdatePlaceObjectScriptParams(gameObject, true, false, false, false, 0);
 
             currObjectData = new PlayerStatistics.ObjectsData(objectType, objPos, new Vector3(scaleFactor, scaleFactor, scaleFactor), new Vector3(0, 0, 0),
-                    new PlayerStatistics.PlaceObjectScriptParams(true, false, false, false, 0), true, rotateAnimationController, null);
+                    new PlayerStatistics.PlaceObjectScriptParams(true, false, false, false, 0), true, rotateAnimationController, null, null);
         }
 
         Animator objAnimator = gameObject.GetComponentInChildren<Animator>();
@@ -406,7 +406,7 @@ public class ProceduralGeneration : MonoBehaviour
 
         PlayerStatistics.ObjectsData currObjectData = new PlayerStatistics.ObjectsData("launcher", launcherPos, null, new Vector3(0, 0, 0),
                     new PlayerStatistics.PlaceObjectScriptParams(false, true, false, false, 0), false, rotateAnimationController, 
-                    new PlayerStatistics.EnemyLauncherScriptParams(true, false));
+                    new PlayerStatistics.EnemyLauncherScriptParams(true, false), null);
         playerStats.AddObjectToSaveList(currObjectData);
 
         if (count == 1)
@@ -434,7 +434,7 @@ public class ProceduralGeneration : MonoBehaviour
 
             currObjectData = new PlayerStatistics.ObjectsData("launcher", launcherPos, null, new Vector3(0, 0, 0),
                     new PlayerStatistics.PlaceObjectScriptParams(false, true, false, false, 0), false, rotateAnimationController,
-                    new PlayerStatistics.EnemyLauncherScriptParams(true, false));
+                    new PlayerStatistics.EnemyLauncherScriptParams(true, false), null);
             playerStats.AddObjectToSaveList(currObjectData);
         }
 
@@ -453,7 +453,7 @@ public class ProceduralGeneration : MonoBehaviour
 
             currObjectData = new PlayerStatistics.ObjectsData("launcher", launcherPos, null, new Vector3(0, 0, 0),
                     new PlayerStatistics.PlaceObjectScriptParams(false, true, false, false, 0), false, rotateAnimationController,
-                    new PlayerStatistics.EnemyLauncherScriptParams(true, false));
+                    new PlayerStatistics.EnemyLauncherScriptParams(true, false), null);
             playerStats.AddObjectToSaveList(currObjectData);
         }
 
@@ -469,7 +469,7 @@ public class ProceduralGeneration : MonoBehaviour
         Instantiate(fHorizontalPlatform, platformPos, Quaternion.Euler(new Vector3(0, 0, alignment)));
 
         PlayerStatistics.ObjectsData currObjectData = new PlayerStatistics.ObjectsData("hPlatform", platformPos, null, new Vector3(0, 0, alignment),
-                    null, false, rotateAnimationController, null);
+                    null, false, rotateAnimationController, null, null);
         playerStats.AddObjectToSaveList(currObjectData);
 
         if (count == 2)
@@ -491,7 +491,7 @@ public class ProceduralGeneration : MonoBehaviour
                 }
 
                 currObjectData = new PlayerStatistics.ObjectsData("hPlatform:", platformPos, null, new Vector3(0, 0, alignment),
-                            null, false, rotateAnimationController, null);
+                            null, false, rotateAnimationController, null, null);
                 playerStats.AddObjectToSaveList(currObjectData);
 
                 return yAxis + 7.5f;
@@ -500,7 +500,7 @@ public class ProceduralGeneration : MonoBehaviour
 
 
         currObjectData = new PlayerStatistics.ObjectsData("hPlatform", platformPos, null, new Vector3(0, 0, alignment),
-                    null, false, rotateAnimationController, null);
+                    null, false, rotateAnimationController, null, null);
         playerStats.AddObjectToSaveList(currObjectData);
         return yAxis + 10f;
     }
@@ -513,7 +513,7 @@ public class ProceduralGeneration : MonoBehaviour
         Instantiate(fHorizontalPlatform, platformPos, Quaternion.Euler(new Vector3(0, 0, alignment)));
 
         PlayerStatistics.ObjectsData currObjectData = new PlayerStatistics.ObjectsData("grinder", platformPos, null, new Vector3(0, 0, alignment),
-                    null, false, rotateAnimationController, null);
+                    null, false, rotateAnimationController, null, null);
         playerStats.AddObjectToSaveList(currObjectData);
     }
 
@@ -551,7 +551,7 @@ public class ProceduralGeneration : MonoBehaviour
             cannonAnimator.runtimeAnimatorController = stillCannonAnimationController;
 
             PlayerStatistics.ObjectsData currObjectData = new PlayerStatistics.ObjectsData("stillCannon", cannonPos, null, new Vector3(0, 0, alignment),
-                    null, true, stillCannonAnimationController, new PlayerStatistics.EnemyLauncherScriptParams(false, false));
+                    null, true, stillCannonAnimationController, new PlayerStatistics.EnemyLauncherScriptParams(false, false), null);
             playerStats.AddObjectToSaveList(currObjectData);
         } else
         {
@@ -560,7 +560,7 @@ public class ProceduralGeneration : MonoBehaviour
             cannonAnimator.runtimeAnimatorController = blinkingCannonAnimationController;
 
             PlayerStatistics.ObjectsData currObjectData = new PlayerStatistics.ObjectsData("stillCannon", cannonPos, null, new Vector3(0, 0, alignment),
-                null, true, blinkingCannonAnimationController, new PlayerStatistics.EnemyLauncherScriptParams(false, true));
+                null, true, blinkingCannonAnimationController, new PlayerStatistics.EnemyLauncherScriptParams(false, true), null);
             playerStats.AddObjectToSaveList(currObjectData);
         }
     }
@@ -584,13 +584,13 @@ public class ProceduralGeneration : MonoBehaviour
         {
             Instantiate(upCannon, cannonPos, Quaternion.Euler(new Vector3(180, 0, 180)));
             PlayerStatistics.ObjectsData currObjectData = new PlayerStatistics.ObjectsData("upCannon", cannonPos, null, new Vector3(180, 0, 180),
-                null, false, blinkingCannonAnimationController, null);
+                null, false, blinkingCannonAnimationController, null, null);
             playerStats.AddObjectToSaveList(currObjectData);
         } else
         {
             Instantiate(upCannon, cannonPos, transform.rotation);
             PlayerStatistics.ObjectsData currObjectData = new PlayerStatistics.ObjectsData("upCannon", cannonPos, null, new Vector3(0, 0, 0),
-                null, false, blinkingCannonAnimationController, null);
+                null, false, blinkingCannonAnimationController, null, null);
             playerStats.AddObjectToSaveList(currObjectData);
         }
     }
@@ -618,11 +618,11 @@ public class ProceduralGeneration : MonoBehaviour
         bigSphere.GetComponent<InitiateFall>().playerPrefab = playerGO;
 
         PlayerStatistics.ObjectsData currObjectData = new PlayerStatistics.ObjectsData("sphere", spherePos, null, new Vector3(0, 0, 0),
-            null, false, blinkingCannonAnimationController, null);
+            null, false, blinkingCannonAnimationController, null, null);
         playerStats.AddObjectToSaveList(currObjectData);
 
         currObjectData = new PlayerStatistics.ObjectsData("sphereSupportingPlatform", platformPos, new Vector3(1.5f,1,1), new Vector3(0, 0, platformAlignment),
-            null, false, blinkingCannonAnimationController, null);
+            null, false, blinkingCannonAnimationController, null, null);
         playerStats.AddObjectToSaveList(currObjectData);
     }
 
@@ -630,15 +630,13 @@ public class ProceduralGeneration : MonoBehaviour
     {
         GameObject stillPlatform = proceduralHelper.objectsDict["stillPlatform"];
 
-        int leftOrRight = UnityEngine.Random.Range(0, 2);
-
         Vector3 stillPlatformPos = new Vector3(xCoordinate, yAxis, 0);
 
         Instantiate(stillPlatform, stillPlatformPos, transform.rotation);
 
 
         PlayerStatistics.ObjectsData currObjectData = new PlayerStatistics.ObjectsData("stillPlatform", stillPlatformPos, null, new Vector3(0, 0, 0),
-            null, false, blinkingCannonAnimationController, null);
+            null, false, blinkingCannonAnimationController, null, null);
         playerStats.AddObjectToSaveList(currObjectData);
     }
 
@@ -652,7 +650,7 @@ public class ProceduralGeneration : MonoBehaviour
             Vector3 wrapperPos = new Vector3(0, yAxis, 0);
             bigBoxWrapper = Instantiate(bigBoxWrapper, wrapperPos, transform.rotation);
 
-            int boxPlacementCombinations = 3;
+            int boxPlacementCombinations = UnityEngine.Random.Range(0, 4);
             GameObject fBox = bigBoxWrapper.transform.GetChild(0).gameObject;
             GameObject sBox = bigBoxWrapper.transform.GetChild(1).gameObject;
 
@@ -708,22 +706,47 @@ public class ProceduralGeneration : MonoBehaviour
                 Vector3 topLeftCoordinate = fRend.bounds.max;
                 Vector3 bottomRightCoordinate = sRend.bounds.min;
 
-
-                // Need to place moving object....
+                
 
                 int rotatingObjCombinations = UnityEngine.Random.Range(0, 4);
-
-                if(rotatingObjCombinations == 0)
-                {
-
-                }
+                int rotatingObjIndex = UnityEngine.Random.Range(0, 3);
 
                 float yForRotatingObj = (topLeftCoordinate.y + bottomRightCoordinate.y) / 2f;
-                PlaceRotatingObjects(yForRotatingObj, rotatingObjects[UnityEngine.Random.Range(0, 3)], "center");
-
+                float offset = 0.7f;
+                if (rotatingObjCombinations == 0)
+                {
+                    PlaceRotatingObjects(topLeftCoordinate.y - offset, rotatingObjects[rotatingObjIndex], "center");
+                    PlaceRotatingObjects(yForRotatingObj, rotatingObjects[rotatingObjIndex], "-1");
+                    PlaceRotatingObjects(yForRotatingObj, rotatingObjects[rotatingObjIndex], "1");
+                    PlaceRotatingObjects(bottomRightCoordinate.y + offset , rotatingObjects[rotatingObjIndex], "center");
+                } else if(rotatingObjCombinations == 1)
+                {
+                    PlaceRotatingObjects(topLeftCoordinate.y - offset , rotatingObjects[rotatingObjIndex], "-1");
+                    PlaceRotatingObjects(topLeftCoordinate.y - offset, rotatingObjects[rotatingObjIndex], "1");
+                    PlaceRotatingObjects(bottomRightCoordinate.y + offset, rotatingObjects[rotatingObjIndex], "-1");
+                    PlaceRotatingObjects(bottomRightCoordinate.y + offset, rotatingObjects[rotatingObjIndex], "1");
+                } else if(rotatingObjCombinations == 2)
+                {
+                    PlaceRotatingObjects(yForRotatingObj, rotatingObjects[rotatingObjIndex], "center");
+                } else if(rotatingObjCombinations == 3)
+                {
+                    PlaceRotatingObjects(yForRotatingObj, rotatingObjects[rotatingObjIndex], "-1");
+                    PlaceRotatingObjects(yForRotatingObj, rotatingObjects[rotatingObjIndex], "1");
+                }
             }
 
-            return yAxis + 5f;
+            Vector3 wrapperRotation = new Vector3(bigBoxWrapper.transform.eulerAngles.x, bigBoxWrapper.transform.eulerAngles.y, bigBoxWrapper.transform.eulerAngles.z);
+            Vector3 fBoxRotation = new Vector3(fBox.transform.eulerAngles.x, fBox.transform.eulerAngles.y, fBox.transform.eulerAngles.z);
+            Vector3 sBoxRotation = new Vector3(sBox.transform.eulerAngles.x, sBox.transform.eulerAngles.y, sBox.transform.eulerAngles.z);
+
+            PlayerStatistics.BigBoxData boxDataObj = new PlayerStatistics.BigBoxData(fBox.transform.localPosition, sBox.transform.localPosition, fBoxRotation, sBoxRotation, fBox.transform.localScale, sBox.transform.localScale);
+
+            PlayerStatistics.ObjectsData currObjectData = new PlayerStatistics.ObjectsData("bigBox", wrapperPos, bigBoxWrapper.transform.localScale, wrapperRotation,
+                null, false, blinkingCannonAnimationController, null, boxDataObj);
+            playerStats.AddObjectToSaveList(currObjectData);
+
+
+            return yAxis + 10f;
         }
         else
         {
@@ -745,14 +768,25 @@ public class ProceduralGeneration : MonoBehaviour
             fBox.transform.localPosition = (objectRequired == 0) ? new Vector3(-6.1f, 0, 0) : new Vector3(-7.5f, 0, 0);
             sBox.transform.localPosition = (objectRequired == 0) ? new Vector3(6.1f, 0, 0) : new Vector3(7.5f, 0, 0);
 
+            Vector3 fBoxRotation = new Vector3(fBox.transform.eulerAngles.x, fBox.transform.eulerAngles.y, fBox.transform.eulerAngles.z);
+            Vector3 sBoxRotation = new Vector3(sBox.transform.eulerAngles.x, sBox.transform.eulerAngles.y, sBox.transform.eulerAngles.z);
+            PlayerStatistics.BigBoxData boxDataObjOne = new PlayerStatistics.BigBoxData(fBox.transform.localPosition, sBox.transform.localPosition, fBoxRotation, sBoxRotation, fBox.transform.localScale, sBox.transform.localScale);
+
+
+
             fBox = bigBoxWrapperTwo.transform.GetChild(0).gameObject;
             sBox = bigBoxWrapperTwo.transform.GetChild(1).gameObject;
-
             fBox.transform.rotation = sBox.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 45f));
             fBox.transform.localPosition = (objectRequired == 0) ? new Vector3(-6.1f, 0, 0) : new Vector3(-7.5f, 0, 0);
             sBox.transform.localPosition = (objectRequired == 0) ? new Vector3(6.1f, 0, 0) : new Vector3(7.5f, 0, 0);
 
-            if(objectRequired == 1 || objectRequired == 2)
+
+            fBoxRotation = new Vector3(fBox.transform.eulerAngles.x, fBox.transform.eulerAngles.y, fBox.transform.eulerAngles.z);
+            sBoxRotation = new Vector3(sBox.transform.eulerAngles.x, sBox.transform.eulerAngles.y, sBox.transform.eulerAngles.z);
+            PlayerStatistics.BigBoxData boxDataObjTwo = new PlayerStatistics.BigBoxData(fBox.transform.localPosition, sBox.transform.localPosition, fBoxRotation, sBoxRotation, fBox.transform.localScale, sBox.transform.localScale);
+
+
+            if (objectRequired == 1 || objectRequired == 2)
             {
                 bigBoxWrapperOne.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
                 bigBoxWrapperTwo.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
@@ -761,14 +795,28 @@ public class ProceduralGeneration : MonoBehaviour
 
                 if(objectRequired == 2)
                 {
-                    CreateL2RAnimation(0, UnityEngine.Random.Range(0, 2), rotatingObjects[UnityEngine.Random.Range(0, 3)], 0, yAxis + 2.5f);
+                    CreateL2RAnimation(0, 1, rotatingObjects[UnityEngine.Random.Range(0, 3)], 0, yAxis + 2.5f);
                 }
             } else
             {
                 bigBoxWrapperOne.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
                 bigBoxWrapperTwo.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-                CreateL2RAnimation(0, UnityEngine.Random.Range(0, 2), rotatingObjects[UnityEngine.Random.Range(0, 3)], 0, yAxis + 2.5f);
+                CreateL2RAnimation(0, 1, rotatingObjects[UnityEngine.Random.Range(0, 3)], 0, yAxis + 2.5f);
             }
+
+
+            Vector3 wrapperRotationOne = new Vector3(bigBoxWrapperOne.transform.eulerAngles.x, bigBoxWrapperOne.transform.eulerAngles.y, bigBoxWrapperOne.transform.eulerAngles.z);
+            Vector3 wrapperRotationTwo = new Vector3(bigBoxWrapperTwo.transform.eulerAngles.x, bigBoxWrapperTwo.transform.eulerAngles.y, bigBoxWrapperTwo.transform.eulerAngles.z);
+
+
+            PlayerStatistics.ObjectsData currObjectData = new PlayerStatistics.ObjectsData("bigBox", bigBoxWrapperOne.transform.position, bigBoxWrapperOne.transform.localScale, wrapperRotationOne,
+                null, false, blinkingCannonAnimationController, null, boxDataObjOne);
+            playerStats.AddObjectToSaveList(currObjectData);
+
+            currObjectData = new PlayerStatistics.ObjectsData("bigBox", bigBoxWrapperTwo.transform.position, bigBoxWrapperOne.transform.localScale, wrapperRotationTwo,
+                null, false, blinkingCannonAnimationController, null, boxDataObjTwo);
+            playerStats.AddObjectToSaveList(currObjectData);
+
 
             return yAxis + 10f;
         }
@@ -884,8 +932,7 @@ public class ProceduralGeneration : MonoBehaviour
             for (int i = 0; i < numOfObjects; i++)
             {
                 int objectIndex = UnityEngine.Random.Range(0, 12);
-                //string objectType = proceduralHelper.objectsDict.Keys.ElementAt(objectIndex);
-                string objectType = "bigBox";
+                string objectType = proceduralHelper.objectsDict.Keys.ElementAt(objectIndex);
                 if (objectType == "square")
                 {
                     int count = GetRandomWeightedIndex(new float[] { 0.5f, 0.3f, 0.2f });
@@ -894,6 +941,7 @@ public class ProceduralGeneration : MonoBehaviour
                 else if (objectType == "bigBox")
                 {
                     int numOfBoxes = UnityEngine.Random.Range(0, 2);
+                    yAxis += 5f;
                     yAxis = PlaceBigBox(yAxis, (numOfBoxes + 1) * 2);
                 }
                 else if (objectType == "sphere")
@@ -958,6 +1006,7 @@ public class ProceduralGeneration : MonoBehaviour
             playerStats.prevProceduralLevelFailed = false;
         }
 
+        //proceduralHelper.AddObjectsForSlowMotion();
 
     }
 

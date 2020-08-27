@@ -128,8 +128,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isRotating: 0
   placeWrtCornors: 0
+  isCoinOrPlayer: 0
+  scalingRequired: 0
   leftRightOffset: 0.3
   baseScreenWidth: 5.61
+  dynamicWidthForScaling: 0
 --- !u!1 &3234638709379059280
 GameObject:
   m_ObjectHideFlags: 0
@@ -391,7 +394,11 @@ MonoBehaviour:
   granadePrefab: {fileID: 1115305243761945601, guid: 493e1d3a6ca1f9246b3f8f3dae4b704f,
     type: 3}
   playerPrefab: {fileID: 0}
-  distanceThreshold: 5
+  stillDistanceThreshold: 3
+  aimAtPlayer: 0
+  isBlinking: 0
+  isUpShootingLauncher: 0
+  blinkDistanceThreshold: 0.5
 --- !u!60 &7500571777623009594
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -401,7 +408,7 @@ PolygonCollider2D:
   m_GameObject: {fileID: 3234638710210536853}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: b8f350d6b7026a04e9d5fd56080ae559, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0

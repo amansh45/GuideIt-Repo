@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ProceduralHelper : MonoBehaviour
@@ -23,9 +25,9 @@ public class ProceduralHelper : MonoBehaviour
         public GameObject sphereSupportingPlatform;
     }
 
-    [SerializeField] GameObject playSpaceGO, playerPrefab;
+    [SerializeField] GameObject playSpaceGO, playerPrefab, slowmotionGO;
 
-
+    Slowmotion slowmoClass;
     public Dictionary<string, GameObject> objectsDict = new Dictionary<string, GameObject>();
     PlayerStatistics playerStats;
 
@@ -60,17 +62,28 @@ public class ProceduralHelper : MonoBehaviour
     {
         playerStats = FindObjectOfType<PlayerStatistics>();
         CreateDictionary();
+        Dictionary<string, List<GameObject>> gameObjectsDictForSlowmo = new Dictionary<string, List<GameObject>>();
 
         List<PlayerStatistics.ObjectsData> levelObjectsData = playerStats.listOfObjects;
         int numObjects = levelObjectsData.Count;
         for(int i=0;i<numObjects;i++)
         {
             PlayerStatistics.ObjectsData objectData = levelObjectsData[i];
-            GameObject go = (objectData.ObjectType == "hPlatform:") ? objectsDict["hPlatform"] : objectsDict[objectData.ObjectType];
-            go = Instantiate(go, objectData.ObjectPosition, Quaternion.Euler(objectData.ObjectRotation));
+            GameObject goInstance = (objectData.ObjectType == "hPlatform:") ? objectsDict["hPlatform"] : objectsDict[objectData.ObjectType];
+            GameObject go = Instantiate(goInstance, objectData.ObjectPosition, Quaternion.Euler(objectData.ObjectRotation));
+
+            if(gameObjectsDictForSlowmo.ContainsKey(objectData.ObjectType))
+            {
+                gameObjectsDictForSlowmo[objectData.ObjectType].Add(go);
+            }
+            else
+                gameObjectsDictForSlowmo.Add(objectData.ObjectType, new List<GameObject> { go });
+
+
+            Debug.Log("Length is: " + objectData.ObjectType + gameObjectsDictForSlowmo[objectData.ObjectType].Count);
 
             // : is used to denote when count for horizontalplatform is 3
-            if(objectData.ObjectType == "hPlatform:")
+            if (objectData.ObjectType == "hPlatform:")
             {
                 foreach (Transform child in go.transform)
                 {
@@ -79,6 +92,24 @@ public class ProceduralHelper : MonoBehaviour
                         child.gameObject.SetActive(false);
                     }
                 }
+            }
+
+            if(objectData.ObjectType == "bigBox")
+            {
+                GameObject fBox = go.transform.GetChild(0).gameObject;
+                GameObject sBox = go.transform.GetChild(1).gameObject;
+
+                PlayerStatistics.BigBoxData boxChildParams = (PlayerStatistics.BigBoxData) objectData.BigBoxParams;
+
+                Debug.Log("First box Rotation Vector is: " + boxChildParams.FBoxRotation);
+                Debug.Log("Second box Rotation Vector is: " + boxChildParams.SBoxRotation);
+
+                fBox.transform.localPosition = boxChildParams.FBoxPos;
+                fBox.transform.localScale = boxChildParams.FBoxScale;
+                fBox.transform.rotation = Quaternion.Euler(boxChildParams.FBoxRotation);
+                sBox.transform.localPosition = boxChildParams.SBoxPos;
+                sBox.transform.localScale = boxChildParams.SBoxScale;
+                sBox.transform.rotation = Quaternion.Euler(boxChildParams.SBoxRotation);
             }
 
 
@@ -113,6 +144,32 @@ public class ProceduralHelper : MonoBehaviour
         }
         SetPlaySpaceAtRuntime(levelObjectsData[numObjects - 1].ObjectPosition.y + 5f);
 
+        AddObjectsForSlowMotion(gameObjectsDictForSlowmo);
+
+    }
+
+    public void AddObjectsForSlowMotion(Dictionary<string, List<GameObject>> objectDictForSlowmo)
+    {
+
+        foreach (KeyValuePair<string, List<GameObject>> obj in objectDictForSlowmo) {
+
+            List<GameObject> slowmoCandidates = obj.Value;
+            int size = slowmoCandidates.Count;
+            for(int i=0;i<size;i++)
+            {
+                if (obj.Key == "box" || obj.Key == "blade" || obj.Key == "square" || obj.Key == "upCannon")
+                    slowmoClass.gameEntities.Append(slowmoCandidates[i].transform.GetChild(0).gameObject);
+                else if (obj.Key == "launcher")
+                    slowmoClass.gameEntities.Append(slowmoCandidates[i].transform.GetChild(1).gameObject);
+                else if (obj.Key == "grinder")
+                {
+                    slowmoClass.gameEntities.Append(slowmoCandidates[i].transform.GetChild(0).GetChild(1).gameObject);
+                    slowmoClass.gameEntities.Append(slowmoCandidates[i].transform.GetChild(1).GetChild(1).gameObject);
+                }
+                else if (obj.Key == "hPlatform" || obj.Key == "stillCannon")
+                    slowmoClass.gameEntities.Append(slowmoCandidates[i]);
+            }
+        }
     }
 
     public void SetPlaySpaceAtRuntime(float yAxis)
@@ -143,5 +200,6 @@ public class ProceduralHelper : MonoBehaviour
     private void Start()
     {
         playerStats = FindObjectOfType<PlayerStatistics>();
+        slowmoClass = slowmotionGO.GetComponent<Slowmotion>();
     }
 }

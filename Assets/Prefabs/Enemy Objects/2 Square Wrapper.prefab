@@ -112,7 +112,7 @@ PolygonCollider2D:
   m_GameObject: {fileID: 5161719616067391618}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: b8f350d6b7026a04e9d5fd56080ae559, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -194,6 +194,7 @@ MonoBehaviour:
   scalingRequired: 0
   leftRightOffset: 0.15
   baseScreenWidth: 5.635593
+  dynamicWidthForScaling: 0
 --- !u!1 &7510595978817576444
 GameObject:
   m_ObjectHideFlags: 0

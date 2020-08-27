@@ -25,7 +25,7 @@ public class LevelController : MonoBehaviour
     [SerializeField] GameObject coinsAcquired;
     TextMeshProUGUI coinsAcquiredOnScreenText;
     int coinsInScene = 0, currentCoinsAcquired = 0;
-
+    ProceduralGeneration pg;
 
     private void Start()
     {
@@ -42,6 +42,7 @@ public class LevelController : MonoBehaviour
         gameLinesClass = gameLines.GetComponent<GameLines>();
         levelCompletedText = levelCompletedTextGO.GetComponent<TextMeshProUGUI>();
         PersistentInformation.LevelIdentifier = gameObject.scene.name;
+        pg = FindObjectOfType<ProceduralGeneration>();
     }
 
     /*
@@ -130,19 +131,25 @@ public class LevelController : MonoBehaviour
     IEnumerator PlayerDeathActions(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
-        slowmotionClass.customSlowmo(true, onPauseSlowmoFactor);
-        retryCanvas.gameObject.SetActive(true);
-        levelCompleteSlider.GetComponent<Slider>().value = gameLinesClass.levelCompleted;
-        int completedPercentage = (int) (gameLinesClass.levelCompleted * 100f);
-        levelCompletedText.text = "Level Completed: " + completedPercentage + "%";
-        playerActionsClass.isGamePaused = true;
+
+        if (pg != null)
+            ClickedRetryButton();
+        else
+        {
+            slowmotionClass.customSlowmo(true, onPauseSlowmoFactor);
+            retryCanvas.gameObject.SetActive(true);
+            levelCompleteSlider.GetComponent<Slider>().value = gameLinesClass.levelCompleted;
+            int completedPercentage = (int)(gameLinesClass.levelCompleted * 100f);
+            levelCompletedText.text = "Level Completed: " + completedPercentage + "%";
+            playerActionsClass.isGamePaused = true;
+        }
     }
 
     public void ShowRetryCanvas(float waitTime)
     {
-        ProceduralGeneration pg = FindObjectOfType<ProceduralGeneration>();
         if (pg != null)
             playerStats.prevProceduralLevelFailed = true;
+
         StartCoroutine(PlayerDeathActions(waitTime));
     }
 
@@ -238,17 +245,23 @@ public class LevelController : MonoBehaviour
     public void OnLevelFinished(float timeTaken)
     {
         
-        string levelName = gameObject.scene.name;
-        string[] levelIdentity = levelName.Split('.');
-        int currentChapterIndex = int.Parse(levelIdentity[0]);
-        int currentLevelIndex = int.Parse(levelIdentity[1]);
+        if(pg != null)
+        {
+            ClickedRetryButton();
+            playerStats.listOfObjects.Clear();
+        } else
+        {
+            string levelName = gameObject.scene.name;
+            string[] levelIdentity = levelName.Split('.');
+            int currentChapterIndex = int.Parse(levelIdentity[0]);
+            int currentLevelIndex = int.Parse(levelIdentity[1]);
 
-        float prevBestTime = playerStats.chaptersList[currentChapterIndex].LevelsInChapter[currentLevelIndex].PersonalBestTime;
-        playerStats.levelCompletionData = new PlayerStatistics.LevelCompletionData(currentChapterIndex, currentLevelIndex, coinsInScene, currentCoinsAcquired, timeTaken, prevBestTime);
-        UpdateAndUnlockNextLevel(currentChapterIndex, currentLevelIndex, timeTaken);
-        
-        SceneManager.LoadScene("Level Complete");
+            float prevBestTime = playerStats.chaptersList[currentChapterIndex].LevelsInChapter[currentLevelIndex].PersonalBestTime;
+            playerStats.levelCompletionData = new PlayerStatistics.LevelCompletionData(currentChapterIndex, currentLevelIndex, coinsInScene, currentCoinsAcquired, timeTaken, prevBestTime);
+            UpdateAndUnlockNextLevel(currentChapterIndex, currentLevelIndex, timeTaken);
 
+            SceneManager.LoadScene("Level Complete");
+        }
     }
 
 }

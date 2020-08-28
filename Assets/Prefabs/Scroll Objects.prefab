@@ -132,9 +132,46 @@ MonoBehaviour:
   borderQuadPrefab: {fileID: 7669852889516758189, guid: edee5650bf946dd409d1795367a3e952,
     type: 3}
   backgroundMaterials:
-  - bottom: {fileID: 2100000, guid: 3582df85d96a5a84da8755de8bcc230e, type: 2}
-    top: {fileID: 2100000, guid: 707c8064163932b4dab9166287aeb09b, type: 2}
-    main: {fileID: 2100000, guid: c3bd3e0fea676da43ab64c9eaa318ba4, type: 2}
+  - PlayerSkinColor: Red
+    PlayerSkinCategory: PlayerBasic
+    Bottom: {fileID: 2100000, guid: 1beb81643d874354cabdb78b1dadb021, type: 2}
+    Top: {fileID: 2100000, guid: ded70278fe9c7514295daa30d2d11783, type: 2}
+    Main: {fileID: 2100000, guid: fbac45b95a7c0f149a4149af337c2a35, type: 2}
+  - PlayerSkinColor: Blue
+    PlayerSkinCategory: PlayerBasic
+    Bottom: {fileID: 2100000, guid: 837ef3a6ab1b4d84d9522bbecb6e4917, type: 2}
+    Top: {fileID: 2100000, guid: 8460a4c1177b22940bccda2dd03bda28, type: 2}
+    Main: {fileID: 2100000, guid: 9e5003376c564a24f86ad8005fc23156, type: 2}
+  - PlayerSkinColor: Purple
+    PlayerSkinCategory: PlayerBasic
+    Bottom: {fileID: 2100000, guid: 15fbeb7feb1891a40a43fc81bf795bbc, type: 2}
+    Top: {fileID: 2100000, guid: 91700760db1897b4ca9b2194c137c26e, type: 2}
+    Main: {fileID: 2100000, guid: 3934b997cd786c74aa321ad09f1286c9, type: 2}
+  - PlayerSkinColor: Yellow
+    PlayerSkinCategory: PlayerBasic
+    Bottom: {fileID: 2100000, guid: f457db375f69a134a9a30d62f01f98f4, type: 2}
+    Top: {fileID: 2100000, guid: 204042fe89e7aac4792e7681028352f9, type: 2}
+    Main: {fileID: 2100000, guid: a18887191861d324b807f03927c37744, type: 2}
+  - PlayerSkinColor: Red
+    PlayerSkinCategory: PlayerModerate
+    Bottom: {fileID: 2100000, guid: 1beb81643d874354cabdb78b1dadb021, type: 2}
+    Top: {fileID: 2100000, guid: ded70278fe9c7514295daa30d2d11783, type: 2}
+    Main: {fileID: 2100000, guid: fbac45b95a7c0f149a4149af337c2a35, type: 2}
+  - PlayerSkinColor: Blue
+    PlayerSkinCategory: PlayerModerate
+    Bottom: {fileID: 2100000, guid: 837ef3a6ab1b4d84d9522bbecb6e4917, type: 2}
+    Top: {fileID: 2100000, guid: 8460a4c1177b22940bccda2dd03bda28, type: 2}
+    Main: {fileID: 2100000, guid: 9e5003376c564a24f86ad8005fc23156, type: 2}
+  - PlayerSkinColor: Yellow
+    PlayerSkinCategory: PlayerModerate
+    Bottom: {fileID: 2100000, guid: f457db375f69a134a9a30d62f01f98f4, type: 2}
+    Top: {fileID: 2100000, guid: 204042fe89e7aac4792e7681028352f9, type: 2}
+    Main: {fileID: 2100000, guid: a18887191861d324b807f03927c37744, type: 2}
+  - PlayerSkinColor: Purple
+    PlayerSkinCategory: PlayerModerate
+    Bottom: {fileID: 2100000, guid: 15fbeb7feb1891a40a43fc81bf795bbc, type: 2}
+    Top: {fileID: 2100000, guid: 91700760db1897b4ca9b2194c137c26e, type: 2}
+    Main: {fileID: 2100000, guid: 3934b997cd786c74aa321ad09f1286c9, type: 2}
   playerPrefab: {fileID: 0}
 --- !u!1001 &5658543596417843131
 PrefabInstance:

@@ -18,26 +18,72 @@ public class Background : MonoBehaviour {
     [System.Serializable]
     public struct BackgroundMaterial
     {
-        public Material bottom;
-        public Material top;
-        public Material main;
+        public string PlayerSkinColor;
+        public string PlayerSkinCategory;
+        public Material Bottom;
+        public Material Top;
+        public Material Main;
+
+        public BackgroundMaterial(string playerSkinColor, string playerSkinCategory, Material bottom, Material top, Material main)
+        {
+            PlayerSkinCategory = playerSkinCategory;
+            PlayerSkinColor = playerSkinColor;
+            Bottom = bottom;
+            Top = top;
+            Main = main;
+        }
     }
 
 
     int currentActiveBackgroundIndex;
     float cameraWidth, cameraHeight;
     GameLines borderLines;
+    PlayerStatistics playerStats;
 
-    private void InstantiateBorder(float x, float y, float z, float xScale, float yScale, Material backgroundMaterial, string borderName) {
+    private int RetrieveBackgroundIndex(SkinColors playerSkinColor, SkinCategory playerSkinCategory)
+    {
+        int numBackgroundMaterials = backgroundMaterials.Count, i = 0;
+        while(i < numBackgroundMaterials)
+        {
+            if (backgroundMaterials[i].PlayerSkinCategory == playerSkinCategory.ToString() && backgroundMaterials[i].PlayerSkinColor == playerSkinColor.ToString())
+                break;
+            i += 1;
+        }
+        return (i < numBackgroundMaterials) ? i : numBackgroundMaterials - 1;
+    }
+
+    private void SetActiveBackgroundIndex()
+    {
+        int numUpgrades = playerStats.upgradesList.Count;
+
+        for (int i = 0; i < numUpgrades; i++)
+        {
+            PlayerStatistics.Upgrade currUpgrade = playerStats.upgradesList[i];
+            if (currUpgrade.IsActive)
+            {
+                if (currUpgrade.ApplicableOn == ObjectsDescription.Player)
+                {
+                    currentActiveBackgroundIndex = RetrieveBackgroundIndex(currUpgrade.ParticlesColor, currUpgrade.UpgradeCategory);
+                    break;
+                }
+            }
+        }
+
+        GameObject backgroundInstance = gameObject.transform.GetChild(0).gameObject;
+        backgroundInstance.GetComponent<MeshRenderer>().material = backgroundMaterials[currentActiveBackgroundIndex].Main;
+
+    }
+
+    private void InstantiateBorder(float x, float y, float z, float xScale, float yScale, Material backgroundMaterial, string borderName)
+    {
         GameObject borderInstance = Instantiate(borderQuadPrefab, transform.position, transform.rotation);
-        if(borderName != "Bottom Border")
+        if (borderName != "Bottom Border")
             borderInstance.transform.parent = transform;
         borderInstance.transform.localScale = new Vector3(xScale, yScale, 0);
         borderInstance.transform.position = new Vector3(x, y, z);
         borderInstance.GetComponent<MeshRenderer>().material = backgroundMaterial;
         borderInstance.transform.name = borderName;
     }
-
 
     private void FrameBordersPlayerAreaAndLevelProgress()
     {
@@ -54,7 +100,7 @@ public class Background : MonoBehaviour {
             borderZAxis,
             borderSize,
             cameraHeight + extraOffset,
-            backgroundMaterials[currentActiveBackgroundIndex].main,
+            backgroundMaterials[currentActiveBackgroundIndex].Main,
             "Left Border");
 
 
@@ -64,7 +110,7 @@ public class Background : MonoBehaviour {
             borderZAxis,
             borderSize,
             cameraHeight + extraOffset,
-            backgroundMaterials[currentActiveBackgroundIndex].main,
+            backgroundMaterials[currentActiveBackgroundIndex].Main,
             "Right Border");
 
         // bottom border
@@ -73,7 +119,7 @@ public class Background : MonoBehaviour {
             borderZAxis,
             cameraWidth, 
             borderSize,
-            backgroundMaterials[currentActiveBackgroundIndex].bottom,
+            backgroundMaterials[currentActiveBackgroundIndex].Bottom,
             "Bottom Border");
 
         // top border
@@ -82,7 +128,7 @@ public class Background : MonoBehaviour {
             borderZAxis,
             cameraWidth,
             topMargin,
-            backgroundMaterials[currentActiveBackgroundIndex].top,
+            backgroundMaterials[currentActiveBackgroundIndex].Top,
             "Top Border");
 
 
@@ -104,21 +150,26 @@ public class Background : MonoBehaviour {
             gameObject);
 
     }
-    
 
+    
     private void Start()
     {
         borderLines = FindObjectOfType<GameLines>().GetComponent<GameLines>();
         playerActionsClass = playerPrefab.GetComponent<PlayerActions>();
         currentActiveBackgroundIndex = 0;
         proceduralGeneration = FindObjectOfType<ProceduralGeneration>();
+        playerStats = FindObjectOfType<PlayerStatistics>();
         if(proceduralGeneration == null)
+        {
+            SetActiveBackgroundIndex();
             FrameBordersPlayerAreaAndLevelProgress();
+        }
     }
 
     void Update() {
         if(proceduralGeneration != null && proceduralGeneration.hasLevelGenerationCompleted && firstTime)
         {
+            SetActiveBackgroundIndex();
             FrameBordersPlayerAreaAndLevelProgress();
             firstTime = false;
         }

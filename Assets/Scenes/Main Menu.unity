@@ -1118,9 +1118,11 @@ MonoBehaviour:
   borderQuadPrefab: {fileID: 7669852889516758189, guid: edee5650bf946dd409d1795367a3e952,
     type: 3}
   backgroundMaterials:
-  - bottom: {fileID: 2100000, guid: 3582df85d96a5a84da8755de8bcc230e, type: 2}
-    top: {fileID: 2100000, guid: 707c8064163932b4dab9166287aeb09b, type: 2}
-    main: {fileID: 2100000, guid: c3bd3e0fea676da43ab64c9eaa318ba4, type: 2}
+  - PlayerSkinColor: 
+    PlayerSkinCategory: 
+    Bottom: {fileID: 2100000, guid: 3582df85d96a5a84da8755de8bcc230e, type: 2}
+    Top: {fileID: 2100000, guid: 707c8064163932b4dab9166287aeb09b, type: 2}
+    Main: {fileID: 2100000, guid: c3bd3e0fea676da43ab64c9eaa318ba4, type: 2}
   playerPrefab: {fileID: 0}
 --- !u!4 &546368621
 Transform:

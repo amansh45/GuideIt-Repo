@@ -80,6 +80,7 @@ public class VFXController : MonoBehaviour
     private void AddSkinsToLevel()
     {
         int numUpgrades = playerStats.upgradesList.Count;
+
         for (int i = 0; i < numUpgrades; i++)
         {
             PlayerStatistics.Upgrade currUpgrade = playerStats.upgradesList[i];

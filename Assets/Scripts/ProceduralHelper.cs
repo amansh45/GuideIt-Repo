@@ -80,7 +80,7 @@ public class ProceduralHelper : MonoBehaviour
                 gameObjectsDictForSlowmo.Add(objectData.ObjectType, new List<GameObject> { go });
 
 
-            Debug.Log("Length is: " + objectData.ObjectType + gameObjectsDictForSlowmo[objectData.ObjectType].Count);
+            //Debug.Log("Length is: " + objectData.ObjectType + gameObjectsDictForSlowmo[objectData.ObjectType].Count);
 
             // : is used to denote when count for horizontalplatform is 3
             if (objectData.ObjectType == "hPlatform:")
@@ -150,25 +150,32 @@ public class ProceduralHelper : MonoBehaviour
 
     public void AddObjectsForSlowMotion(Dictionary<string, List<GameObject>> objectDictForSlowmo)
     {
-
         foreach (KeyValuePair<string, List<GameObject>> obj in objectDictForSlowmo) {
 
             List<GameObject> slowmoCandidates = obj.Value;
             int size = slowmoCandidates.Count;
+            Debug.Log("Number of " + obj.Key + ": " + size);
+
+            
             for(int i=0;i<size;i++)
             {
                 if (obj.Key == "box" || obj.Key == "blade" || obj.Key == "square" || obj.Key == "upCannon")
-                    slowmoClass.gameEntities.Append(slowmoCandidates[i].transform.GetChild(0).gameObject);
+                {
+                    slowmoClass.gameEntities.Add(slowmoCandidates[i].transform.GetChild(0).gameObject);
+                }
                 else if (obj.Key == "launcher")
-                    slowmoClass.gameEntities.Append(slowmoCandidates[i].transform.GetChild(1).gameObject);
+                {
+                    slowmoClass.gameEntities.Add(slowmoCandidates[i].transform.GetChild(1).gameObject);
+                }
                 else if (obj.Key == "grinder")
                 {
-                    slowmoClass.gameEntities.Append(slowmoCandidates[i].transform.GetChild(0).GetChild(1).gameObject);
-                    slowmoClass.gameEntities.Append(slowmoCandidates[i].transform.GetChild(1).GetChild(1).gameObject);
+                    slowmoClass.gameEntities.Add(slowmoCandidates[i].transform.GetChild(0).GetChild(1).gameObject);
+                    slowmoClass.gameEntities.Add(slowmoCandidates[i].transform.GetChild(1).GetChild(1).gameObject);
                 }
                 else if (obj.Key == "hPlatform" || obj.Key == "stillCannon")
-                    slowmoClass.gameEntities.Append(slowmoCandidates[i]);
+                    slowmoClass.gameEntities.Add(slowmoCandidates[i]);
             }
+            
         }
     }
 
@@ -197,9 +204,13 @@ public class ProceduralHelper : MonoBehaviour
 
     }
 
+    private void Awake()
+    { 
+        slowmoClass = slowmotionGO.GetComponent<Slowmotion>();
+    }
+
     private void Start()
     {
         playerStats = FindObjectOfType<PlayerStatistics>();
-        slowmoClass = slowmotionGO.GetComponent<Slowmotion>();
     }
 }

@@ -10,8 +10,9 @@ public class Background : MonoBehaviour {
     [SerializeField] List<BackgroundMaterial> backgroundMaterials;
     [SerializeField] GameObject playerPrefab;
 
+
     PlayerActions playerActionsClass;
-    ProceduralGeneration proceduralGeneration;
+    ProceduralGeneration proceduralGeneration; 
 
     bool firstTime = true;
 

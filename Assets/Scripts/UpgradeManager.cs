@@ -165,6 +165,7 @@ public class UpgradeManager : MonoBehaviour
     void CreateLine(Vector2 initialFingerPos)
     {
         currentLine = Instantiate(linePrefab, initialFingerPos, Quaternion.identity) as GameObject;
+        currentLine.GetComponent<SpriteRenderer>().color = playerStats.colorsData[playerStats.upgradesList[selectedUpgradeIndexForPreview].ParticlesColor.ToString()].ThirdColor;
         previousFingerPosition = currentLine;
         playerClass.SetWayPoints(previousFingerPosition, false);
     }
@@ -175,6 +176,7 @@ public class UpgradeManager : MonoBehaviour
         float angle = 0;
         var rotation = Quaternion.Euler(0, 0, angle);
         GameObject lineInstance = Instantiate(linePrefab, newFingerPos, rotation) as GameObject;
+        lineInstance.GetComponent<SpriteRenderer>().color = playerStats.colorsData[playerStats.upgradesList[selectedUpgradeIndexForPreview].ParticlesColor.ToString()].ThirdColor;
         previousFingerPosition = lineInstance;
         playerClass.SetWayPoints(previousFingerPosition, true);
     }

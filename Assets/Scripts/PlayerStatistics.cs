@@ -456,6 +456,12 @@ public class PlayerStatistics : MonoBehaviour
         PlayerStatistics.CustomColor mcolor = colorsData[currUpgrade.ParticlesColor.ToString()];
         player.GetComponent<SpriteRenderer>().color = mcolor.ThirdColor;
 
+        PlayerActions pa = player.GetComponent<PlayerActions>();
+
+        if(pa != null)
+            pa.SetColorForPathLines(mcolor.ThirdColor);
+
+
         foreach (Transform child in mat.transform)
         {
             ParticleSystem ps = child.GetComponent<ParticleSystem>();

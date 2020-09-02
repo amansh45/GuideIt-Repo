@@ -26,6 +26,8 @@ public class PlayerActions : MonoBehaviour
         //objectPooler = ObjectPooler.Instance;
     }
 
+    Color pathLineColor = Color.white;
+
     private bool IsPlayerTryingToShoot(Vector2 fingerPosition)
     {
         float currentTime = Time.time;
@@ -173,6 +175,7 @@ public class PlayerActions : MonoBehaviour
     {
         //currentLine = objectPooler.SpawnFromPool("PathLine", initialFingerPos, Quaternion.identity);
         currentLine = Instantiate(linePrefab, initialFingerPos, Quaternion.identity) as GameObject;
+        currentLine.GetComponent<SpriteRenderer>().color = pathLineColor;
         previousFingerPosition = currentLine;
         playerClass.SetWayPoints(previousFingerPosition, false);
     }
@@ -191,8 +194,15 @@ public class PlayerActions : MonoBehaviour
         var rotation = Quaternion.Euler(0, 0, angle);
         //GameObject lineInstance = objectPooler.SpawnFromPool("PathLine", newFingerPos, rotation);
         GameObject lineInstance = Instantiate(linePrefab, newFingerPos, rotation) as GameObject;
+        lineInstance.GetComponent<SpriteRenderer>().color = pathLineColor;
         previousFingerPosition = lineInstance;
         playerClass.SetWayPoints(previousFingerPosition, true);
+    }
+
+
+    public void SetColorForPathLines(Color mColor)
+    {
+        pathLineColor = mColor;
     }
 
 }

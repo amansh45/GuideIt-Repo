@@ -15,6 +15,7 @@ public class VFXController : MonoBehaviour
     PlayerStatistics playerStats;
     Dictionary<string, GameObject> skinsAndMaterials = new Dictionary<string, GameObject>();
     CameraManager camManager;
+    Color skinColor = Color.white;
 
     private void Start()
     {
@@ -35,6 +36,11 @@ public class VFXController : MonoBehaviour
     public void PlayerDied(Vector3 position, GameObject collider, float camShakeDuration)
     {
         GameObject deathEffect = Instantiate(deathParticleSystem, position, transform.rotation);
+
+        ParticleSystem ps = deathEffect.GetComponent<ParticleSystem>();
+
+        var main = ps.main;
+        main.startColor = skinColor;
 
         Destroy(deathEffect, deathEffectDuration);
         InitiateCameraShakeEffect(camShakeDuration);
@@ -92,6 +98,9 @@ public class VFXController : MonoBehaviour
                     skinsAndMaterials[currUpgrade.UpgradeCategory.ToString()].transform.position = player.transform.position;
                     skinsAndMaterials[currUpgrade.UpgradeCategory.ToString()].SetActive(true);
                     playerStats.UpdateColorOfSkin(currUpgrade, player);
+
+                    PlayerStatistics.CustomColor mcolor = playerStats.colorsData[currUpgrade.ParticlesColor.ToString()];
+                    skinColor = mcolor.ThirdColor;
                 }
             }
         }

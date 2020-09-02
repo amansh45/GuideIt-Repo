@@ -36,14 +36,14 @@ public class ProceduralHelper : MonoBehaviour
         objectsDict.Add("square", enemyObjects.square); //
         objectsDict.Add("blade", enemyObjects.blade); //
         objectsDict.Add("box", enemyObjects.box); // 
-        objectsDict.Add("bigBox", enemyObjects.bigBox); //
-        objectsDict.Add("sphere", enemyObjects.sphere); //
         objectsDict.Add("launcher", enemyObjects.launcher); //
-        objectsDict.Add("grinder", enemyObjects.grinder); //
-        objectsDict.Add("hPlatform", enemyObjects.hPlatform); //
-        objectsDict.Add("saw", enemyObjects.saw); //
         objectsDict.Add("stillCannon", enemyObjects.stillCannon); //
         objectsDict.Add("upCannon", enemyObjects.upCannon); //
+        objectsDict.Add("bigBox", enemyObjects.bigBox); //
+        objectsDict.Add("grinder", enemyObjects.grinder); //
+        objectsDict.Add("sphere", enemyObjects.sphere); //
+        objectsDict.Add("hPlatform", enemyObjects.hPlatform); //
+        objectsDict.Add("saw", enemyObjects.saw); //
         objectsDict.Add("stillPlatform", enemyObjects.stillPlatform); //
         objectsDict.Add("sphereSupportingPlatform", enemyObjects.sphereSupportingPlatform); //
     }

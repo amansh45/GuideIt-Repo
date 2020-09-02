@@ -11,7 +11,7 @@ using UnityEngine.UIElements;
 
 public class ProceduralGeneration : MonoBehaviour
 {
-    
+
     [SerializeField] GameObject coinsPrefab, playerGO;
     [SerializeField] RuntimeAnimatorController snappingAnimationController, rotateAnimationController, l2rAnimationController, stillCannonAnimationController, blinkingCannonAnimationController;
 
@@ -50,14 +50,15 @@ public class ProceduralGeneration : MonoBehaviour
     private GameObject InitializeObjects(string objectType, Vector3 position, Quaternion rotation)
     {
         GameObject go = Instantiate(proceduralHelper.objectsDict[objectType], position, rotation);
-
+        
+        
         if (gameObjectsDictForSlowmo.ContainsKey(objectType))
         {
             gameObjectsDictForSlowmo[objectType].Add(go);
         }
         else
             gameObjectsDictForSlowmo.Add(objectType, new List<GameObject> { go });
-
+        
         return go;
     }
 
@@ -95,7 +96,7 @@ public class ProceduralGeneration : MonoBehaviour
 
 
 
-        if (count  == 3 || count == 4)
+        if (count == 3 || count == 4)
         {
             Vector3 tPos = new Vector3((screenCenterXPoint / 2f) - 0.5f, spawningYCoordinate + 2 * yDistanceBetweenObjects, 0);
             GameObject thirdGO = InitializeObjects(objectType, tPos, Quaternion.Euler(new Vector3(0, 0, 0)));
@@ -109,7 +110,7 @@ public class ProceduralGeneration : MonoBehaviour
             playerStats.AddObjectToSaveList(currObjectData);
         }
 
-        if(count == 4)
+        if (count == 4)
         {
             Vector3 foPos = new Vector3((screenCenterXPoint / 2f) + 0.5f, spawningYCoordinate + 3 * yDistanceBetweenObjects, 0);
             GameObject fourthGO = InitializeObjects(objectType, foPos, Quaternion.Euler(new Vector3(0, 180, 360)));
@@ -138,7 +139,8 @@ public class ProceduralGeneration : MonoBehaviour
         {
             CreateL2RAnimation(animatorIndex, count, objectType, yDistanceBetweenObjects, yAxis);
             return yAxis;
-        } else if (count == 2)
+        }
+        else if (count == 2)
         {
             /*
              * movement = 0 for L2R movement
@@ -151,7 +153,8 @@ public class ProceduralGeneration : MonoBehaviour
             {
                 CreateL2RAnimation(animatorIndex, count, objectType, yDistanceBetweenObjects, yAxis);
                 return yAxis + yDistanceBetweenObjects;
-            }  else if (movement == 1 || movement == 2)
+            }
+            else if (movement == 1 || movement == 2)
             {
                 int alignment = UnityEngine.Random.Range(15, 35);
                 Vector3 fPos = new Vector3((screenCenterXPoint / 2f) - 0.5f, yAxis, 0);
@@ -162,12 +165,13 @@ public class ProceduralGeneration : MonoBehaviour
                 {
                     firstGO = InitializeObjects(objectType, fPos, Quaternion.Euler(new Vector3(0, 0, (-1) * alignment)));
                     secondGO = InitializeObjects(objectType, sPos, Quaternion.Euler(new Vector3(0, 0, 180 - alignment)));
-                } else
+                }
+                else
                 {
                     firstGO = InitializeObjects(objectType, fPos, Quaternion.Euler(new Vector3(0, 0, alignment)));
                     secondGO = InitializeObjects(objectType, sPos, Quaternion.Euler(new Vector3(0, 0, (-1) * (180 - alignment))));
                 }
-                
+
                 Animator firstAnimator = firstGO.GetComponentInChildren<Animator>();
                 Animator secondAnimator = secondGO.GetComponentInChildren<Animator>();
                 firstAnimator.runtimeAnimatorController = (animatorIndex == 0) ? l2rAnimationController : snappingAnimationController;
@@ -178,7 +182,7 @@ public class ProceduralGeneration : MonoBehaviour
 
 
 
-                if(movement == 1)
+                if (movement == 1)
                 {
                     PlayerStatistics.ObjectsData currObjectData = new PlayerStatistics.ObjectsData(objectType, fPos, null, new Vector3(0, 0, (-1) * alignment),
                         new PlayerStatistics.PlaceObjectScriptParams(false, true, false, true, 0), true, firstAnimator.runtimeAnimatorController, null, null);
@@ -187,7 +191,8 @@ public class ProceduralGeneration : MonoBehaviour
                     currObjectData = new PlayerStatistics.ObjectsData(objectType, sPos, null, new Vector3(0, 0, 180 - alignment),
                         new PlayerStatistics.PlaceObjectScriptParams(false, true, false, true, 0), true, secondAnimator.runtimeAnimatorController, null, null);
                     playerStats.AddObjectToSaveList(currObjectData);
-                } else
+                }
+                else
                 {
                     PlayerStatistics.ObjectsData currObjectData = new PlayerStatistics.ObjectsData(objectType, fPos, null, new Vector3(0, 0, alignment),
                         new PlayerStatistics.PlaceObjectScriptParams(false, true, false, true, 0), true, firstAnimator.runtimeAnimatorController, null, null);
@@ -198,10 +203,11 @@ public class ProceduralGeneration : MonoBehaviour
                     playerStats.AddObjectToSaveList(currObjectData);
                 }
 
-            } else if(movement == 3)
+            }
+            else if (movement == 3)
             {
-                Vector3 fPos = new Vector3((screenCenterXPoint / 2f) - xDistanceBetweenObjects, yAxis + dynamicWidthForScaling/2.8f, 0);
-                Vector3 sPos = new Vector3((screenCenterXPoint / 2f) + xDistanceBetweenObjects, yAxis - dynamicWidthForScaling/2.8f, 0);
+                Vector3 fPos = new Vector3((screenCenterXPoint / 2f) - xDistanceBetweenObjects, yAxis + dynamicWidthForScaling / 2.8f, 0);
+                Vector3 sPos = new Vector3((screenCenterXPoint / 2f) + xDistanceBetweenObjects, yAxis - dynamicWidthForScaling / 2.8f, 0);
                 GameObject firstGO = InitializeObjects(objectType, fPos, Quaternion.Euler(new Vector3(0, 0, -90)));
                 GameObject secondGO = InitializeObjects(objectType, sPos, Quaternion.Euler(new Vector3(0, 0, 90)));
                 proceduralHelper.UpdatePlaceObjectScriptParams(firstGO, true, false, false, true, dynamicWidthForScaling);
@@ -210,7 +216,7 @@ public class ProceduralGeneration : MonoBehaviour
                 Animator secondAnimator = secondGO.GetComponentInChildren<Animator>();
                 firstAnimator.runtimeAnimatorController = (animatorIndex == 0) ? l2rAnimationController : snappingAnimationController;
                 secondAnimator.runtimeAnimatorController = (animatorIndex == 0) ? l2rAnimationController : snappingAnimationController;
-                
+
 
 
                 PlayerStatistics.ObjectsData currObjectData = new PlayerStatistics.ObjectsData(objectType, fPos, null, new Vector3(0, 0, -90),
@@ -230,7 +236,8 @@ public class ProceduralGeneration : MonoBehaviour
                 PlaceStillPlatform(yAxis - dynamicWidthForScaling / 2.8f - offset, (-1f) * xCoordinate);
             }
             return yAxis + dynamicWidthForScaling;
-        } else if(count == 3)
+        }
+        else if (count == 3)
         {
 
             int movement = GetRandomWeightedIndex(new float[] { 0.7f, 0.3f });
@@ -238,7 +245,8 @@ public class ProceduralGeneration : MonoBehaviour
             {
                 CreateL2RAnimation(animatorIndex, count, objectType, yDistanceBetweenObjects, yAxis);
                 return yAxis + (2f * yDistanceBetweenObjects);
-            } else if(movement == 1)
+            }
+            else if (movement == 1)
             {
                 Vector3 fPos = new Vector3((screenCenterXPoint / 2f), yAxis + dynamicWidthForScaling / 2.8f, 0);
                 Vector3 sPos = new Vector3((screenCenterXPoint / 2f) - xDistanceBetweenObjects, yAxis - dynamicWidthForScaling / 2.8f, 0);
@@ -279,14 +287,16 @@ public class ProceduralGeneration : MonoBehaviour
 
             }
             return yAxis + dynamicWidthForScaling;
-        } else
+        }
+        else
         {
             int movement = GetRandomWeightedIndex(new float[] { 0.7f, 0.3f });
             if (movement == 0)
             {
                 CreateL2RAnimation(animatorIndex, count, objectType, yDistanceBetweenObjects, yAxis);
-                return (yAxis + 3*yDistanceBetweenObjects);
-            } else if(movement == 1)
+                return (yAxis + 3 * yDistanceBetweenObjects);
+            }
+            else if (movement == 1)
             {
                 Vector3 fPos = new Vector3((screenCenterXPoint / 2f) - (1.5f) * xDistanceBetweenObjects, yAxis + dynamicWidthForScaling / 2.8f, 0);
                 Vector3 sPos = new Vector3((screenCenterXPoint / 2f) - (0.5f) * xDistanceBetweenObjects, yAxis - dynamicWidthForScaling / 2.8f, 0);
@@ -364,7 +374,8 @@ public class ProceduralGeneration : MonoBehaviour
 
             currObjectData = new PlayerStatistics.ObjectsData(objectType, objPos, new Vector3(scaleFactor, scaleFactor, scaleFactor), new Vector3(0, 0, 0),
                     new PlayerStatistics.PlaceObjectScriptParams(true, false, false, false, 0), true, rotateAnimationController, null, null);
-        } else if(xPosition == "left")
+        }
+        else if (xPosition == "left")
         {
             objPos = new Vector3(-1, yAxis, 0);
             gameObject = InitializeObjects(objectType, objPos, transform.rotation);
@@ -373,7 +384,9 @@ public class ProceduralGeneration : MonoBehaviour
 
             currObjectData = new PlayerStatistics.ObjectsData(objectType, objPos, new Vector3(scaleFactor, scaleFactor, scaleFactor), new Vector3(0, 0, 0),
                     new PlayerStatistics.PlaceObjectScriptParams(true, true, false, false, 0), true, rotateAnimationController, null, null);
-        } else if(xPosition == "right") {
+        }
+        else if (xPosition == "right")
+        {
             objPos = new Vector3(1, yAxis, 0);
             gameObject = InitializeObjects(objectType, objPos, transform.rotation);
             gameObject.transform.localScale = new Vector3(scaleFactor, scaleFactor, scaleFactor);
@@ -381,7 +394,8 @@ public class ProceduralGeneration : MonoBehaviour
 
             currObjectData = new PlayerStatistics.ObjectsData(objectType, objPos, new Vector3(scaleFactor, scaleFactor, scaleFactor), new Vector3(0, 0, 0),
                     new PlayerStatistics.PlaceObjectScriptParams(true, true, false, false, 0), true, rotateAnimationController, null, null);
-        } else
+        }
+        else
         {
             objPos = new Vector3(float.Parse(xPosition), yAxis, 0);
             gameObject = InitializeObjects(objectType, objPos, transform.rotation);
@@ -410,20 +424,21 @@ public class ProceduralGeneration : MonoBehaviour
         enemyLauncher.playerPrefab = playerGO;
 
         PlayerStatistics.ObjectsData currObjectData = new PlayerStatistics.ObjectsData("launcher", launcherPos, null, new Vector3(0, 0, 0),
-                    new PlayerStatistics.PlaceObjectScriptParams(false, true, false, false, 0), false, rotateAnimationController, 
+                    new PlayerStatistics.PlaceObjectScriptParams(false, true, false, false, 0), false, rotateAnimationController,
                     new PlayerStatistics.EnemyLauncherScriptParams(true, false), null);
         playerStats.AddObjectToSaveList(currObjectData);
 
         if (count == 1)
             return yAxis;
 
-        if(count == 2 || count == 3)
+        if (count == 2 || count == 3)
         {
             float newXCoordinate;
-            if (xCoordinate < screenCenterXPoint/2f )
+            if (xCoordinate < screenCenterXPoint / 2f)
             {
                 newXCoordinate = (screenCenterXPoint / 2f) + 0.5f;
-            } else
+            }
+            else
             {
                 newXCoordinate = (screenCenterXPoint / 2f) - 0.5f;
             }
@@ -446,7 +461,7 @@ public class ProceduralGeneration : MonoBehaviour
         if (count == 2)
             return yAxis + 1f;
 
-        if(count == 3)
+        if (count == 3)
         {
             launcherPos.x = xCoordinate;
             launcherPos.y = yAxis + 2f;
@@ -468,7 +483,7 @@ public class ProceduralGeneration : MonoBehaviour
 
     float PlaceHorizontalPlatform(float yAxis, int count)
     {
-        
+
         Vector3 platformPos = new Vector3(0, yAxis, 0);
         float alignment = (UnityEngine.Random.Range(-30, 30));
         GameObject fHorizontalPlatform = InitializeObjects("hPlatform", platformPos, Quaternion.Euler(new Vector3(0, 0, alignment)));
@@ -480,15 +495,15 @@ public class ProceduralGeneration : MonoBehaviour
         if (count == 2)
             return yAxis + 5f;
 
-        if (count == 3 || count ==4)
+        if (count == 3 || count == 4)
         {
             platformPos.y += 3.51f;
             GameObject sHorizontalPlatform = InitializeObjects("hPlatform", platformPos, Quaternion.Euler(new Vector3(0, 0, alignment)));
-            if(count == 3)
+            if (count == 3)
             {
-                foreach(Transform child in sHorizontalPlatform.transform)
+                foreach (Transform child in sHorizontalPlatform.transform)
                 {
-                    if(child.gameObject.name == "LR Horizontal Platform (2)" || child.gameObject.name == "LR Horizontal Platform (3)")
+                    if (child.gameObject.name == "LR Horizontal Platform (2)" || child.gameObject.name == "LR Horizontal Platform (3)")
                     {
                         child.gameObject.SetActive(false);
                     }
@@ -522,12 +537,12 @@ public class ProceduralGeneration : MonoBehaviour
 
     void PlaceStillCannon(float yAxis)
     {
-         /* 
-          * 0 is for non blinking cannon shooting in regular intervals
-          * 1 is for blinking cannon
-         */
+        /* 
+         * 0 is for non blinking cannon shooting in regular intervals
+         * 1 is for blinking cannon
+        */
         int cannonType = UnityEngine.Random.Range(0, 2);
-        
+
         /*
          * 0 is for cannon position in left
          * 1 is for cannon position in right
@@ -538,7 +553,7 @@ public class ProceduralGeneration : MonoBehaviour
 
         float alignment = UnityEngine.Random.Range(-20, 20);
 
-        if(leftOrRight == 1)
+        if (leftOrRight == 1)
         {
             alignment += 180f;
         }
@@ -546,7 +561,7 @@ public class ProceduralGeneration : MonoBehaviour
         GameObject stillCannon = InitializeObjects("stillCannon", cannonPos, Quaternion.Euler(new Vector3(0, 0, alignment)));
         Animator cannonAnimator = stillCannon.GetComponentInChildren<Animator>();
         EnemyLauncher enemyLauncher = stillCannon.GetComponent<EnemyLauncher>();
-        if(cannonType == 0)
+        if (cannonType == 0)
         {
             enemyLauncher.isBlinking = false;
             cannonAnimator.runtimeAnimatorController = stillCannonAnimationController;
@@ -554,7 +569,8 @@ public class ProceduralGeneration : MonoBehaviour
             PlayerStatistics.ObjectsData currObjectData = new PlayerStatistics.ObjectsData("stillCannon", cannonPos, null, new Vector3(0, 0, alignment),
                     null, true, stillCannonAnimationController, new PlayerStatistics.EnemyLauncherScriptParams(false, false), null);
             playerStats.AddObjectToSaveList(currObjectData);
-        } else
+        }
+        else
         {
             enemyLauncher.isBlinking = true;
             enemyLauncher.playerPrefab = playerGO;
@@ -586,7 +602,8 @@ public class ProceduralGeneration : MonoBehaviour
             PlayerStatistics.ObjectsData currObjectData = new PlayerStatistics.ObjectsData("upCannon", cannonPos, null, new Vector3(180, 0, 180),
                 null, false, blinkingCannonAnimationController, null, null);
             playerStats.AddObjectToSaveList(currObjectData);
-        } else
+        }
+        else
         {
             InitializeObjects("upCannon", cannonPos, transform.rotation);
             PlayerStatistics.ObjectsData currObjectData = new PlayerStatistics.ObjectsData("upCannon", cannonPos, null, new Vector3(0, 0, 0),
@@ -618,7 +635,7 @@ public class ProceduralGeneration : MonoBehaviour
             null, false, blinkingCannonAnimationController, null, null);
         playerStats.AddObjectToSaveList(currObjectData);
 
-        currObjectData = new PlayerStatistics.ObjectsData("sphereSupportingPlatform", platformPos, new Vector3(1.5f,1,1), new Vector3(0, 0, platformAlignment),
+        currObjectData = new PlayerStatistics.ObjectsData("sphereSupportingPlatform", platformPos, new Vector3(1.5f, 1, 1), new Vector3(0, 0, platformAlignment),
             null, false, blinkingCannonAnimationController, null, null);
         playerStats.AddObjectToSaveList(currObjectData);
     }
@@ -652,7 +669,7 @@ public class ProceduralGeneration : MonoBehaviour
                 fBox.transform.localPosition = new Vector3(-4.2f, 2f, 0);
                 sBox.transform.localPosition = new Vector3(4.2f, -2f, 0);
 
-                bigBoxWrapper.transform.rotation = (UnityEngine.Random.Range(0,2) == 0) ? Quaternion.Euler(new Vector3(0, 0, 26f)) : Quaternion.Euler(new Vector3(0, 0, -26f));
+                bigBoxWrapper.transform.rotation = (UnityEngine.Random.Range(0, 2) == 0) ? Quaternion.Euler(new Vector3(0, 0, 26f)) : Quaternion.Euler(new Vector3(0, 0, -26f));
             }
             else if (boxPlacementCombinations == 1)
             {
@@ -660,12 +677,13 @@ public class ProceduralGeneration : MonoBehaviour
 
                 int objectRequired = (UnityEngine.Random.Range(0, 2));
 
-                if(objectRequired == 0)
+                if (objectRequired == 0)
                 {
                     bigBoxWrapper.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
                     fBox.transform.localPosition = new Vector3(-6.1f, 0, 0);
                     sBox.transform.localPosition = new Vector3(6.1f, 0, 0);
-                } else
+                }
+                else
                 {
                     bigBoxWrapper.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
                     fBox.transform.localPosition = new Vector3(-7.5f, 0, 0);
@@ -683,9 +701,9 @@ public class ProceduralGeneration : MonoBehaviour
                 float minBound = rend.bounds.min.y;
                 float maxBound = rend.bounds.max.y;
 
-                PlaceRotatingObjects((minBound + 3*maxBound)/4f, rotatingObjects[UnityEngine.Random.Range(0,3)], "center");
+                PlaceRotatingObjects((minBound + 3 * maxBound) / 4f, rotatingObjects[UnityEngine.Random.Range(0, 3)], "center");
 
-                PlaceRotatingObjects((3*minBound + maxBound)/4f, rotatingObjects[UnityEngine.Random.Range(0, 3)], "center");
+                PlaceRotatingObjects((3 * minBound + maxBound) / 4f, rotatingObjects[UnityEngine.Random.Range(0, 3)], "center");
             }
             else if (boxPlacementCombinations == 3)
             {
@@ -699,7 +717,7 @@ public class ProceduralGeneration : MonoBehaviour
                 Vector3 topLeftCoordinate = fRend.bounds.max;
                 Vector3 bottomRightCoordinate = sRend.bounds.min;
 
-                
+
 
                 int rotatingObjCombinations = UnityEngine.Random.Range(0, 4);
                 int rotatingObjIndex = UnityEngine.Random.Range(0, 3);
@@ -711,17 +729,20 @@ public class ProceduralGeneration : MonoBehaviour
                     PlaceRotatingObjects(topLeftCoordinate.y - offset, rotatingObjects[rotatingObjIndex], "center");
                     PlaceRotatingObjects(yForRotatingObj, rotatingObjects[rotatingObjIndex], "-1");
                     PlaceRotatingObjects(yForRotatingObj, rotatingObjects[rotatingObjIndex], "1");
-                    PlaceRotatingObjects(bottomRightCoordinate.y + offset , rotatingObjects[rotatingObjIndex], "center");
-                } else if(rotatingObjCombinations == 1)
+                    PlaceRotatingObjects(bottomRightCoordinate.y + offset, rotatingObjects[rotatingObjIndex], "center");
+                }
+                else if (rotatingObjCombinations == 1)
                 {
-                    PlaceRotatingObjects(topLeftCoordinate.y - offset , rotatingObjects[rotatingObjIndex], "-1");
+                    PlaceRotatingObjects(topLeftCoordinate.y - offset, rotatingObjects[rotatingObjIndex], "-1");
                     PlaceRotatingObjects(topLeftCoordinate.y - offset, rotatingObjects[rotatingObjIndex], "1");
                     PlaceRotatingObjects(bottomRightCoordinate.y + offset, rotatingObjects[rotatingObjIndex], "-1");
                     PlaceRotatingObjects(bottomRightCoordinate.y + offset, rotatingObjects[rotatingObjIndex], "1");
-                } else if(rotatingObjCombinations == 2)
+                }
+                else if (rotatingObjCombinations == 2)
                 {
                     PlaceRotatingObjects(yForRotatingObj, rotatingObjects[rotatingObjIndex], "center");
-                } else if(rotatingObjCombinations == 3)
+                }
+                else if (rotatingObjCombinations == 3)
                 {
                     PlaceRotatingObjects(yForRotatingObj, rotatingObjects[rotatingObjIndex], "-1");
                     PlaceRotatingObjects(yForRotatingObj, rotatingObjects[rotatingObjIndex], "1");
@@ -746,7 +767,7 @@ public class ProceduralGeneration : MonoBehaviour
 
             int objectRequired = (UnityEngine.Random.Range(0, 3));
 
-            
+
             Vector3 wrapperPos = new Vector3(0, yAxis, 0);
             GameObject bigBoxWrapperOne = InitializeObjects("bigBox", wrapperPos, transform.rotation);
             wrapperPos = new Vector3(0, yAxis + 5f, 0);
@@ -784,11 +805,12 @@ public class ProceduralGeneration : MonoBehaviour
                 PlaceRotatingObjects(yAxis, "blade", "center");
                 PlaceRotatingObjects(yAxis + 5f, "blade", "center");
 
-                if(objectRequired == 2)
+                if (objectRequired == 2)
                 {
                     CreateL2RAnimation(0, 1, rotatingObjects[UnityEngine.Random.Range(0, 3)], 0, yAxis + 2.5f);
                 }
-            } else
+            }
+            else
             {
                 bigBoxWrapperOne.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
                 bigBoxWrapperTwo.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
@@ -818,36 +840,40 @@ public class ProceduralGeneration : MonoBehaviour
         float margin = 2f;
         if (numOfRotatingObjects == 1)
             PlaceRotatingObjects(yAxis, objectType, "center");
-        else if(numOfRotatingObjects == 2)
+        else if (numOfRotatingObjects == 2)
         {
             float xAxis = (screenWidth < 4.75f) ? UnityEngine.Random.Range(0.5f, 3f) : UnityEngine.Random.Range(1.3f, 3f);
             PlaceRotatingObjects(yAxis, objectType, xAxis.ToString());
             PlaceRotatingObjects(yAxis, objectType, (-1f * xAxis).ToString());
             return yAxis;
-        } else if(numOfRotatingObjects == 3)
+        }
+        else if (numOfRotatingObjects == 3)
         {
             float xAxis = (screenWidth < 4.75f) ? UnityEngine.Random.Range(1f, 3f) : UnityEngine.Random.Range(1.3f, 3f);
             PlaceRotatingObjects(yAxis, objectType, "center");
             int placementCombination = UnityEngine.Random.Range(0, 3);
-            if(placementCombination == 0)
+            if (placementCombination == 0)
             {
                 PlaceRotatingObjects(yAxis + margin, objectType, xAxis.ToString());
                 PlaceRotatingObjects(yAxis + margin, objectType, (-1f * xAxis).ToString());
-            } else if(placementCombination == 1)
+            }
+            else if (placementCombination == 1)
             {
                 PlaceRotatingObjects(yAxis - margin, objectType, xAxis.ToString());
                 PlaceRotatingObjects(yAxis - margin, objectType, (-1f * xAxis).ToString());
-            } else if(placementCombination == 2)
+            }
+            else if (placementCombination == 2)
             {
                 PlaceRotatingObjects(yAxis, objectType, xAxis.ToString());
                 PlaceRotatingObjects(yAxis, objectType, (-1f * xAxis).ToString());
                 return yAxis;
             }
-        } else if(numOfRotatingObjects == 4)
+        }
+        else if (numOfRotatingObjects == 4)
         {
             int placementCombination = UnityEngine.Random.Range(0, 2);
 
-            if(placementCombination == 0)
+            if (placementCombination == 0)
             {
                 float firstxAxis = (screenWidth < 4.75f) ? UnityEngine.Random.Range(0.5f, 1f) : UnityEngine.Random.Range(1.3f, 1.8f);
                 float secondxAxis = (screenWidth < 4.75f) ? UnityEngine.Random.Range(1.2f, 3f) : UnityEngine.Random.Range(2f, 3f);
@@ -857,16 +883,18 @@ public class ProceduralGeneration : MonoBehaviour
                 PlaceRotatingObjects(yAxis, objectType, firstxAxis.ToString());
                 PlaceRotatingObjects(yAxis, objectType, (-1f * firstxAxis).ToString());
 
-                if(topOrDown == 0)
+                if (topOrDown == 0)
                 {
                     PlaceRotatingObjects(yAxis + margin, objectType, secondxAxis.ToString());
                     PlaceRotatingObjects(yAxis + margin, objectType, (-1f * secondxAxis).ToString());
-                } else
+                }
+                else
                 {
                     PlaceRotatingObjects(yAxis - margin, objectType, secondxAxis.ToString());
                     PlaceRotatingObjects(yAxis - margin, objectType, (-1f * secondxAxis).ToString());
                 }
-            } else if(placementCombination == 1)
+            }
+            else if (placementCombination == 1)
             {
                 float xAxis = (screenWidth < 4.75f) ? UnityEngine.Random.Range(1.3f, 3f) : UnityEngine.Random.Range(2f, 3f);
                 PlaceRotatingObjects(yAxis, objectType, xAxis.ToString());
@@ -876,18 +904,20 @@ public class ProceduralGeneration : MonoBehaviour
                 PlaceRotatingObjects(yAxis - margin, objectType, "center");
             }
 
-        } else if(numOfRotatingObjects == 5)
+        }
+        else if (numOfRotatingObjects == 5)
         {
             float xAxis = (screenWidth < 4.75f) ? UnityEngine.Random.Range(1.3f, 3f) : UnityEngine.Random.Range(2f, 3f);
             int placementCombination = UnityEngine.Random.Range(0, 2);
-            if(placementCombination == 0)
+            if (placementCombination == 0)
             {
                 PlaceRotatingObjects(yAxis, objectType, "center");
                 PlaceRotatingObjects(yAxis, objectType, xAxis.ToString());
                 PlaceRotatingObjects(yAxis, objectType, (-1f * xAxis).ToString());
                 PlaceRotatingObjects(yAxis + margin, objectType, "center");
                 PlaceRotatingObjects(yAxis - margin, objectType, "center");
-            } else if(placementCombination == 1)
+            }
+            else if (placementCombination == 1)
             {
                 PlaceRotatingObjects(yAxis + margin, objectType, xAxis.ToString());
                 PlaceRotatingObjects(yAxis + margin, objectType, (-1f * xAxis).ToString());
@@ -908,7 +938,7 @@ public class ProceduralGeneration : MonoBehaviour
         proceduralHelper = GetComponent<ProceduralHelper>();
 
         if (!playerStats.prevProceduralLevelFailed)
-        { 
+        {
             var bottomLeft = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, 0));
             var bottomRight = Camera.main.ViewportToWorldPoint(new Vector3(1, 0, 0));
             screenWidth = bottomRight.x - bottomLeft.x;
@@ -916,7 +946,7 @@ public class ProceduralGeneration : MonoBehaviour
 
             proceduralHelper.CreateDictionary();
 
-            int numOfObjects = UnityEngine.Random.Range(7, 8);
+            int numOfObjects = UnityEngine.Random.Range(12, 15);
 
             float yAxis = transform.position.y + 10f;
 
@@ -926,8 +956,8 @@ public class ProceduralGeneration : MonoBehaviour
                 string objectType = proceduralHelper.objectsDict.Keys.ElementAt(objectIndex);
                 if (objectType == "square")
                 {
-                    int count = GetRandomWeightedIndex(new float[] { 0.5f, 0.3f, 0.2f });
-                    yAxis = PlaceMovingObjects(yAxis, count + 2, objectType);
+                    int numOfRotatingObjects = UnityEngine.Random.Range(1, 6);
+                    yAxis = GenerateRotatingObjectCombinations(yAxis, numOfRotatingObjects, objectType);
                 }
                 else if (objectType == "bigBox")
                 {
@@ -993,7 +1023,8 @@ public class ProceduralGeneration : MonoBehaviour
 
             proceduralHelper.AddObjectsForSlowMotion(gameObjectsDictForSlowmo);
 
-        } else
+        }
+        else
         {
             proceduralHelper.LoadLevelFromStats();
             hasLevelGenerationCompleted = true;
@@ -1002,11 +1033,11 @@ public class ProceduralGeneration : MonoBehaviour
 
     }
 
-    
+
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

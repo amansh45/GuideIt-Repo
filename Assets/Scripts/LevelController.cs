@@ -132,10 +132,12 @@ public class LevelController : MonoBehaviour
     {
         yield return new WaitForSeconds(waitTime);
 
+        
         if (pg != null)
             ClickedRetryButton();
         else
         {
+        
             slowmotionClass.customSlowmo(true, onPauseSlowmoFactor);
             retryCanvas.gameObject.SetActive(true);
             levelCompleteSlider.GetComponent<Slider>().value = gameLinesClass.levelCompleted;

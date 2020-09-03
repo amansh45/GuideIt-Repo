@@ -63,7 +63,7 @@ public class PlaceObjects : MonoBehaviour
                 rightMost = Mathf.Max(rightMost, rend.bounds.max.x);
                 coverage = Mathf.Max(coverage, (rend.bounds.max.x - rend.bounds.min.x));
             }
-            }
+        }
     }
 
     void Update()

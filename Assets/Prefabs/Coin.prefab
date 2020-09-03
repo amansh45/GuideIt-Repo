@@ -142,10 +142,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isRotating: 0
-  placeWrtCornors: 1
-  isCoin: 1
-  leftRightOffset: 0.3
-  baseScreenWidth: 5.61
+  placeWrtCornors: 0
+  isCoinOrPlayer: 1
+  scalingRequired: 0
+  leftRightOffset: 0
+  baseScreenWidth: 5.635593
+  dynamicWidthForScaling: 0
 --- !u!1001 &7782668432763110566
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -43,6 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0345a37e1ff60dc4089d456e287514b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  prevProceduralLevelFailed: 0
   firstActiveTaskIndex: 0
   secondActiveTaskIndex: 1
   tasksCompleted: 0
@@ -51,4 +52,4 @@ MonoBehaviour:
   highestLevel: 0
   playerCoins: 0
   playerStatsLoaded: 0
-  levelsInChapter: 04000000030000000300000003000000
+  levelsInChapter: 03000000030000000300000003000000

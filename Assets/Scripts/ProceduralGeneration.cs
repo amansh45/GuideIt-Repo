@@ -939,6 +939,7 @@ public class ProceduralGeneration : MonoBehaviour
 
         if (!playerStats.prevProceduralLevelFailed)
         {
+            playerStats.listOfObjects.Clear();
             var bottomLeft = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, 0));
             var bottomRight = Camera.main.ViewportToWorldPoint(new Vector3(1, 0, 0));
             screenWidth = bottomRight.x - bottomLeft.x;

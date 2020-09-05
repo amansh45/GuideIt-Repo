@@ -24,7 +24,8 @@ public class LevelController : MonoBehaviour
 
     [SerializeField] GameObject coinsAcquired;
     TextMeshProUGUI coinsAcquiredOnScreenText;
-    int coinsInScene = 0, currentCoinsAcquired = 0;
+    public int coinsInScene = 0;
+    public int currentCoinsAcquired = 0;
     ProceduralGeneration pg;
 
     private void Start()
@@ -152,6 +153,19 @@ public class LevelController : MonoBehaviour
         if (pg != null)
             playerStats.prevProceduralLevelFailed = true;
 
+        string levelName = gameObject.scene.name;
+        string[] levelIdentity = levelName.Split('.');
+        int currentChapterIndex = int.Parse(levelIdentity[0]);
+        int currentLevelIndex = int.Parse(levelIdentity[1]);
+
+        PlayerStatistics.Level currentLevel = playerStats.chaptersList[currentChapterIndex].LevelsInChapter[currentLevelIndex];
+        if(!currentLevel.IsPlayed)
+        {
+            currentLevel.numTimesLevelFailed += 1;
+            currentLevel.numTimesNearMiss = 0;
+            playerStats.chaptersList[currentChapterIndex].LevelsInChapter[currentLevelIndex] = currentLevel;
+        }
+
         StartCoroutine(PlayerDeathActions(waitTime));
     }
 
@@ -159,7 +173,7 @@ public class LevelController : MonoBehaviour
     {
         currentCoinsAcquired += 1;
         coinsAcquiredOnScreenText.text = currentCoinsAcquired.ToString() + " / " + coinsInScene;
-        taskHandler.UpdateLevelTaskState(ObjectsDescription.Coin, TaskTypes.Collect, TaskCategory.CountingTask);
+        taskHandler.UpdateLevelTaskState(ObjectsDescription.Coin, TaskTypes.Collect, TaskCategory.CountingTask, new List<string>() { });
     }
 
     public void ClickedPauseButton()

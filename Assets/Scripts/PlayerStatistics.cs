@@ -101,12 +101,12 @@ public class PlayerStatistics : MonoBehaviour
         public bool IsCompleted, IsLevelTask;
         public int TaskIndex, TaskCompletionAward, CurrentCount;
         public float CountLimit;
-        public ObjectsDescription AssociatedWith;
+        public List<ObjectsDescription> AssociatedWith;
         public TaskTypes CurrTaskType;
         public TaskCategory CurrTaskCategory;
         public string TaskDescription;
 
-        public Task(bool isCompleted, bool isLevelTask, ObjectsDescription associatedWith, string taskDescription, int taskIndex, int taskCompletionAward, TaskTypes taskType, TaskCategory taskCategory)
+        public Task(bool isCompleted, bool isLevelTask, List<ObjectsDescription> associatedWith, string taskDescription, int taskIndex, int taskCompletionAward, TaskTypes taskType, TaskCategory taskCategory)
         {
             IsCompleted = isCompleted;
             IsLevelTask = isLevelTask;
@@ -120,7 +120,7 @@ public class PlayerStatistics : MonoBehaviour
             CurrentCount = 0;
         }
 
-        public Task(bool isCompleted, bool isLevelTask, ObjectsDescription associatedWith, string taskDescription, int taskIndex, int taskCompletionAward, TaskTypes taskType, TaskCategory taskCategory, float countLimit)
+        public Task(bool isCompleted, bool isLevelTask, List<ObjectsDescription> associatedWith, string taskDescription, int taskIndex, int taskCompletionAward, TaskTypes taskType, TaskCategory taskCategory, float countLimit)
         {
             IsCompleted = isCompleted;
             IsLevelTask = isLevelTask;
@@ -200,6 +200,8 @@ public class PlayerStatistics : MonoBehaviour
         public int CoinsAcquiredInLevel, LevelIndex;
         public bool IsPlaying, IsPlayed, IsLocked;
         public string LevelType;
+        public int numTimesLevelFailed;
+        public int numTimesNearMiss;
 
         public Level(float personalBestTime, int coinsAcquiredInLevel, int levelIndex, bool isPlaying, bool isPlayed, bool isLocked, string levelType)
         {
@@ -210,6 +212,8 @@ public class PlayerStatistics : MonoBehaviour
             IsPlayed = isPlayed;
             IsLocked = isLocked;
             LevelType = levelType;
+            numTimesLevelFailed = 0;
+            numTimesNearMiss = 0;
         }
     }
 
@@ -312,16 +316,44 @@ public class PlayerStatistics : MonoBehaviour
         return romanValue;
     }
 
+
+    // two objects can't be combined together while assignment of tasks in a game.
     private void AddTasks()
     {
-
-        Task task = new Task(false, true, ObjectsDescription.Coin, "Collect 5 coins in any level", 0, 20, TaskTypes.Collect, TaskCategory.CountingTask, 5);
+        int index = 0;
+        Task task = new Task(false, false, new List<ObjectsDescription>() { ObjectsDescription.Player }, "Follow on Instagram", index++, 200, TaskTypes.Follow, TaskCategory.ImmediateActionTask);
         tasksList.Add(task);
-        task = new Task(false, false, ObjectsDescription.EnemyLauncher, "Destroy 4 enemy Cannons", 1, 100, TaskTypes.Destroy, TaskCategory.CountingTask, 4);
+        task = new Task(false, true, new List<ObjectsDescription>() { ObjectsDescription.Box }, "Near miss a box thrice in any level", index++, 100, TaskTypes.NearMiss, TaskCategory.CountingTask, 3);
         tasksList.Add(task);
-        task = new Task(false, false, ObjectsDescription.Coin, "Collect 20 coins in total", 2, 20, TaskTypes.Collect, TaskCategory.CountingTask, 20);
+        task = new Task(false, false, new List<ObjectsDescription>() { ObjectsDescription.BigFallingSphere }, "Push 2 sphere out of the way by shooting at them", index++, 50, TaskTypes.Collide, TaskCategory.CountingTask, 2);
         tasksList.Add(task);
-        task = new Task(false, true, ObjectsDescription.Player, "Complete Level in one go", 3, 50, TaskTypes.NoHit, TaskCategory.CountingTask, 1);
+        task = new Task(false, true, new List<ObjectsDescription>() { ObjectsDescription.EnemyProjectile }, "Destroy 2 misslles by shooting at it", index++, 50, TaskTypes.Destroy, TaskCategory.CountingTask, 2);
+        tasksList.Add(task);
+        task = new Task(false, true, new List<ObjectsDescription>() { ObjectsDescription.Player }, "Complete a level with zero near miss", index++, 5, TaskTypes.NoNearMiss, TaskCategory.ImmediateActionTask);
+        tasksList.Add(task);
+        task = new Task(false, true, new List<ObjectsDescription>() { ObjectsDescription.Coin }, "Collect 1 coin in any level", index++, 5, TaskTypes.Collect, TaskCategory.CountingTask, 1);
+        tasksList.Add(task);
+        task = new Task(false, true, new List<ObjectsDescription>() { ObjectsDescription.Player }, "Complete a level without getting hit", index++, 5, TaskTypes.NoHit, TaskCategory.ImmediateActionTask);
+        tasksList.Add(task);
+        task = new Task(false, true, new List<ObjectsDescription>() { ObjectsDescription.Player }, "Complete any level without making ball to hover", index++, 5, TaskTypes.Hover, TaskCategory.ImmediateActionTask);
+        tasksList.Add(task);
+        task = new Task(false, true, new List<ObjectsDescription>() { ObjectsDescription.Box }, "Near miss a box thrice in any level", index++, 100, TaskTypes.NearMiss, TaskCategory.CountingTask, 3);
+        tasksList.Add(task);
+        task = new Task(false, true, new List<ObjectsDescription>() { ObjectsDescription.Coin }, "Collect all coins in a level", index++, 15, TaskTypes.CollectAllCoinsInLevel, TaskCategory.ImmediateActionTask);
+        tasksList.Add(task);
+        task = new Task(false, true, new List<ObjectsDescription>() { ObjectsDescription.EnemyLauncher }, "Destroy 1 enemy Cannons in any level", index++, 100, TaskTypes.Destroy, TaskCategory.CountingTask, 1);
+        tasksList.Add(task);
+        task = new Task(false, false, new List<ObjectsDescription>() { ObjectsDescription.Coin }, "Collect 8 coins", index++, 50, TaskTypes.Collect, TaskCategory.CountingTask, 10);
+        tasksList.Add(task);
+        task = new Task(false, false, new List<ObjectsDescription>() { ObjectsDescription.EnemyLauncher }, "Destroy 2 enemy Cannons", index++, 100, TaskTypes.Destroy, TaskCategory.CountingTask, 2);
+        tasksList.Add(task);
+        task = new Task(false, false, new List<ObjectsDescription>() { ObjectsDescription.Coin }, "Collect 4 coins", index++, 20, TaskTypes.Collect, TaskCategory.CountingTask, 4);
+        tasksList.Add(task);
+        task = new Task(false, true, new List<ObjectsDescription>() { ObjectsDescription.EnemyLauncher }, "Destroy 3 enemy Cannons in any level", index++, 100, TaskTypes.Destroy, TaskCategory.CountingTask, 3);
+        tasksList.Add(task);
+        task = new Task(false, false, new List<ObjectsDescription>() { ObjectsDescription.Coin }, "Collect 20 coins in total", index++, 20, TaskTypes.Collect, TaskCategory.CountingTask, 20);
+        tasksList.Add(task);
+        task = new Task(false, true, new List<ObjectsDescription>() { ObjectsDescription.Player }, "Complete Level in one go", index++, 50, TaskTypes.NoHit, TaskCategory.CountingTask, 1);
         tasksList.Add(task);
 
         totalTasks = tasksList.Count;
@@ -376,6 +408,7 @@ public class PlayerStatistics : MonoBehaviour
         upgradesList.Add(upgrade);
         */
     }
+
 
     public Color HexToRGB(string code)
     {

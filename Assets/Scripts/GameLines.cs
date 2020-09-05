@@ -13,6 +13,8 @@ public class GameLines : MonoBehaviour {
     [SerializeField] float progressIndicatorZAxis = -1.2f, finishLevelAfter = 1.3f;
     [SerializeField] float extraOffsetForCollider = 0.2f;
 
+
+    TaskHandler taskHandlerClass;
     public float levelCompleted = 0f;
 
     Vector3 bottomLeft, topLeft, bottomRight, topRight;
@@ -105,6 +107,7 @@ public class GameLines : MonoBehaviour {
 
     private void Start()
     {
+        taskHandlerClass = FindObjectOfType<TaskHandler>();
         levelControllerClass = levelController.GetComponent<LevelController>();
         playerActions = playerPrefab.GetComponent<PlayerActions>();
     }
@@ -122,7 +125,7 @@ public class GameLines : MonoBehaviour {
         firstSpark.GetComponent<Spark>().SetParams(true, yAxisForBorder);
         secondSpark.GetComponent<Spark>().SetParams(false, yAxisForBorder);
     }
-    
+
 
     void LevelComplete() {
         gameRunning = false;
@@ -131,13 +134,14 @@ public class GameLines : MonoBehaviour {
         finishParticle.SetActive(true);
         Destroy(gameObjectsForLineRenderer[borderLineIndicesMapping["Top"]]);
         float currentVal = topLeft.x + 0.1f;
-        while(currentVal <= topRight.x) {
+        while (currentVal <= topRight.x) {
             GameObject dashInstance = Instantiate(lineDash, new Vector3(currentVal, topLeft.y, borderZaxis), transform.rotation);
             dashInstance.transform.parent = transform.parent;
             dashInstance.name = "Dashed Border";
             dashInstance.transform.localScale = new Vector3(singleDashLength, singleDashWidth, 1);
             currentVal += spaceBetweenLine;
         }
+        taskHandlerClass.UpdateLevelTaskState(ObjectsDescription.Coin, TaskTypes.CollectAllCoinsInLevel, TaskCategory.ImmediateActionTask, new List<string>() { levelControllerClass.coinsInScene.ToString(), levelControllerClass.currentCoinsAcquired.ToString() });
         //Destroy(playerPrefab);
         StartCoroutine(ShowLevelCompleteScene());
     }

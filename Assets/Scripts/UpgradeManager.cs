@@ -48,6 +48,7 @@ public class UpgradeManager : MonoBehaviour
     PlayerStatistics playerStats;
     UpgradeScroller upgradeScrollerClass;
     Dictionary<string, GameObject> skinsAndMaterials = new Dictionary<string, GameObject>();
+    TaskHandler taskHandlerClass;
 
     bool isShooting = false, previewHasFocus = true;
 
@@ -392,10 +393,15 @@ public class UpgradeManager : MonoBehaviour
             if(fromCoin)
             {
                 PlayerStatistics.SkinColorStuff skinColorData = currentUpgrade.ColorStuff[currentUpgrade.ParticlesColor.ToString()];
-                playerStats.playerCoins -= skinColorData.CoinCost;
-                numCoinsTMPro.text = playerStats.playerCoins.ToString();
-                skinColorData.IsUnlocked = true;
-                currentUpgrade.ColorStuff[currentUpgrade.ParticlesColor.ToString()] = skinColorData;
+                if(playerStats.playerCoins >= skinColorData.CoinCost)
+                {
+                    playerStats.playerCoins -= skinColorData.CoinCost;
+                    numCoinsTMPro.text = playerStats.playerCoins.ToString();
+                    skinColorData.IsUnlocked = true;
+                    currentUpgrade.ColorStuff[currentUpgrade.ParticlesColor.ToString()] = skinColorData;
+
+                    taskHandlerClass.UpdateLevelTaskState(ObjectsDescription.Player, TaskTypes.UpdateSkin, TaskCategory.ImmediateActionTask, new List<string>() { skinColorData.CoinCost.ToString() });
+                }
             } else
             {
                 // pay from credit card.
@@ -405,9 +411,14 @@ public class UpgradeManager : MonoBehaviour
         {
             if(fromCoin)
             {
-                playerStats.playerCoins -= currentUpgrade.CoinCost;
-                numCoinsTMPro.text = playerStats.playerCoins.ToString();
-                currentUpgrade.IsUnlocked = true;
+                if(playerStats.playerCoins >= currentUpgrade.CoinCost)
+                {
+                    playerStats.playerCoins -= currentUpgrade.CoinCost;
+                    numCoinsTMPro.text = playerStats.playerCoins.ToString();
+                    currentUpgrade.IsUnlocked = true;
+
+                    taskHandlerClass.UpdateLevelTaskState(ObjectsDescription.Player, TaskTypes.UpdateSkin, TaskCategory.ImmediateActionTask, new List<string>() { currentUpgrade.CoinCost.ToString() });
+                }
             } else
             {
                 // pay from credit card.
@@ -463,6 +474,8 @@ public class UpgradeManager : MonoBehaviour
         numCoinsTMPro.text = playerStats.playerCoins.ToString();
 
         selectedUpgradeIndexForPreview = 0;
+
+        taskHandlerClass = FindObjectOfType<TaskHandler>();
 
         upgradeScrollerClass = GetComponent<UpgradeScroller>();
 

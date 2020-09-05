@@ -9,6 +9,7 @@ public enum ObjectsDescription
     Box,
     Blade,
     Square,
+    BigFallingSphere,
     EnemyProjectile,
     NearMissBoundary,
     PlayerProjectile,
@@ -16,6 +17,9 @@ public enum ObjectsDescription
     PlayerLauncher,
     FinishLine,
     Coin,
+    NearMissBoxGO,
+    NearMissBladeGO,
+    NearMissSquareGO
 }
 
 

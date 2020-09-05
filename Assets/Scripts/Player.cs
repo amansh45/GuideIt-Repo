@@ -46,6 +46,8 @@ public class Player : MonoBehaviour
     LevelController levelControllerClass;
 
     public PlayerState playerState;
+    List<string> nearMissObjectNames = new List<string>();
+    PlayerStatistics playerStats;
 
     void Start()
     {
@@ -65,6 +67,7 @@ public class Player : MonoBehaviour
         vfxControllerClass = FindObjectOfType<VFXController>();
         if(levelController != null)
             levelControllerClass = levelController.GetComponent<LevelController>();
+        playerStats = FindObjectOfType<PlayerStatistics>();
     }
 
     public void SetScale(float scale)
@@ -93,7 +96,9 @@ public class Player : MonoBehaviour
             waypoints_buffer[waypoints_buffer.Count-1].Add(point);
         }
     }
-    
+
+    bool ballCameToRest = false;
+
     void Update()
     {
 
@@ -102,7 +107,10 @@ public class Player : MonoBehaviour
         else if (playerState == PlayerState.Still)
             ballSpeed = 0f;
         else if (playerState == PlayerState.Hover)
+        {
+            ballCameToRest = true;
             ballSpeed = hoverSpeed;
+        }
         else if (playerState == PlayerState.Move)
             ballSpeed = moveSpeed;
         
@@ -112,34 +120,45 @@ public class Player : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.tag == ObjectsDescription.EnemyObject.ToString() || other.gameObject.tag == ObjectsDescription.EnemyLauncher.ToString())
-            //Debug.Log("death");
-                Die(other.gameObject);
+            Die(other.gameObject);
         else if (other.gameObject.tag == ObjectsDescription.FinishLine.ToString())
             LevelComplete();
-        else if (other.gameObject.name == ObjectsDescription.NearMissBoundary.ToString())
+        else if (other.gameObject.name.Replace(" ", string.Empty) == ObjectsDescription.NearMissBladeGO.ToString())
         {
-            if (other.gameObject.transform.parent.name == ObjectsDescription.Blade.ToString())
-            {
-                Debug.Log("Near Miss registered with blade");
-                taskHandlerClass.UpdateLevelTaskState(ObjectsDescription.Blade, TaskTypes.NearMiss, TaskCategory.CountingTask);
-            }
-            else if (other.gameObject.transform.parent.name == ObjectsDescription.Box.ToString())
-            {
-                Debug.Log("Near Miss registered with box");
-                taskHandlerClass.UpdateLevelTaskState(ObjectsDescription.Box, TaskTypes.NearMiss, TaskCategory.CountingTask);
-            }
-            else if (other.gameObject.transform.parent.name == ObjectsDescription.Square.ToString())
-            {
-                Debug.Log("Near Miss registered with square");
-                taskHandlerClass.UpdateLevelTaskState(ObjectsDescription.Square, TaskTypes.NearMiss, TaskCategory.CountingTask);
-            }
+            string objectName = other.gameObject.transform.parent.parent.gameObject.name;
+
+            if (nearMissObjectNames.Contains(objectName))
+                return;
+
+            nearMissObjectNames.Add(objectName);
+
+            taskHandlerClass.UpdateLevelTaskState(ObjectsDescription.Blade, TaskTypes.NearMiss, TaskCategory.CountingTask, new List<string>() { });
+        } else if(other.gameObject.name.Replace(" ", string.Empty) == ObjectsDescription.NearMissBoxGO.ToString())
+        {
+            string objectName = other.gameObject.transform.parent.parent.gameObject.name;
+            
+            if (nearMissObjectNames.Contains(objectName))
+                return;
+
+            nearMissObjectNames.Add(objectName);
+            taskHandlerClass.UpdateLevelTaskState(ObjectsDescription.Box, TaskTypes.NearMiss, TaskCategory.CountingTask, new List<string>() { });
+        } else if(other.gameObject.name.Replace(" ", string.Empty) == ObjectsDescription.NearMissSquareGO.ToString())
+        {
+            string objectName = other.gameObject.transform.parent.parent.gameObject.name;
+
+            Debug.Log(objectName);
+
+            if (nearMissObjectNames.Contains(objectName))
+                return;
+
+            nearMissObjectNames.Add(objectName);
+            taskHandlerClass.UpdateLevelTaskState(ObjectsDescription.Square, TaskTypes.NearMiss, TaskCategory.CountingTask, new List<string>() { });
         }
     }
 
     void Die(GameObject collider)
     {
         Debug.Log("Player Died...");
-        //taskHandlerClass.ResetTasks();
         levelControllerClass.ShowRetryCanvas(camShakeDuration);
         Destroy(gameObject);
         vfxControllerClass.PlayerDied(transform.position, collider, camShakeDuration);
@@ -147,7 +166,14 @@ public class Player : MonoBehaviour
 
     void LevelComplete()
     {
-        Debug.Log("Level Complete...");
+        string levelName = gameObject.scene.name;
+        string[] levelIdentity = levelName.Split('.');
+        int currentChapterIndex = int.Parse(levelIdentity[0]);
+        int currentLevelIndex = int.Parse(levelIdentity[1]);
+
+        taskHandlerClass.UpdateLevelTaskState(ObjectsDescription.Player, TaskTypes.Hover, TaskCategory.ImmediateActionTask, new List<string>() { (!ballCameToRest).ToString() });
+        taskHandlerClass.UpdateLevelTaskState(ObjectsDescription.Player, TaskTypes.NoHit, TaskCategory.ImmediateActionTask, new List<string>() { (playerStats.chaptersList[currentChapterIndex].LevelsInChapter[currentLevelIndex].numTimesLevelFailed == 0).ToString() });
+        taskHandlerClass.UpdateLevelTaskState(ObjectsDescription.Player, TaskTypes.NoNearMiss, TaskCategory.ImmediateActionTask, new List<string>() {  });
         taskHandlerClass.FinalizeTasks();
     }
 

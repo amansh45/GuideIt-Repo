@@ -11,9 +11,12 @@ public enum TaskTypes
     Destroy,
     UpdateSkin,
     Follow,
-    Rest,
+    Hover,
     ScreenClick,
     NoHit,
+    CollectAllCoinsInLevel,
+    NoNearMiss,
+    Collide
 }
 
 public enum TaskCategory
@@ -34,12 +37,22 @@ public class TaskHandler : MonoBehaviour
 
     PlayerStatistics playerStats;
     public PlayerStatistics.Task firstTask, secondTask;
-    //public Dictionary<string, Dictionary<string, int>> levelCountTasks = new Dictionary<string, Dictionary<string, int>>();
     bool firstTimeLoad = true;
     PlayerStatistics.Task firstTaskBackup, secondTaskBackup;
+    int currentChapterIndex, currentLevelIndex;
+    string sceneName;
 
     private void Awake()
     {
+        Scene scene = SceneManager.GetActiveScene();
+        sceneName = scene.name;
+        if(sceneName.Contains("."))
+        {
+            string[] levelChapterIndex = sceneName.Split('.');
+            currentChapterIndex = int.Parse(levelChapterIndex[0]);
+            currentLevelIndex = int.Parse(levelChapterIndex[1]);
+        }
+
         int taskHandlerCount = FindObjectsOfType<TaskHandler>().Length;
         if (taskHandlerCount > 1)
             Destroy(gameObject);
@@ -55,24 +68,17 @@ public class TaskHandler : MonoBehaviour
     public void UpdateTaskPointers()
     {
         int findex = playerStats.firstActiveTaskIndex, sindex = playerStats.secondActiveTaskIndex;
-        string taskAssociatedWith, taskType, taskCategory;
 
         if (findex != -1)
         {
             firstTask = playerStats.tasksList[findex];
             firstTaskBackup = firstTask;
-            taskAssociatedWith = firstTask.AssociatedWith.ToString();
-            taskType = firstTask.CurrTaskType.ToString();
-            taskCategory = firstTask.CurrTaskCategory.ToString();
         }
 
         if (sindex != -1)
         {
             secondTask = playerStats.tasksList[sindex];
             secondTaskBackup = secondTask;
-            taskAssociatedWith = firstTask.AssociatedWith.ToString();
-            taskType = firstTask.CurrTaskType.ToString();
-            taskCategory = firstTask.CurrTaskCategory.ToString();
         }
     }
 
@@ -86,14 +92,13 @@ public class TaskHandler : MonoBehaviour
         }
     }
 
-    private bool IsLevelEligibleToExecuteTask(string sceneName)
+    private bool IsLevelEligibleToExecuteTask()
     {
-        string[] levelChapterIndex = sceneName.Split('.');
-        PlayerStatistics.Level levelData = playerStats.chaptersList[int.Parse(levelChapterIndex[0])].LevelsInChapter[int.Parse(levelChapterIndex[1])];
+        PlayerStatistics.Level levelData = playerStats.chaptersList[currentChapterIndex].LevelsInChapter[currentLevelIndex];
         return !levelData.IsPlayed;
     }
 
-    private bool UpdateCameFromLevel(string sceneName)
+    private bool UpdateCameFromLevel()
     {
         return sceneName.Contains(".");
     }
@@ -102,18 +107,14 @@ public class TaskHandler : MonoBehaviour
     // level needs to be completed for updating the task
     // after level complete levelTask will be completed fully or not at all
     // after level complete gameTask can be completed partially.
-    public void UpdateLevelTaskState(ObjectsDescription objectType, TaskTypes taskType, TaskCategory taskCategory)
+    public void UpdateLevelTaskState(ObjectsDescription objectType, TaskTypes taskType, TaskCategory taskCategory, List<string> metaData)
     {
-        Scene scene = SceneManager.GetActiveScene();
-        string sceneName = scene.name;
-        if (UpdateCameFromLevel(sceneName) && !IsLevelEligibleToExecuteTask(sceneName))
+        if (UpdateCameFromLevel() && !IsLevelEligibleToExecuteTask())
             return;
 
-        string objectStr = objectType.ToString();
-        string taskTypeStr = taskType.ToString();
         if (taskCategory == TaskCategory.CountingTask)
         {
-            if(firstTask.AssociatedWith == objectType && firstTask.CurrTaskType == taskType && firstTask.CurrTaskCategory == taskCategory)
+            if(firstTask.AssociatedWith.Contains(objectType) && firstTask.CurrTaskType == taskType && firstTask.CurrTaskCategory == taskCategory)
             {
                 if (firstTask.CurrentCount < firstTask.CountLimit)
                     firstTask.CurrentCount += 1;
@@ -122,7 +123,7 @@ public class TaskHandler : MonoBehaviour
                     firstTask.IsCompleted = true;
             }
 
-            if (secondTask.AssociatedWith == objectType && secondTask.CurrTaskType == taskType && secondTask.CurrTaskCategory == taskCategory)
+            if (secondTask.AssociatedWith.Contains(objectType) && secondTask.CurrTaskType == taskType && secondTask.CurrTaskCategory == taskCategory)
             {
                 if (secondTask.CurrentCount < secondTask.CountLimit)
                     secondTask.CurrentCount += 1;
@@ -130,7 +131,65 @@ public class TaskHandler : MonoBehaviour
                 if(secondTask.CurrentCount == secondTask.CountLimit)
                     secondTask.IsCompleted = true;
             }
-            
+
+            if(taskType == TaskTypes.NearMiss)
+            {
+                Debug.Log("Near miss registered...");
+                PlayerStatistics.Level levelData = playerStats.chaptersList[currentChapterIndex].LevelsInChapter[currentLevelIndex];
+                levelData.numTimesNearMiss += 1;
+                playerStats.chaptersList[currentChapterIndex].LevelsInChapter[currentLevelIndex] = levelData;
+            }
+
+        } else if(taskCategory == TaskCategory.ImmediateActionTask)
+        {
+            if(taskType == TaskTypes.CollectAllCoinsInLevel)
+            {
+                if (firstTask.AssociatedWith.Contains(objectType) && firstTask.CurrTaskType == taskType && firstTask.CurrTaskCategory == taskCategory)
+                {
+                    if (int.Parse(metaData[0]) == int.Parse(metaData[1]))
+                        firstTask.IsCompleted = true;
+                }
+
+                if (secondTask.AssociatedWith.Contains(objectType) && secondTask.CurrTaskType == taskType && secondTask.CurrTaskCategory == taskCategory)
+                {
+                    if (int.Parse(metaData[0]) == int.Parse(metaData[1]))
+                        secondTask.IsCompleted = true;
+                }
+            } else if(taskType == TaskTypes.Hover || taskType == TaskTypes.NoHit)
+            {
+                if (firstTask.AssociatedWith.Contains(objectType) && firstTask.CurrTaskType == taskType && firstTask.CurrTaskCategory == taskCategory)
+                {
+                    firstTask.IsCompleted = bool.Parse(metaData[0]);
+                }
+
+                if (secondTask.AssociatedWith.Contains(objectType) && secondTask.CurrTaskType == taskType && secondTask.CurrTaskCategory == taskCategory)
+                {
+                    secondTask.IsCompleted = bool.Parse(metaData[0]);
+                }
+            } else if(taskType == TaskTypes.NoNearMiss)
+            {
+                if (firstTask.AssociatedWith.Contains(objectType) && firstTask.CurrTaskType == taskType && firstTask.CurrTaskCategory == taskCategory)
+                {
+                    firstTask.IsCompleted = (playerStats.chaptersList[currentChapterIndex].LevelsInChapter[currentLevelIndex].numTimesNearMiss == 0);
+                }
+
+                if (secondTask.AssociatedWith.Contains(objectType) && secondTask.CurrTaskType == taskType && secondTask.CurrTaskCategory == taskCategory)
+                {
+                    secondTask.IsCompleted = (playerStats.chaptersList[currentChapterIndex].LevelsInChapter[currentLevelIndex].numTimesNearMiss == 0);
+                }
+            } else if(taskType == TaskTypes.UpdateSkin)
+            {
+                if (firstTask.AssociatedWith.Contains(objectType) && firstTask.CurrTaskType == taskType && firstTask.CurrTaskCategory == taskCategory)
+                {
+                    firstTask.IsCompleted = (firstTask.CountLimit <= int.Parse(metaData[0]));
+                }
+
+                if (secondTask.AssociatedWith.Contains(objectType) && secondTask.CurrTaskType == taskType && secondTask.CurrTaskCategory == taskCategory)
+                {
+                    secondTask.IsCompleted = (secondTask.CountLimit <= int.Parse(metaData[0]));
+                }
+                FinalizeTasks();
+            }
         }
     }
 

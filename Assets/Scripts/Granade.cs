@@ -44,6 +44,11 @@ public class Granade : MonoBehaviour
 
         if (tag == ObjectsDescription.EnemyProjectile.ToString() && isGranadeMoving)
         {
+            if(other.gameObject.tag == ObjectsDescription.PlayerProjectile.ToString())
+            {
+                taskHandlerClass.UpdateLevelTaskState(ObjectsDescription.EnemyProjectile, TaskTypes.Destroy, TaskCategory.CountingTask, new List<string>() { });
+            }
+
             if (other.gameObject.tag == ObjectsDescription.Player.ToString() || other.gameObject.tag == ObjectsDescription.PlayerProjectile.ToString())
             {
                 Destroy(gameObject);
@@ -60,11 +65,27 @@ public class Granade : MonoBehaviour
                 GameObject launcher = other.transform.parent.gameObject;
                 vfxControllerClass.InitiateScreenRippleEffect(launcher.transform.position);
                 vfxControllerClass.InitiateExplodeEffect(launcher.transform.position);
-                taskHandlerClass.UpdateLevelTaskState(ObjectsDescription.EnemyLauncher, TaskTypes.Destroy, TaskCategory.CountingTask);
+                taskHandlerClass.UpdateLevelTaskState(ObjectsDescription.EnemyLauncher, TaskTypes.Destroy, TaskCategory.CountingTask, new List<string>() { });
                 Destroy(launcher);
                 Destroy(gameObject);
+            } else if(other.gameObject.name.Replace(" ",string.Empty) == ObjectsDescription.BigFallingSphere.ToString())
+            {
+                taskHandlerClass.UpdateLevelTaskState(ObjectsDescription.BigFallingSphere, TaskTypes.Collide, TaskCategory.CountingTask, new List<string>() { });
             }
         }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.name.Replace(" ",string.Empty).Contains(ObjectsDescription.BigFallingSphere.ToString()))
+        {
+            taskHandlerClass.UpdateLevelTaskState(ObjectsDescription.BigFallingSphere, TaskTypes.Collide, TaskCategory.CountingTask, new List<string>() { });
+            Destroy(gameObject);
+            vfxControllerClass.InitiateCameraShakeEffect(cameraShakeDuration);
+            vfxControllerClass.InitiateScreenRippleEffect(transform.position);
+            vfxControllerClass.InitiateExplodeEffect(transform.position);
+        }
+            
     }
 
     public void SetScaleFactor(float slomotionScaleFactor)

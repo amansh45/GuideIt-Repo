@@ -64,7 +64,7 @@ public class OnClickMenuUI : MonoBehaviour
     {
         if (levelController == null)
             levelController = FindObjectOfType<LevelController>();
-        levelController.ClickedRetryButton();
+        levelController.ClickedRetryButton(true);
     }
     
 

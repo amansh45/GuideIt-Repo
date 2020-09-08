@@ -82,7 +82,11 @@ public class EnemyLauncher : MonoBehaviour
 
     void InitiateGranade()
     {
-        latestGranade = Instantiate(granadePrefab, transform.position, transform.rotation) as GameObject;
+        
+        if (gameObject.name.Contains("Still Cannon Wrapper"))
+            latestGranade = Instantiate(granadePrefab, transform.GetChild(0).position, transform.rotation) as GameObject;
+        else       
+            latestGranade = Instantiate(granadePrefab, transform.position, transform.rotation) as GameObject;
         if (isUpShootingLauncher)
         {
             if(transform.position.x < screenCenter)

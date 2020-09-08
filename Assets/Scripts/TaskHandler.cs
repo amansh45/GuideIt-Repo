@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 using UnityEngine.SceneManagement;
 
 // types of tasks.
@@ -103,6 +104,9 @@ public class TaskHandler : MonoBehaviour
         return sceneName.Contains(".");
     }
 
+
+
+
     // real time updation will be done by mainmenuhandler or levelcontroller
     // level needs to be completed for updating the task
     // after level complete levelTask will be completed fully or not at all
@@ -112,9 +116,13 @@ public class TaskHandler : MonoBehaviour
         if (UpdateCameFromLevel() && !IsLevelEligibleToExecuteTask())
             return;
 
+        bool objTypeMatchesFirstTask = Array.Exists(firstTask.AssociatedWith, element => element == objectType);
+        bool objTypeMatchesSecondTask = Array.Exists(secondTask.AssociatedWith, element => element == objectType);
+
         if (taskCategory == TaskCategory.CountingTask)
         {
-            if(firstTask.AssociatedWith.Contains(objectType) && firstTask.CurrTaskType == taskType && firstTask.CurrTaskCategory == taskCategory)
+            
+            if(objTypeMatchesFirstTask && firstTask.CurrTaskType == taskType && firstTask.CurrTaskCategory == taskCategory)
             {
                 if (firstTask.CurrentCount < firstTask.CountLimit)
                     firstTask.CurrentCount += 1;
@@ -123,7 +131,7 @@ public class TaskHandler : MonoBehaviour
                     firstTask.IsCompleted = true;
             }
 
-            if (secondTask.AssociatedWith.Contains(objectType) && secondTask.CurrTaskType == taskType && secondTask.CurrTaskCategory == taskCategory)
+            if (objTypeMatchesSecondTask && secondTask.CurrTaskType == taskType && secondTask.CurrTaskCategory == taskCategory)
             {
                 if (secondTask.CurrentCount < secondTask.CountLimit)
                     secondTask.CurrentCount += 1;
@@ -144,47 +152,47 @@ public class TaskHandler : MonoBehaviour
         {
             if(taskType == TaskTypes.CollectAllCoinsInLevel)
             {
-                if (firstTask.AssociatedWith.Contains(objectType) && firstTask.CurrTaskType == taskType && firstTask.CurrTaskCategory == taskCategory)
+                if (objTypeMatchesFirstTask && firstTask.CurrTaskType == taskType && firstTask.CurrTaskCategory == taskCategory)
                 {
                     if (int.Parse(metaData[0]) == int.Parse(metaData[1]))
                         firstTask.IsCompleted = true;
                 }
 
-                if (secondTask.AssociatedWith.Contains(objectType) && secondTask.CurrTaskType == taskType && secondTask.CurrTaskCategory == taskCategory)
+                if (objTypeMatchesSecondTask && secondTask.CurrTaskType == taskType && secondTask.CurrTaskCategory == taskCategory)
                 {
                     if (int.Parse(metaData[0]) == int.Parse(metaData[1]))
                         secondTask.IsCompleted = true;
                 }
             } else if(taskType == TaskTypes.Hover || taskType == TaskTypes.NoHit)
             {
-                if (firstTask.AssociatedWith.Contains(objectType) && firstTask.CurrTaskType == taskType && firstTask.CurrTaskCategory == taskCategory)
+                if (objTypeMatchesFirstTask && firstTask.CurrTaskType == taskType && firstTask.CurrTaskCategory == taskCategory)
                 {
                     firstTask.IsCompleted = bool.Parse(metaData[0]);
                 }
 
-                if (secondTask.AssociatedWith.Contains(objectType) && secondTask.CurrTaskType == taskType && secondTask.CurrTaskCategory == taskCategory)
+                if (objTypeMatchesSecondTask && secondTask.CurrTaskType == taskType && secondTask.CurrTaskCategory == taskCategory)
                 {
                     secondTask.IsCompleted = bool.Parse(metaData[0]);
                 }
             } else if(taskType == TaskTypes.NoNearMiss)
             {
-                if (firstTask.AssociatedWith.Contains(objectType) && firstTask.CurrTaskType == taskType && firstTask.CurrTaskCategory == taskCategory)
+                if (objTypeMatchesFirstTask && firstTask.CurrTaskType == taskType && firstTask.CurrTaskCategory == taskCategory)
                 {
                     firstTask.IsCompleted = (playerStats.chaptersList[currentChapterIndex].LevelsInChapter[currentLevelIndex].numTimesNearMiss == 0);
                 }
 
-                if (secondTask.AssociatedWith.Contains(objectType) && secondTask.CurrTaskType == taskType && secondTask.CurrTaskCategory == taskCategory)
+                if (objTypeMatchesSecondTask && secondTask.CurrTaskType == taskType && secondTask.CurrTaskCategory == taskCategory)
                 {
                     secondTask.IsCompleted = (playerStats.chaptersList[currentChapterIndex].LevelsInChapter[currentLevelIndex].numTimesNearMiss == 0);
                 }
             } else if(taskType == TaskTypes.UpdateSkin)
             {
-                if (firstTask.AssociatedWith.Contains(objectType) && firstTask.CurrTaskType == taskType && firstTask.CurrTaskCategory == taskCategory)
+                if (objTypeMatchesFirstTask && firstTask.CurrTaskType == taskType && firstTask.CurrTaskCategory == taskCategory)
                 {
                     firstTask.IsCompleted = (firstTask.CountLimit <= int.Parse(metaData[0]));
                 }
 
-                if (secondTask.AssociatedWith.Contains(objectType) && secondTask.CurrTaskType == taskType && secondTask.CurrTaskCategory == taskCategory)
+                if (objTypeMatchesSecondTask && secondTask.CurrTaskType == taskType && secondTask.CurrTaskCategory == taskCategory)
                 {
                     secondTask.IsCompleted = (secondTask.CountLimit <= int.Parse(metaData[0]));
                 }

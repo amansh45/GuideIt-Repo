@@ -56,6 +56,13 @@ public class Granade : MonoBehaviour
                 vfxControllerClass.InitiateScreenRippleEffect(transform.position);
                 vfxControllerClass.InitiateExplodeEffect(transform.position);
             }
+            
+            else if(other.gameObject.tag == ObjectsDescription.EnemyObject.ToString())
+            {
+                Destroy(gameObject);
+                vfxControllerClass.InitiateExplodeEffect(transform.position);
+            }
+            
         }
         else if (tag == ObjectsDescription.PlayerProjectile.ToString())
         {
@@ -68,9 +75,6 @@ public class Granade : MonoBehaviour
                 taskHandlerClass.UpdateLevelTaskState(ObjectsDescription.EnemyLauncher, TaskTypes.Destroy, TaskCategory.CountingTask, new List<string>() { });
                 Destroy(launcher);
                 Destroy(gameObject);
-            } else if(other.gameObject.name.Replace(" ",string.Empty) == ObjectsDescription.BigFallingSphere.ToString())
-            {
-                taskHandlerClass.UpdateLevelTaskState(ObjectsDescription.BigFallingSphere, TaskTypes.Collide, TaskCategory.CountingTask, new List<string>() { });
             }
         }
     }

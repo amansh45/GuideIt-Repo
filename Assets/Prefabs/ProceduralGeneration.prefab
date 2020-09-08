@@ -1,0 +1,99 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &9172864659714195779
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9172864659714195781}
+  - component: {fileID: 9172864659714195778}
+  - component: {fileID: 9172864659714195780}
+  m_Layer: 0
+  m_Name: ProceduralGeneration
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9172864659714195781
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9172864659714195779}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9172864659714195778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9172864659714195779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fed6c260b0e9f6e4b8a1da175e5cb76f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coinsPrefab: {fileID: 929961085189442446, guid: 3d9137ac55441d640a9c11438b295347,
+    type: 3}
+  playerGO: {fileID: 0}
+  snappingAnimationController: {fileID: 9100000, guid: f8eb06033bc241f4aabdd29f5040d7be,
+    type: 2}
+  rotateAnimationController: {fileID: 9100000, guid: 9628e44c5735e3d418ec8fd47a07fdc1,
+    type: 2}
+  l2rAnimationController: {fileID: 9100000, guid: 4a274fe358224b74399e388c8e489462,
+    type: 2}
+  stillCannonAnimationController: {fileID: 9100000, guid: 9610310910250a14c8797759e6469d88,
+    type: 2}
+  blinkingCannonAnimationController: {fileID: 9100000, guid: d8ed75ed83eee5f4aa9c00b6c4c6db5b,
+    type: 2}
+  hasLevelGenerationCompleted: 0
+--- !u!114 &9172864659714195780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9172864659714195779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bc72061ddb96134a854444d533f6dd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyObjects:
+    square: {fileID: 5161719617795137624, guid: dffc3b4460c4f944ebf2a7fe42cd81d8,
+      type: 3}
+    bigBox: {fileID: 4007911041186045627, guid: 71e82a0b7df16eb44b67ad66da543092,
+      type: 3}
+    sphere: {fileID: 7686610315252515874, guid: e7d75c247687abf40a0640e22ddaa7c8,
+      type: 3}
+    blade: {fileID: 3608964236608183296, guid: 4948a6519d8e41d47ae40a69babce2dd, type: 3}
+    box: {fileID: 9089513015767164995, guid: 221ce7e384e6e7f41be160aac4526c77, type: 3}
+    launcher: {fileID: 3234638709327313726, guid: aba16a075dddf394db5d01432d51dd83,
+      type: 3}
+    grinder: {fileID: 598868123022754846, guid: fc7fee7727181ac4599302c5b73d3d98,
+      type: 3}
+    hPlatform: {fileID: 4707258787373216651, guid: 4e95e469302e8264e9e63154b8320c88,
+      type: 3}
+    saw: {fileID: 6888472139141832504, guid: 8dbc7154852396c42bf0af49811bcdb6, type: 3}
+    stillCannon: {fileID: 1553537297963963040, guid: 09667c1915698df40a923655d00cb2c8,
+      type: 3}
+    upCannon: {fileID: 2355911546221398998, guid: 75c00f8c5978d034eb85a8c29cb0aeaa,
+      type: 3}
+    stillPlatform: {fileID: 2913142494671259844, guid: 784d84cee830ac541bddfc3449613b03,
+      type: 3}
+    sphereSupportingPlatform: {fileID: 6098295803265367988, guid: c78d1c2daee3c624da8f72dd959935ed,
+      type: 3}
+  playSpaceGO: {fileID: 0}
+  playerPrefab: {fileID: 0}
+  slowmotionGO: {fileID: 0}

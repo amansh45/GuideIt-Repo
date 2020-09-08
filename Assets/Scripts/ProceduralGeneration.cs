@@ -947,7 +947,7 @@ public class ProceduralGeneration : MonoBehaviour
 
             proceduralHelper.CreateDictionary();
 
-            int numOfObjects = UnityEngine.Random.Range(12, 15);
+            int numOfObjects = UnityEngine.Random.Range(5, 8);
 
             float yAxis = transform.position.y + 10f;
 

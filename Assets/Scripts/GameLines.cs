@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GameLines : MonoBehaviour {
@@ -8,11 +9,10 @@ public class GameLines : MonoBehaviour {
     [SerializeField] float screenBorderOffset = 0.2f, spaceBetweenLine = 0.2f, singleDashLength = 0.2f, singleDashWidth = 0.1f, borderZaxis;
     [SerializeField] float borderWidth = 0.025f;
     [SerializeField] Color color = Color.white;
-    [SerializeField] GameObject playerPrefab, levelProgressIndicator, levelController;
+    [SerializeField] GameObject playerPrefab, levelProgressIndicator, levelController, playerTimerUI;
     [SerializeField] Camera mainCamera;
     [SerializeField] float progressIndicatorZAxis = -1.2f, finishLevelAfter = 1.3f;
     [SerializeField] float extraOffsetForCollider = 0.2f;
-
 
     TaskHandler taskHandlerClass;
     public float levelCompleted = 0f;
@@ -27,7 +27,9 @@ public class GameLines : MonoBehaviour {
     PlayerActions playerActions;
     bool gameRunning = false;
     float levelMaxY = 0, levelMinY = 0, playAreaMinY = 0, playAreaMaxY = 0, playerTimer = 0f, yAxisForBorder;
-    
+    TextMeshProUGUI timerLabel;
+    ProceduralGeneration pg;
+
     public Dictionary<string, int> borderLineIndicesMapping = new Dictionary<string, int>()
     {
         {"Left",  0},
@@ -110,6 +112,12 @@ public class GameLines : MonoBehaviour {
         taskHandlerClass = FindObjectOfType<TaskHandler>();
         levelControllerClass = levelController.GetComponent<LevelController>();
         playerActions = playerPrefab.GetComponent<PlayerActions>();
+        timerLabel = playerTimerUI.GetComponent<TextMeshProUGUI>();
+        pg = FindObjectOfType<ProceduralGeneration>();
+        if (pg != null)
+            playerTimer = PersistentInformation.timerForInfinitelevel;
+        else
+            PersistentInformation.timerForInfinitelevel = 0f;
     }
 
     GameObject firstSpark, secondSpark;
@@ -173,6 +181,16 @@ public class GameLines : MonoBehaviour {
 
             firstProgressInstance.transform.localPosition = new Vector3(prevFirstProgressPos.x, nextProgressY, prevFirstProgressPos.z);
             secondProgressInstance.transform.localPosition = new Vector3(prevSecondProgressPos.x, nextProgressY, prevSecondProgressPos.z);
+
+            var minutes = Mathf.FloorToInt(playerTimer / 60);
+            var seconds = Mathf.FloorToInt(playerTimer % 60);
+            var fraction = (playerTimer * 100) % 99;
+
+            timerLabel.text = string.Format("{0:00} : {1:00}", (minutes * 60) + seconds, fraction);
+
+            if (pg != null)
+                PersistentInformation.timerForInfinitelevel = playerTimer;
+
         }
     }
 

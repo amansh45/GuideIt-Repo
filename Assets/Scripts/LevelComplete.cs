@@ -70,12 +70,23 @@ public class LevelComplete : MonoBehaviour
 
             coinTextGO.GetComponent<TextMeshProUGUI>().text = playerStats.playerCoins.ToString();
             levelIndexGO.GetComponent<TextMeshProUGUI>().text = completedLevel.LevelIndex.ToString();
-            currentTimeGO.GetComponent<TextMeshProUGUI>().text = System.Math.Round(completedLevel.RecentTime, 2).ToString() + "s";
+
+            var minutes = completedLevel.RecentTime / 60;
+            var seconds = completedLevel.RecentTime % 60;
+            var fraction = (completedLevel.RecentTime * 100) % 99;
+            currentTimeGO.GetComponent<TextMeshProUGUI>().text = string.Format("{0:00} : {1:00}", (minutes * 60) + seconds, fraction);
+
 
             if (completedLevel.BestTime == int.MaxValue)
                 prevBestTimeGO.GetComponent<TextMeshProUGUI>().text = "Best Time:  --";
             else
-                prevBestTimeGO.GetComponent<TextMeshProUGUI>().text = "Best Time: " + System.Math.Round(completedLevel.BestTime, 2).ToString() + "s";
+            {
+                minutes = completedLevel.BestTime / 60;
+                seconds = completedLevel.BestTime % 60;
+                fraction = (completedLevel.BestTime * 100) % 99;
+                prevBestTimeGO.GetComponent<TextMeshProUGUI>().text = string.Format("{0:00} : {1:00}", (minutes * 60) + seconds, fraction);
+            }
+                
 
             firstTimeLoad = false;
         }

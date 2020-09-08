@@ -135,7 +135,7 @@ public class LevelController : MonoBehaviour
 
         
         if (pg != null)
-            ClickedRetryButton();
+            ClickedRetryButton(true);
         else
         {
         
@@ -214,9 +214,10 @@ public class LevelController : MonoBehaviour
         taskHandler.ResetTasks();
     }
 
-    public void ClickedRetryButton()
+    public void ClickedRetryButton(bool taskResetRequired)
     {
-        taskHandler.ResetTasks();
+        if(taskResetRequired)
+            taskHandler.ResetTasks();
         Scene scene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(scene.name);
     }
@@ -263,7 +264,7 @@ public class LevelController : MonoBehaviour
         
         if(pg != null)
         {
-            ClickedRetryButton();
+            ClickedRetryButton(false);
             playerStats.listOfObjects.Clear();
         } else
         {
@@ -278,6 +279,9 @@ public class LevelController : MonoBehaviour
 
             SceneManager.LoadScene("Level Complete");
         }
+        
+        LoadSaveStats.SavePlayerData(playerStats.tasksList, playerStats.chaptersList, playerStats.upgradesList, playerStats.firstActiveTaskIndex, playerStats.secondActiveTaskIndex, playerStats.tasksCompleted,
+            playerStats.highestChapter, playerStats.highestLevel, playerStats.playerCoins);
     }
 
 }

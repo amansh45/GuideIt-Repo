@@ -56,8 +56,8 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _AlphaIntensity_Fade_1: 0.68
-    - _AlphaIntensity_Fade_2: 1.9649999
+    - _AlphaIntensity_Fade_1: 0
+    - _AlphaIntensity_Fade_2: 0.84
     - _BumpScale: 1
     - _ColorMask: 15
     - _Cutoff: 0.5
@@ -69,7 +69,7 @@ Material:
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
-    - _OperationBlend_Fade_1: 0.25
+    - _OperationBlend_Fade_1: 0
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -85,5 +85,5 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _TintRGBA_Color_1: {r: 1, g: 0, b: 0.31442928, a: 0.20392157}
-    - _TintRGBA_Color_2: {r: 0.8867924, g: 0.55633676, b: 0.594092, a: 0.7294118}
+    - _TintRGBA_Color_1: {r: 0.6132076, g: 0.28635636, b: 0.28635636, a: 1}
+    - _TintRGBA_Color_2: {r: 0.40883967, g: 0.5377358, b: 0.15472585, a: 1}

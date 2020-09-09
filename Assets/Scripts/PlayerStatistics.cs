@@ -385,12 +385,18 @@ public class PlayerStatistics : MonoBehaviour
 
     private void AddUpgrades()
     {
-        Upgrade upgrade = new Upgrade(0, 0f, false, false, true, true, ObjectsDescription.Player, SkinCategory.PlayerBasic, SkinColors.Yellow, IntegerToRoman(1), CostForColor());
+        Upgrade upgrade = new Upgrade(0, 0f, false, false, true, true, ObjectsDescription.Player, SkinCategory.PlayerNoobie, SkinColors.Yellow, IntegerToRoman(1), CostForColor());
         upgradesList.Add(upgrade);
 
-        upgrade = new Upgrade(500, 5f, false, false, false, false, ObjectsDescription.Player, SkinCategory.PlayerModerate, SkinColors.Yellow, IntegerToRoman(2), CostForColor());
+        upgrade = new Upgrade(250, 5f, false, false, false, false, ObjectsDescription.Player, SkinCategory.PlayerBasic, SkinColors.Yellow, IntegerToRoman(2), CostForColor());
         upgradesList.Add(upgrade);
-        
+
+        upgrade = new Upgrade(500, 10f, false, false, false, false, ObjectsDescription.Player, SkinCategory.PlayerModerate, SkinColors.Yellow, IntegerToRoman(3), CostForColor());
+        upgradesList.Add(upgrade);
+
+        upgrade = new Upgrade(1000, 15f, false, false, false, false, ObjectsDescription.Player, SkinCategory.PlayerAdvance, SkinColors.Yellow, IntegerToRoman(4), CostForColor());
+        upgradesList.Add(upgrade);
+
         /*
         upgrade = new Upgrade(1000, 10f, false, false, false, false, ObjectsDescription.Player, SkinCategory.PlayerAdvance, playerAdvance, SkinColors.Yellow, IntegerToRoman(3), CostForColor());
         upgradesList.Add(upgrade);
@@ -559,6 +565,11 @@ public class PlayerStatistics : MonoBehaviour
 
         if (currentUpgrade.ApplicableOn == ObjectsDescription.Player)
         {
+            GameObject mat = targetGO.transform.GetChild(0).gameObject;
+            Debug.Log("Inside basic, name of upgrade: " + mat.name);
+            UpdatePlayerSkinColor(mat, currentUpgrade, targetGO);
+
+            /*
             if (currentUpgrade.UpgradeCategory == SkinCategory.PlayerBasic)
             {
                 GameObject mat = targetGO.transform.GetChild(0).gameObject;
@@ -568,9 +579,10 @@ public class PlayerStatistics : MonoBehaviour
             else if (currentUpgrade.UpgradeCategory == SkinCategory.PlayerModerate)
             {
                 GameObject mat = targetGO.transform.GetChild(0).gameObject;
-                Debug.Log("Inside moderate, name of upgrade: " + mat.name);
+                Debug.Log("name of upgrade: " + mat.name);
                 UpdatePlayerSkinColor(mat, currentUpgrade, targetGO);
             }
+            */
         }
         else if (currentUpgrade.ApplicableOn == ObjectsDescription.PlayerLauncher)
         {

@@ -71,20 +71,20 @@ public class LevelComplete : MonoBehaviour
             coinTextGO.GetComponent<TextMeshProUGUI>().text = playerStats.playerCoins.ToString();
             levelIndexGO.GetComponent<TextMeshProUGUI>().text = completedLevel.LevelIndex.ToString();
 
-            var minutes = completedLevel.RecentTime / 60;
-            var seconds = completedLevel.RecentTime % 60;
+            var minutes = Mathf.FloorToInt(completedLevel.RecentTime / 60);
+            var seconds = Mathf.FloorToInt(completedLevel.RecentTime % 60);
             var fraction = (completedLevel.RecentTime * 100) % 99;
-            currentTimeGO.GetComponent<TextMeshProUGUI>().text = string.Format("{0:00} : {1:00}", (minutes * 60) + seconds, fraction);
+            currentTimeGO.GetComponent<TextMeshProUGUI>().text = string.Format("{0:00} : {1:00}", (minutes * 60) + seconds, fraction)+"s";
 
 
             if (completedLevel.BestTime == int.MaxValue)
                 prevBestTimeGO.GetComponent<TextMeshProUGUI>().text = "Best Time:  --";
             else
             {
-                minutes = completedLevel.BestTime / 60;
-                seconds = completedLevel.BestTime % 60;
+                minutes = Mathf.FloorToInt(completedLevel.BestTime / 60);
+                seconds = Mathf.FloorToInt(completedLevel.BestTime % 60);
                 fraction = (completedLevel.BestTime * 100) % 99;
-                prevBestTimeGO.GetComponent<TextMeshProUGUI>().text = string.Format("{0:00} : {1:00}", (minutes * 60) + seconds, fraction);
+                prevBestTimeGO.GetComponent<TextMeshProUGUI>().text = "Best Time: " + string.Format("{0:00} : {1:00}", (minutes * 60) + seconds, fraction)+"s";
             }
                 
 

@@ -5,8 +5,8 @@ using UnityEngine;
 public class Spark : MonoBehaviour
 {
     [SerializeField] Sprite upSprite, leftSprite, rightSprite;
-    [SerializeField] float sparkSpeed = 400f, cornerOffset = 0.5f;
-
+    [SerializeField] float cornerOffset = 0.5f;
+    float sparkSpeed = 2000f;
     Rigidbody2D sparkRigidbody;
     SpriteRenderer spriteRenderer;
 
@@ -37,7 +37,7 @@ public class Spark : MonoBehaviour
             Destroy(gameObject);
     }
 
-    void Update()
+    private void Update()
     {
         if(isActive)
         {

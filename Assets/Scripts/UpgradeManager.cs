@@ -6,10 +6,11 @@ using UnityEngine.UI;
 
 public enum SkinCategory
 {
+    PlayerNoobie,
     PlayerBasic,
     PlayerModerate,
-/*
     PlayerAdvance,
+/*
     LauncherBasic,
     LauncherModerate,
     LauncherAdvance,

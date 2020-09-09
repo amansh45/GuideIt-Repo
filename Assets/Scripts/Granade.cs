@@ -21,14 +21,18 @@ public class Granade : MonoBehaviour
         granadeRigidBody = GetComponent<Rigidbody2D>();
     }
 
-    void Update()
+    private void FixedUpdate()
     {
-        if (isGranadeMoving)
+        if(isGranadeMoving)
         {
             float projectileSpeed = granadeSpeed * Time.deltaTime;
             granadeRigidBody.velocity = transform.right * projectileSpeed;
         }
-        else
+    }
+
+    void Update()
+    {
+        if (!isGranadeMoving)
         {
             if (startScale < 1f)
             {

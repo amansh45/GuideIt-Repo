@@ -3006,6 +3006,8 @@ MonoBehaviour:
   onPauseSlowmoFactor: 0.1
   movementOffset: 2
   coinsAcquired: {fileID: 1807482393}
+  coinsInScene: 0
+  currentCoinsAcquired: 0
 --- !u!4 &1118273809
 Transform:
   m_ObjectHideFlags: 0
@@ -5581,6 +5583,11 @@ PrefabInstance:
       propertyPath: mainCamera
       value: 
       objectReference: {fileID: 1452022398}
+    - target: {fileID: 2705887151364670106, guid: 4af0d4ece932e974caa2a43e79a97050,
+        type: 3}
+      propertyPath: playerTimerUI
+      value: 
+      objectReference: {fileID: 6975245791788433427}
     - target: {fileID: 2705887151364670107, guid: 4af0d4ece932e974caa2a43e79a97050,
         type: 3}
       propertyPath: m_LocalPosition.y
@@ -6281,6 +6288,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2a764cfe49e5fb545b8ed4c114463c4a, type: 3}
+--- !u!1 &6975245791788433427 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1381312018119981129, guid: 2a764cfe49e5fb545b8ed4c114463c4a,
+    type: 3}
+  m_PrefabInstance: {fileID: 6975245791788433426}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7353162324043056142
 PrefabInstance:
   m_ObjectHideFlags: 0

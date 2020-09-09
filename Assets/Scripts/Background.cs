@@ -9,6 +9,7 @@ public class Background : MonoBehaviour {
     [SerializeField] GameObject borderQuadPrefab;
     [SerializeField] List<BackgroundMaterial> backgroundMaterials;
     [SerializeField] GameObject playerPrefab;
+    [SerializeField] Material objectsColor;
 
 
     PlayerActions playerActionsClass;
@@ -21,18 +22,10 @@ public class Background : MonoBehaviour {
     {
         public string PlayerSkinColor;
         public string PlayerSkinCategory;
+        public string hexCode;
         public Material Bottom;
         public Material Top;
         public Material Main;
-
-        public BackgroundMaterial(string playerSkinColor, string playerSkinCategory, Material bottom, Material top, Material main)
-        {
-            PlayerSkinCategory = playerSkinCategory;
-            PlayerSkinColor = playerSkinColor;
-            Bottom = bottom;
-            Top = top;
-            Main = main;
-        }
     }
 
 
@@ -72,7 +65,9 @@ public class Background : MonoBehaviour {
 
         GameObject backgroundInstance = gameObject.transform.GetChild(0).gameObject;
         backgroundInstance.GetComponent<MeshRenderer>().material = backgroundMaterials[currentActiveBackgroundIndex].Main;
-
+        Debug.Log(playerStats.HexToRGB("#"+backgroundMaterials[currentActiveBackgroundIndex].hexCode));
+        objectsColor.SetColor("_Color", playerStats.HexToRGB("#"+backgroundMaterials[currentActiveBackgroundIndex].hexCode));
+        //objectsColor.color = playerStats.HexToRGB(backgroundMaterials[currentActiveBackgroundIndex].hexCode);
     }
 
     private void InstantiateBorder(float x, float y, float z, float xScale, float yScale, Material backgroundMaterial, string borderName)

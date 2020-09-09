@@ -58,7 +58,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c3bd3e0fea676da43ab64c9eaa318ba4, type: 2}
+  - {fileID: 2100000, guid: 3934b997cd786c74aa321ad09f1286c9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -133,46 +133,103 @@ MonoBehaviour:
     type: 3}
   backgroundMaterials:
   - PlayerSkinColor: Red
+    PlayerSkinCategory: PlayerNoobie
+    hexCode: A5FFFF
+    Bottom: {fileID: 2100000, guid: 008183bcde8bb624a9286a9585d05b07, type: 2}
+    Top: {fileID: 2100000, guid: f2ae486ab1513a54a895079fe94e7416, type: 2}
+    Main: {fileID: 2100000, guid: 6ba294b0d3f3f2d419448f995bdbd80e, type: 2}
+  - PlayerSkinColor: Blue
+    PlayerSkinCategory: PlayerNoobie
+    hexCode: FFC5F7
+    Bottom: {fileID: 2100000, guid: 119607463a6274946bc363d97095d2ec, type: 2}
+    Top: {fileID: 2100000, guid: cba67e9e658d1b14e9c22780ff5962b4, type: 2}
+    Main: {fileID: 2100000, guid: 66ab1e66eac42d34fa9368c927c4ec2c, type: 2}
+  - PlayerSkinColor: Purple
+    PlayerSkinCategory: PlayerNoobie
+    hexCode: F8FFA5
+    Bottom: {fileID: 2100000, guid: b317c992f67b85d41b6590266145a003, type: 2}
+    Top: {fileID: 2100000, guid: 7dc91aca2a0b7f54cb246651516ae2bb, type: 2}
+    Main: {fileID: 2100000, guid: dc0739bcab5a06942861b9728c54b43c, type: 2}
+  - PlayerSkinColor: Yellow
+    PlayerSkinCategory: PlayerNoobie
+    hexCode: FFC0E0
+    Bottom: {fileID: 2100000, guid: 98b25de77b1cc1a41852565220770ec7, type: 2}
+    Top: {fileID: 2100000, guid: 4360ad99cd4be4045892d4131c645965, type: 2}
+    Main: {fileID: 2100000, guid: 332fbb9dc521c3840b853099b3883e6c, type: 2}
+  - PlayerSkinColor: Red
     PlayerSkinCategory: PlayerBasic
-    Bottom: {fileID: 2100000, guid: 1beb81643d874354cabdb78b1dadb021, type: 2}
-    Top: {fileID: 2100000, guid: ded70278fe9c7514295daa30d2d11783, type: 2}
-    Main: {fileID: 2100000, guid: fbac45b95a7c0f149a4149af337c2a35, type: 2}
+    hexCode: FFCFBF
+    Bottom: {fileID: 2100000, guid: 3af5d726098377c47b2ca126a6f27828, type: 2}
+    Top: {fileID: 2100000, guid: 4254dfe4e930f0d4b8a1c4042296bbcc, type: 2}
+    Main: {fileID: 2100000, guid: da11b032c0312a54ebd5e55fcb74dc5e, type: 2}
   - PlayerSkinColor: Blue
     PlayerSkinCategory: PlayerBasic
-    Bottom: {fileID: 2100000, guid: 837ef3a6ab1b4d84d9522bbecb6e4917, type: 2}
-    Top: {fileID: 2100000, guid: 8460a4c1177b22940bccda2dd03bda28, type: 2}
-    Main: {fileID: 2100000, guid: 9e5003376c564a24f86ad8005fc23156, type: 2}
+    hexCode: CEE5FF
+    Bottom: {fileID: 2100000, guid: b83bee2514afff8499da23ad9f304111, type: 2}
+    Top: {fileID: 2100000, guid: 62b2c520dd5487342a9a718c794f4e2b, type: 2}
+    Main: {fileID: 2100000, guid: 588e63d8ea0e5fb4ead7e3efbc469268, type: 2}
   - PlayerSkinColor: Purple
     PlayerSkinCategory: PlayerBasic
-    Bottom: {fileID: 2100000, guid: 15fbeb7feb1891a40a43fc81bf795bbc, type: 2}
-    Top: {fileID: 2100000, guid: 91700760db1897b4ca9b2194c137c26e, type: 2}
-    Main: {fileID: 2100000, guid: 3934b997cd786c74aa321ad09f1286c9, type: 2}
+    hexCode: FFC5C7
+    Bottom: {fileID: 2100000, guid: 1ab14eb1fb4a9904d96f12464653f4ce, type: 2}
+    Top: {fileID: 2100000, guid: d94c6d0ce61145043b4935204d5dfc3b, type: 2}
+    Main: {fileID: 2100000, guid: 986dcbe4ee262cb49a8ea83767426b99, type: 2}
   - PlayerSkinColor: Yellow
     PlayerSkinCategory: PlayerBasic
+    hexCode: F6F6F6
+    Bottom: {fileID: 2100000, guid: f67466d8df8c46e46bf4405bd77b322f, type: 2}
+    Top: {fileID: 2100000, guid: 37a8103c97fb9934281d10dc979aa7b5, type: 2}
+    Main: {fileID: 2100000, guid: 103079483248bb943bcea48101f607a7, type: 2}
+  - PlayerSkinColor: Red
+    PlayerSkinCategory: PlayerModerate
+    hexCode: FDDEBC
+    Bottom: {fileID: 2100000, guid: b404bfc604592b1438f9e7e3f2635cd2, type: 2}
+    Top: {fileID: 2100000, guid: f67c1c50229f35646a0ca49f8f89089f, type: 2}
+    Main: {fileID: 2100000, guid: e76fed6543b89824886f70d0a2d4961f, type: 2}
+  - PlayerSkinColor: Blue
+    PlayerSkinCategory: PlayerModerate
+    hexCode: E79EA5
+    Bottom: {fileID: 2100000, guid: 558771ad8d295284996d21800ff7cb50, type: 2}
+    Top: {fileID: 2100000, guid: 5ba51d2ba0a867247b89c8563678ed40, type: 2}
+    Main: {fileID: 2100000, guid: e48170da883bfe6428b6b74b3df33670, type: 2}
+  - PlayerSkinColor: Purple
+    PlayerSkinCategory: PlayerModerate
+    hexCode: D7D7D7
+    Bottom: {fileID: 2100000, guid: 991203ec40a5fae42983924d09720a6b, type: 2}
+    Top: {fileID: 2100000, guid: 260189a983c21a84abc7284a047ef5b5, type: 2}
+    Main: {fileID: 2100000, guid: 8f432072bd92a3c4089879dc9a41bb81, type: 2}
+  - PlayerSkinColor: Yellow
+    PlayerSkinCategory: PlayerModerate
+    hexCode: EFBAEC
     Bottom: {fileID: 2100000, guid: 3582df85d96a5a84da8755de8bcc230e, type: 2}
     Top: {fileID: 2100000, guid: 707c8064163932b4dab9166287aeb09b, type: 2}
     Main: {fileID: 2100000, guid: c3bd3e0fea676da43ab64c9eaa318ba4, type: 2}
   - PlayerSkinColor: Red
-    PlayerSkinCategory: PlayerModerate
+    PlayerSkinCategory: PlayerAdvance
+    hexCode: E4CCFF
     Bottom: {fileID: 2100000, guid: 1beb81643d874354cabdb78b1dadb021, type: 2}
     Top: {fileID: 2100000, guid: ded70278fe9c7514295daa30d2d11783, type: 2}
     Main: {fileID: 2100000, guid: fbac45b95a7c0f149a4149af337c2a35, type: 2}
   - PlayerSkinColor: Blue
-    PlayerSkinCategory: PlayerModerate
+    PlayerSkinCategory: PlayerAdvance
+    hexCode: EADDBF
     Bottom: {fileID: 2100000, guid: 837ef3a6ab1b4d84d9522bbecb6e4917, type: 2}
     Top: {fileID: 2100000, guid: 8460a4c1177b22940bccda2dd03bda28, type: 2}
     Main: {fileID: 2100000, guid: 9e5003376c564a24f86ad8005fc23156, type: 2}
-  - PlayerSkinColor: Yellow
-    PlayerSkinCategory: PlayerModerate
-    Bottom: {fileID: 2100000, guid: 3582df85d96a5a84da8755de8bcc230e, type: 2}
-    Top: {fileID: 2100000, guid: 707c8064163932b4dab9166287aeb09b, type: 2}
-    Main: {fileID: 2100000, guid: c3bd3e0fea676da43ab64c9eaa318ba4, type: 2}
   - PlayerSkinColor: Purple
-    PlayerSkinCategory: PlayerModerate
+    PlayerSkinCategory: PlayerAdvance
+    hexCode: FFC5C7
     Bottom: {fileID: 2100000, guid: 15fbeb7feb1891a40a43fc81bf795bbc, type: 2}
     Top: {fileID: 2100000, guid: 91700760db1897b4ca9b2194c137c26e, type: 2}
     Main: {fileID: 2100000, guid: 3934b997cd786c74aa321ad09f1286c9, type: 2}
+  - PlayerSkinColor: Yellow
+    PlayerSkinCategory: PlayerAdvance
+    hexCode: C5FCFF
+    Bottom: {fileID: 2100000, guid: f457db375f69a134a9a30d62f01f98f4, type: 2}
+    Top: {fileID: 2100000, guid: 204042fe89e7aac4792e7681028352f9, type: 2}
+    Main: {fileID: 2100000, guid: a18887191861d324b807f03927c37744, type: 2}
   playerPrefab: {fileID: 0}
+  objectsColor: {fileID: 2100000, guid: 5bf06ac98ee06f8409c781e0bf430185, type: 2}
 --- !u!1001 &5658543596417843131
 PrefabInstance:
   m_ObjectHideFlags: 0

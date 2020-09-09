@@ -310,7 +310,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -13, y: -1105}
+  m_AnchoredPosition: {x: -12.999939, y: -1105}
   m_SizeDelta: {x: -1820, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &246540089
@@ -1120,10 +1120,12 @@ MonoBehaviour:
   backgroundMaterials:
   - PlayerSkinColor: 
     PlayerSkinCategory: 
+    hexCode: 
     Bottom: {fileID: 2100000, guid: 3582df85d96a5a84da8755de8bcc230e, type: 2}
     Top: {fileID: 2100000, guid: 707c8064163932b4dab9166287aeb09b, type: 2}
     Main: {fileID: 2100000, guid: c3bd3e0fea676da43ab64c9eaa318ba4, type: 2}
   playerPrefab: {fileID: 0}
+  objectsColor: {fileID: 0}
 --- !u!4 &546368621
 Transform:
   m_ObjectHideFlags: 0
@@ -1492,7 +1494,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -47, y: -178}
+  m_AnchoredPosition: {x: -46.99994, y: -178}
   m_SizeDelta: {x: -1760, y: 160}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &820523621
@@ -6542,7 +6544,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -28, y: -626}
+  m_AnchoredPosition: {x: -27.999939, y: -626}
   m_SizeDelta: {x: -1298.9697, y: 157.70557}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1190491652
@@ -8399,11 +8401,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Scene Loader
-      objectReference: {fileID: 0}
-    - target: {fileID: 7836805310484517069, guid: 713e734d472c3b7428756c1f3a9e124a,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 713e734d472c3b7428756c1f3a9e124a, type: 3}

@@ -74,8 +74,10 @@ MonoBehaviour:
   player: {fileID: 0}
   rippleEffectDuration: 1
   explosionEffectDuration: 1.5
-  cameraShakeDuration: 0.25
+  deathEffectDuration: 2
   mainCamera: {fileID: 0}
   upgradesGO:
+  - {fileID: 4214549602540635266, guid: 601aba0a85a2f5a4dab0e790f4e8567e, type: 3}
   - {fileID: 7386533882511071369, guid: 9ec5c661cc36d8e47a72cf2562a5a5e2, type: 3}
   - {fileID: 2143946417511062983, guid: 3f81f5ffeb42ec141b490771d3a551b5, type: 3}
+  - {fileID: 3799918029783865826, guid: f6fbc91be3f9b2647b38333e78d1b800, type: 3}

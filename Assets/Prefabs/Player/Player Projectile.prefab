@@ -184,6 +184,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   granadeSpeed: 250
   shrinkFactorOnLaunch: 0.3
+  cameraShakeDuration: 0.25
+  enemyLauncherDeathSFX: {fileID: 8300000, guid: 77a986fed67a8624f8cd7a8e95be0a09,
+    type: 3}
 --- !u!1001 &948198898357459680
 PrefabInstance:
   m_ObjectHideFlags: 0

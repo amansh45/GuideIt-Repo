@@ -9,6 +9,11 @@ public class LevelController : MonoBehaviour
 {
     [SerializeField] GameObject slowmotion, pauseCanvas, retryCanvas, levelCompleteSlider, levelCompletedTextGO, player, playSpace, gameLines, firstTaskGO, secondTaskGO;
     [SerializeField] float onPauseSlowmoFactor = 0.05f, movementOffset = 2f;
+    [SerializeField] AudioClip playerDeathSFX;
+    [SerializeField] AudioClip coinsAcquiredSFX;
+    [SerializeField] GameObject coinsAcquired;
+
+
     Slowmotion slowmotionClass;
     Player playerClass;
     PlayerActions playerActionsClass;
@@ -22,7 +27,6 @@ public class LevelController : MonoBehaviour
     GameObject testObj = null;
     bool isPlayerStillBeforePause = false;
 
-    [SerializeField] GameObject coinsAcquired;
     TextMeshProUGUI coinsAcquiredOnScreenText;
     public int coinsInScene = 0;
     public int currentCoinsAcquired = 0;
@@ -45,31 +49,6 @@ public class LevelController : MonoBehaviour
         PersistentInformation.LevelIdentifier = gameObject.scene.name;
         pg = FindObjectOfType<ProceduralGeneration>();
     }
-
-    /*
-    private void SetBoundingBox()
-    {
-        // lower bound position of camera.
-        lowerBound = Mathf.Min(lowerBound, player.transform.position.y - movementOffset);
-
-        if(testObj == null)
-        {
-            testObj = Instantiate(testPrefab, playSpaceCollider.bounds.extents, transform.rotation);
-            testObj.name = "extents_test";
-            testObj = Instantiate(testPrefab, playSpaceCollider.bounds.center, transform.rotation);
-            testObj.name = "centers_test";
-            testObj = Instantiate(testPrefab, playSpaceCollider.bounds.min, transform.rotation);
-            testObj.name = "min_test";
-            testObj = Instantiate(testPrefab, playSpaceCollider.bounds.max, transform.rotation);
-            testObj.name = "max_test";
-        }
-
-        Debug.Log(playSpaceCollider.bounds.extents);
-
-        //playSpaceCollider.bounds.extents = new Vector3(lowerBound, playSpace.transform.position.x)
-        //Debug.Log("extents : " + playSpaceCollider.bounds.extents);
-    }
-    */
 
     private void UpdateFirstTaskOnScreen(bool isTaskCompleted)
     {
@@ -166,6 +145,8 @@ public class LevelController : MonoBehaviour
             playerStats.chaptersList[currentChapterIndex].LevelsInChapter[currentLevelIndex] = currentLevel;
         }
 
+        AudioSource.PlayClipAtPoint(playerDeathSFX, Camera.main.transform.position, playerStats.sfxVolume);
+
         StartCoroutine(PlayerDeathActions(waitTime));
     }
 
@@ -173,6 +154,7 @@ public class LevelController : MonoBehaviour
     {
         currentCoinsAcquired += 1;
         coinsAcquiredOnScreenText.text = currentCoinsAcquired.ToString() + " / " + coinsInScene;
+        AudioSource.PlayClipAtPoint(coinsAcquiredSFX, Camera.main.transform.position, playerStats.sfxVolume);
         taskHandler.UpdateLevelTaskState(ObjectsDescription.Coin, TaskTypes.Collect, TaskCategory.CountingTask, new List<string>() { });
     }
 

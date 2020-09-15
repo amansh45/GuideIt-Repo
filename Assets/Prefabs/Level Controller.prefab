@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4807413330352748275
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4807413330352748269}
+  - component: {fileID: 4807413330352748268}
+  m_Layer: 0
+  m_Name: Level Controller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4807413330352748269
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4807413330352748275}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4807413330352748268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4807413330352748275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8daf09eed4598143a23bae9d07a1c5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slowmotion: {fileID: 0}
+  pauseCanvas: {fileID: 0}
+  retryCanvas: {fileID: 0}
+  levelCompleteSlider: {fileID: 0}
+  levelCompletedTextGO: {fileID: 0}
+  player: {fileID: 0}
+  playSpace: {fileID: 0}
+  gameLines: {fileID: 0}
+  firstTaskGO: {fileID: 0}
+  secondTaskGO: {fileID: 0}
+  onPauseSlowmoFactor: 0.1
+  movementOffset: 2
+  playerDeathSFX: {fileID: 8300000, guid: fb66d4a8a6cdcdb478efa0193edfdd60, type: 3}
+  coinsAcquiredSFX: {fileID: 8300000, guid: ea8b25353b3feed438714292f0e9600b, type: 3}
+  coinsAcquired: {fileID: 0}
+  coinsInScene: 0
+  currentCoinsAcquired: 0

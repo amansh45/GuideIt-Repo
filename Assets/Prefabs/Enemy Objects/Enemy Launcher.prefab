@@ -399,6 +399,7 @@ MonoBehaviour:
   isBlinking: 0
   isUpShootingLauncher: 0
   blinkDistanceThreshold: 0.5
+  enemyShootingSFX: {fileID: 8300000, guid: da6e7a7dcc6899e409fda4a2ec5dcb11, type: 3}
 --- !u!60 &7500571777623009594
 PolygonCollider2D:
   m_ObjectHideFlags: 0

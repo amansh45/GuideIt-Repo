@@ -6,12 +6,16 @@ public class Granade : MonoBehaviour
 {
 
     [SerializeField] float granadeSpeed = 200f, shrinkFactorOnLaunch = 0.3f, cameraShakeDuration = 0.25f;
-    VFXController vfxControllerClass;
+    [SerializeField] AudioClip enemyLauncherDeathSFX;
 
     bool isGranadeMoving = false;
     float startScale = 0f, scaleFactor = 0.01f;
     Rigidbody2D granadeRigidBody;
     TaskHandler taskHandlerClass;
+    VFXController vfxControllerClass;
+    
+    PlayerStatistics playerStatsClass;
+    Vector3 mainCameraPos;
 
     private void Start()
     {
@@ -19,6 +23,8 @@ public class Granade : MonoBehaviour
         vfxControllerClass = FindObjectOfType<VFXController>().GetComponent<VFXController>();
         taskHandlerClass = FindObjectOfType<TaskHandler>();
         granadeRigidBody = GetComponent<Rigidbody2D>();
+        playerStatsClass = FindObjectOfType<PlayerStatistics>();
+        mainCameraPos = Camera.main.transform.position;
     }
 
     private void FixedUpdate()
@@ -77,6 +83,7 @@ public class Granade : MonoBehaviour
                 vfxControllerClass.InitiateScreenRippleEffect(launcher.transform.position);
                 vfxControllerClass.InitiateExplodeEffect(launcher.transform.position);
                 taskHandlerClass.UpdateLevelTaskState(ObjectsDescription.EnemyLauncher, TaskTypes.Destroy, TaskCategory.CountingTask, new List<string>() { });
+                AudioSource.PlayClipAtPoint(enemyLauncherDeathSFX, mainCameraPos, playerStatsClass.sfxVolume);
                 Destroy(launcher);
                 Destroy(gameObject);
             }

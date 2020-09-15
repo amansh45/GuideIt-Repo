@@ -20,8 +20,8 @@ public class Coin : MonoBehaviour {
         if(other.gameObject.name == ObjectsDescription.Player.ToString())
         {
             Destroy(gameObject);
-            vfxControllerClass.InitiateRippleEffect(transform.position);
             levelControllerClass.CoinAcquired(coinValue, coinType);
+            vfxControllerClass.InitiateRippleEffect(transform.position);
         }
     }
 }

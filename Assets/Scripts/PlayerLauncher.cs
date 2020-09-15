@@ -7,6 +7,7 @@ public class PlayerLauncher : MonoBehaviour
 
     [SerializeField] GameObject bulletPrefab;
     [SerializeField] float startScale = 0f, launcherSize = 1f, scalingFactor = 0.05f;
+    [SerializeField] AudioClip playerShootingSFX;
     Granade bulletClass;
     GameObject bulletInstance;
     
@@ -27,10 +28,11 @@ public class PlayerLauncher : MonoBehaviour
         }
     }
 
-    public void ShootAndSelfDestruct(Quaternion bulletFiringDirection)
+    public void ShootAndSelfDestruct(Quaternion bulletFiringDirection, float sfxVolume)
     {
         if (startScale >= launcherSize)
         {
+            AudioSource.PlayClipAtPoint(playerShootingSFX, Camera.main.transform.position, sfxVolume);
             bulletClass.transform.rotation = transform.rotation;
             bulletClass.setGranadeSpeed(1f);
             bulletClass.MoveGranade();

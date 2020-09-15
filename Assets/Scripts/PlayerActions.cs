@@ -16,6 +16,7 @@ public class PlayerActions : MonoBehaviour
     Vector2 prevPlayerPosition;
     Vector3 playerMovementAreaScale;
     Slowmotion slowmoClass;
+    PlayerStatistics playerStats;
 
     bool isPlayerShooting = false, isLineDrawing = false;
     public bool isGamePaused = false;
@@ -23,6 +24,7 @@ public class PlayerActions : MonoBehaviour
     {
         slowmoClass = slowmotion.GetComponent<Slowmotion>();
         playerClass = GetComponent<Player>();
+        playerStats = FindObjectOfType<PlayerStatistics>();
         //objectPooler = ObjectPooler.Instance;
     }
 
@@ -74,7 +76,7 @@ public class PlayerActions : MonoBehaviour
         isPlayerShooting = false;
         float bulletFiringAngle = FindAngleBetweenVectors(currentPlayerPosition, currentFingerPos);
         var bulletFiringDirection = Quaternion.Euler(new Vector3(0, 0, bulletFiringAngle));
-        playerLauncherInstance.GetComponent<PlayerLauncher>().ShootAndSelfDestruct(bulletFiringDirection);
+        playerLauncherInstance.GetComponent<PlayerLauncher>().ShootAndSelfDestruct(bulletFiringDirection, playerStats.sfxVolume);
         playerClass.playerState = PlayerState.Hover;
         playerClass.SetScale(1f);
     }

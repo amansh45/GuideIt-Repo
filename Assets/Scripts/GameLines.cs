@@ -13,6 +13,7 @@ public class GameLines : MonoBehaviour {
     [SerializeField] Camera mainCamera;
     [SerializeField] float progressIndicatorZAxis = -1.2f, finishLevelAfter = 1.3f;
     [SerializeField] float extraOffsetForCollider = 0.2f;
+    [SerializeField] AudioClip levelCompleteSFX;
 
     TaskHandler taskHandlerClass;
     public float levelCompleted = 0f;
@@ -29,6 +30,7 @@ public class GameLines : MonoBehaviour {
     float levelMaxY = 0, levelMinY = 0, playAreaMinY = 0, playAreaMaxY = 0, playerTimer = 0f, yAxisForBorder;
     TextMeshProUGUI timerLabel;
     ProceduralGeneration pg;
+    PlayerStatistics playerStats;
 
     public Dictionary<string, int> borderLineIndicesMapping = new Dictionary<string, int>()
     {
@@ -118,6 +120,7 @@ public class GameLines : MonoBehaviour {
             playerTimer = PersistentInformation.timerForInfinitelevel;
         else
             PersistentInformation.timerForInfinitelevel = 0f;
+        playerStats = FindObjectOfType<PlayerStatistics>();
     }
 
     GameObject firstSpark, secondSpark;
@@ -151,6 +154,7 @@ public class GameLines : MonoBehaviour {
         }
         taskHandlerClass.UpdateLevelTaskState(ObjectsDescription.Coin, TaskTypes.CollectAllCoinsInLevel, TaskCategory.ImmediateActionTask, new List<string>() { levelControllerClass.coinsInScene.ToString(), levelControllerClass.currentCoinsAcquired.ToString() });
         //Destroy(playerPrefab);
+        AudioSource.PlayClipAtPoint(levelCompleteSFX, mainCamera.transform.position, playerStats.sfxVolume);
         StartCoroutine(ShowLevelCompleteScene());
     }
 

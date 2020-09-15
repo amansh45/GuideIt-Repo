@@ -10,13 +10,15 @@ public class EnemyLauncher : MonoBehaviour
     public bool aimAtPlayer = false;
     public bool isBlinking = false;
     public bool isUpShootingLauncher = false;
-    [SerializeField] float blinkDistanceThreshold = 0.5f;
+    [SerializeField] float blinkDistanceThreshold = 0.5f, thresholdForSFX = 5f;
+    [SerializeField] AudioClip enemyShootingSFX;
 
     float screenCenter, initializationFactor = 1f, spawnScaleFactor = 0f;
     Granade latestGranadeClass;
     GameObject latestGranade;
     TaskHandler taskHandlerClass;
     Animator anim;
+    PlayerStatistics playerStats;
     int counter = 0;
 
     private void Start()
@@ -26,6 +28,7 @@ public class EnemyLauncher : MonoBehaviour
         screenCenter = (bottomLeft.x + bottomRight.x)/2f;
         taskHandlerClass = FindObjectOfType<TaskHandler>();
         anim = GetComponent<Animator>();
+        playerStats = FindObjectOfType<PlayerStatistics>();
         if(isBlinking)
             anim.enabled = false;
 
@@ -76,6 +79,18 @@ public class EnemyLauncher : MonoBehaviour
 
     void ShootGranade()
     {
+        if(playerPrefab != null)
+        {
+            Vector3 audioSourcePos = transform.position;
+            audioSourcePos.z = playerPrefab.transform.position.z;
+            float distance = Vector3.Distance(audioSourcePos, playerPrefab.transform.position);
+
+            if(distance < thresholdForSFX)
+            {
+                AudioSource.PlayClipAtPoint(enemyShootingSFX, Camera.main.transform.position, playerStats.sfxVolume);
+            }
+        }
+
         latestGranadeClass.setGranadeSpeed(initializationFactor);
         latestGranadeClass.MoveGranade();
     }
@@ -87,6 +102,7 @@ public class EnemyLauncher : MonoBehaviour
             latestGranade = Instantiate(granadePrefab, transform.GetChild(0).position, transform.rotation) as GameObject;
         else       
             latestGranade = Instantiate(granadePrefab, transform.position, transform.rotation) as GameObject;
+
         if (isUpShootingLauncher)
         {
             if(transform.position.x < screenCenter)

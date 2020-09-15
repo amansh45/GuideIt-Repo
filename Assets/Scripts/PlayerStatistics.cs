@@ -12,7 +12,7 @@ public class PlayerStatistics : MonoBehaviour
     public List<Chapter> chaptersList = new List<Chapter>();
     public List<Upgrade> upgradesList = new List<Upgrade>();
     public int firstActiveTaskIndex = 0, secondActiveTaskIndex = 1, tasksCompleted = 0, highestChapter = 0, highestLevel = 0, playerCoins = 0;
-
+    public float sfxVolume = 1f, musicVolume = 1f;
 
 
     public LevelCompletionData levelCompletionData;
@@ -327,6 +327,7 @@ public class PlayerStatistics : MonoBehaviour
     private void AddTasks()
     {
         int index = 0;
+
         Task task = new Task(false, true, new ObjectsDescription[1] { ObjectsDescription.Player }, "Complete a level with zero near miss", index++, 5, TaskTypes.NoNearMiss, TaskCategory.ImmediateActionTask);
         tasksList.Add(task);
         task = new Task(false, true, new ObjectsDescription[1] { ObjectsDescription.Coin }, "Collect 1 coin in any level", index++, 5, TaskTypes.Collect, TaskCategory.CountingTask, 1);
@@ -361,6 +362,7 @@ public class PlayerStatistics : MonoBehaviour
         tasksList.Add(task);
         task = new Task(false, true, new ObjectsDescription[1] { ObjectsDescription.Player }, "Complete Level in one go", index++, 50, TaskTypes.NoHit, TaskCategory.CountingTask, 1);
         tasksList.Add(task);
+        
 
         totalTasks = tasksList.Count;
     }
@@ -568,21 +570,6 @@ public class PlayerStatistics : MonoBehaviour
             GameObject mat = targetGO.transform.GetChild(0).gameObject;
             Debug.Log("Inside basic, name of upgrade: " + mat.name);
             UpdatePlayerSkinColor(mat, currentUpgrade, targetGO);
-
-            /*
-            if (currentUpgrade.UpgradeCategory == SkinCategory.PlayerBasic)
-            {
-                GameObject mat = targetGO.transform.GetChild(0).gameObject;
-                Debug.Log("Inside basic, name of upgrade: " + mat.name);
-                UpdatePlayerSkinColor(mat, currentUpgrade, targetGO);
-            }
-            else if (currentUpgrade.UpgradeCategory == SkinCategory.PlayerModerate)
-            {
-                GameObject mat = targetGO.transform.GetChild(0).gameObject;
-                Debug.Log("name of upgrade: " + mat.name);
-                UpdatePlayerSkinColor(mat, currentUpgrade, targetGO);
-            }
-            */
         }
         else if (currentUpgrade.ApplicableOn == ObjectsDescription.PlayerLauncher)
         {

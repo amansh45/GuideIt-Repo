@@ -160,7 +160,7 @@ public class UpgradeManager : MonoBehaviour
     {
         float bulletFiringAngle = FindAngleBetweenVectors(currentPlayerPosition, currentFingerPos);
         var bulletFiringDirection = Quaternion.Euler(new Vector3(0, 0, bulletFiringAngle));
-        playerLauncherInstance.GetComponent<PlayerLauncher>().ShootAndSelfDestruct(bulletFiringDirection);
+        playerLauncherInstance.GetComponent<PlayerLauncher>().ShootAndSelfDestruct(bulletFiringDirection, playerStats.sfxVolume);
         playerClass.SetScale(1f);
     }
 

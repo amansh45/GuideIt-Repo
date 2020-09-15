@@ -130,7 +130,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 36675e6cb1fd0bc448ff50264ddc3076, type: 2}
+  - {fileID: 2100000, guid: 5bf06ac98ee06f8409c781e0bf430185, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -246,6 +246,7 @@ MonoBehaviour:
   startScale: 0
   launcherSize: 1
   scalingFactor: 0.05
+  playerShootingSFX: {fileID: 8300000, guid: 15de964897e832c40aaaaf918cc06df8, type: 3}
 --- !u!1 &5374116133356687829
 GameObject:
   m_ObjectHideFlags: 0
@@ -376,7 +377,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 36675e6cb1fd0bc448ff50264ddc3076, type: 2}
+  - {fileID: 2100000, guid: 5bf06ac98ee06f8409c781e0bf430185, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

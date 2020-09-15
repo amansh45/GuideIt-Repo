@@ -884,7 +884,7 @@ MonoBehaviour:
   shootXPThreshold: 5
   camShakeDuration: 1.5
   vfxController: {fileID: 418327318}
-  levelController: {fileID: 1118273807}
+  levelController: {fileID: 0}
   playerState: 0
 --- !u!58 &158589556
 CircleCollider2D:
@@ -1521,7 +1521,7 @@ PrefabInstance:
         type: 3}
       propertyPath: levelController
       value: 
-      objectReference: {fileID: 1118273807}
+      objectReference: {fileID: 1281756054}
     - target: {fileID: 929961085189442446, guid: 3d9137ac55441d640a9c11438b295347,
         type: 3}
       propertyPath: m_Name
@@ -2919,62 +2919,6 @@ PrefabInstance:
       objectReference: {fileID: 1452022398}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 11feafbdf551ea843bcd57ce82f0d9a5, type: 3}
---- !u!1 &1118273807
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1118273809}
-  - component: {fileID: 1118273808}
-  m_Layer: 0
-  m_Name: Level Controller
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1118273808
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1118273807}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8daf09eed4598143a23bae9d07a1c5f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slowmotion: {fileID: 1235080899}
-  pauseCanvas: {fileID: 1766712973}
-  retryCanvas: {fileID: 856756305}
-  levelCompleteSlider: {fileID: 404798077}
-  levelCompletedTextGO: {fileID: 1983113068}
-  player: {fileID: 158589551}
-  playSpace: {fileID: 174109983}
-  gameLines: {fileID: 2705887151422562145}
-  firstTaskGO: {fileID: 4152810220003611374}
-  secondTaskGO: {fileID: 217351898}
-  onPauseSlowmoFactor: 0.1
-  movementOffset: 2
-  coinsAcquired: {fileID: 1807482393}
---- !u!4 &1118273809
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1118273807}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 15
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1122827348
 GameObject:
   m_ObjectHideFlags: 0
@@ -3254,6 +3198,136 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6122361556408094409, guid: 221ce7e384e6e7f41be160aac4526c77,
     type: 3}
   m_PrefabInstance: {fileID: 1265051216}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1281756053
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4807413330352748268, guid: 68e77b0f60134d74aa43461d96dc1b04,
+        type: 3}
+      propertyPath: slowmotion
+      value: 
+      objectReference: {fileID: 1235080899}
+    - target: {fileID: 4807413330352748268, guid: 68e77b0f60134d74aa43461d96dc1b04,
+        type: 3}
+      propertyPath: pauseCanvas
+      value: 
+      objectReference: {fileID: 1766712973}
+    - target: {fileID: 4807413330352748268, guid: 68e77b0f60134d74aa43461d96dc1b04,
+        type: 3}
+      propertyPath: retryCanvas
+      value: 
+      objectReference: {fileID: 856756305}
+    - target: {fileID: 4807413330352748268, guid: 68e77b0f60134d74aa43461d96dc1b04,
+        type: 3}
+      propertyPath: levelCompleteSlider
+      value: 
+      objectReference: {fileID: 404798077}
+    - target: {fileID: 4807413330352748268, guid: 68e77b0f60134d74aa43461d96dc1b04,
+        type: 3}
+      propertyPath: levelCompletedTextGO
+      value: 
+      objectReference: {fileID: 1983113068}
+    - target: {fileID: 4807413330352748268, guid: 68e77b0f60134d74aa43461d96dc1b04,
+        type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 158589551}
+    - target: {fileID: 4807413330352748268, guid: 68e77b0f60134d74aa43461d96dc1b04,
+        type: 3}
+      propertyPath: playSpace
+      value: 
+      objectReference: {fileID: 174109983}
+    - target: {fileID: 4807413330352748268, guid: 68e77b0f60134d74aa43461d96dc1b04,
+        type: 3}
+      propertyPath: gameLines
+      value: 
+      objectReference: {fileID: 2705887151422562145}
+    - target: {fileID: 4807413330352748268, guid: 68e77b0f60134d74aa43461d96dc1b04,
+        type: 3}
+      propertyPath: firstTaskGO
+      value: 
+      objectReference: {fileID: 4152810220003611374}
+    - target: {fileID: 4807413330352748268, guid: 68e77b0f60134d74aa43461d96dc1b04,
+        type: 3}
+      propertyPath: secondTaskGO
+      value: 
+      objectReference: {fileID: 217351898}
+    - target: {fileID: 4807413330352748268, guid: 68e77b0f60134d74aa43461d96dc1b04,
+        type: 3}
+      propertyPath: coinsAcquired
+      value: 
+      objectReference: {fileID: 1807482393}
+    - target: {fileID: 4807413330352748269, guid: 68e77b0f60134d74aa43461d96dc1b04,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4807413330352748269, guid: 68e77b0f60134d74aa43461d96dc1b04,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4807413330352748269, guid: 68e77b0f60134d74aa43461d96dc1b04,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4807413330352748269, guid: 68e77b0f60134d74aa43461d96dc1b04,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4807413330352748269, guid: 68e77b0f60134d74aa43461d96dc1b04,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4807413330352748269, guid: 68e77b0f60134d74aa43461d96dc1b04,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4807413330352748269, guid: 68e77b0f60134d74aa43461d96dc1b04,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4807413330352748269, guid: 68e77b0f60134d74aa43461d96dc1b04,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4807413330352748269, guid: 68e77b0f60134d74aa43461d96dc1b04,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4807413330352748269, guid: 68e77b0f60134d74aa43461d96dc1b04,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4807413330352748269, guid: 68e77b0f60134d74aa43461d96dc1b04,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4807413330352748275, guid: 68e77b0f60134d74aa43461d96dc1b04,
+        type: 3}
+      propertyPath: m_Name
+      value: Level Controller
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 68e77b0f60134d74aa43461d96dc1b04, type: 3}
+--- !u!1 &1281756054 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4807413330352748275, guid: 68e77b0f60134d74aa43461d96dc1b04,
+    type: 3}
+  m_PrefabInstance: {fileID: 1281756053}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1298429161
 GameObject:
@@ -4178,7 +4252,7 @@ PrefabInstance:
         type: 3}
       propertyPath: levelController
       value: 
-      objectReference: {fileID: 1118273807}
+      objectReference: {fileID: 1281756054}
     - target: {fileID: 929961085189442446, guid: 3d9137ac55441d640a9c11438b295347,
         type: 3}
       propertyPath: m_Name
@@ -5406,7 +5480,7 @@ PrefabInstance:
         type: 3}
       propertyPath: levelController
       value: 
-      objectReference: {fileID: 1118273807}
+      objectReference: {fileID: 1281756054}
     - target: {fileID: 929961085189442446, guid: 3d9137ac55441d640a9c11438b295347,
         type: 3}
       propertyPath: m_Name
@@ -5525,7 +5599,7 @@ PrefabInstance:
         type: 3}
       propertyPath: levelController
       value: 
-      objectReference: {fileID: 1118273807}
+      objectReference: {fileID: 1281756054}
     - target: {fileID: 2705887151364670106, guid: 4af0d4ece932e974caa2a43e79a97050,
         type: 3}
       propertyPath: mainCamera

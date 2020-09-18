@@ -212,7 +212,7 @@ public class PlayerStatistics : MonoBehaviour
     public struct Level
     {
         public float PersonalBestTime;
-        public int CoinsAcquiredInLevel, LevelIndex;
+        public int CoinsAcquiredInLevel, LevelIndex, CoinsInLevel;
         public bool IsPlaying, IsPlayed, IsLocked;
         public string LevelType;
         public int numTimesLevelFailed;
@@ -229,6 +229,7 @@ public class PlayerStatistics : MonoBehaviour
             LevelType = levelType;
             numTimesLevelFailed = 0;
             numTimesNearMiss = 0;
+            CoinsInLevel = 0;
         }
     }
 
@@ -463,6 +464,14 @@ public class PlayerStatistics : MonoBehaviour
         this.upgradesList = retrievedUpgradesList;
     }
 
+    private void RestoreOtherData(float musicVolume, float sfxVolume, int highestChapter, int highestLevel)
+    {
+        this.musicVolume = musicVolume;
+        this.sfxVolume = sfxVolume;
+        this.highestChapter = highestChapter;
+        this.highestLevel = highestLevel;
+    }
+
     private void Start()
     {
         PlayerData playerData = LoadSaveStats.LoadPlayerData();
@@ -473,6 +482,7 @@ public class PlayerStatistics : MonoBehaviour
             RestoreTasksData(playerData.tasksList, playerData.firstActiveTaskIndex, playerData.secondActiveTaskIndex, playerData.tasksCompleted);
             RestoreUpgradesData(playerData.upgradesList);
             RestoreChaptersData(playerData.chaptersList);
+            RestoreOtherData(playerData.musicVolume, playerData.sfxVolume, playerData.highestChapter, playerData.highestLevel);
         } else
         {
             PersistentInformation.CurrentChapter = 0;

@@ -1215,8 +1215,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: OK
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: c06fb401cdb8b06488e95c35845c4249, type: 2}
-  m_sharedMaterial: {fileID: 1446428770408279248, guid: c06fb401cdb8b06488e95c35845c4249,
+  m_fontAsset: {fileID: 11400000, guid: 15dd99dd269bd994ebf770400831222f, type: 2}
+  m_sharedMaterial: {fileID: 1278043277659715905, guid: 15dd99dd269bd994ebf770400831222f,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -1507,10 +1507,12 @@ MonoBehaviour:
   backgroundMaterials:
   - PlayerSkinColor: 
     PlayerSkinCategory: 
+    hexCode: 
     Bottom: {fileID: 0}
     Top: {fileID: 0}
     Main: {fileID: 0}
   playerPrefab: {fileID: 0}
+  objectsColor: {fileID: 0}
 --- !u!4 &546368621
 Transform:
   m_ObjectHideFlags: 0
@@ -2427,8 +2429,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 400000
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: c06fb401cdb8b06488e95c35845c4249, type: 2}
-  m_sharedMaterial: {fileID: 1446428770408279248, guid: c06fb401cdb8b06488e95c35845c4249,
+  m_fontAsset: {fileID: 11400000, guid: 15dd99dd269bd994ebf770400831222f, type: 2}
+  m_sharedMaterial: {fileID: 1278043277659715905, guid: 15dd99dd269bd994ebf770400831222f,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -2762,8 +2764,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 999999999
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: c06fb401cdb8b06488e95c35845c4249, type: 2}
-  m_sharedMaterial: {fileID: 1446428770408279248, guid: c06fb401cdb8b06488e95c35845c4249,
+  m_fontAsset: {fileID: 11400000, guid: 15dd99dd269bd994ebf770400831222f, type: 2}
+  m_sharedMaterial: {fileID: 1278043277659715905, guid: 15dd99dd269bd994ebf770400831222f,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -7971,8 +7973,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 400000
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: c06fb401cdb8b06488e95c35845c4249, type: 2}
-  m_sharedMaterial: {fileID: 1446428770408279248, guid: c06fb401cdb8b06488e95c35845c4249,
+  m_fontAsset: {fileID: 11400000, guid: 15dd99dd269bd994ebf770400831222f, type: 2}
+  m_sharedMaterial: {fileID: 1278043277659715905, guid: 15dd99dd269bd994ebf770400831222f,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -8488,8 +8490,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Choose skin color for Ball
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: c06fb401cdb8b06488e95c35845c4249, type: 2}
-  m_sharedMaterial: {fileID: 1446428770408279248, guid: c06fb401cdb8b06488e95c35845c4249,
+  m_fontAsset: {fileID: 11400000, guid: 15dd99dd269bd994ebf770400831222f, type: 2}
+  m_sharedMaterial: {fileID: 1278043277659715905, guid: 15dd99dd269bd994ebf770400831222f,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -8874,8 +8876,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: New Text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 15dd99dd269bd994ebf770400831222f, type: 2}
+  m_sharedMaterial: {fileID: 1278043277659715905, guid: 15dd99dd269bd994ebf770400831222f,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -9255,7 +9258,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: Select Skin
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: c06fb401cdb8b06488e95c35845c4249, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 15dd99dd269bd994ebf770400831222f, type: 2}
   m_sharedMaterial: {fileID: 1446428770408279248, guid: c06fb401cdb8b06488e95c35845c4249,
     type: 2}
   m_fontSharedMaterials: []
@@ -9334,7 +9337,7 @@ MonoBehaviour:
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_subTextObjects:
   - {fileID: 0}
   - {fileID: 0}

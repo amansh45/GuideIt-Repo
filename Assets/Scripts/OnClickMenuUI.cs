@@ -12,6 +12,7 @@ public class OnClickMenuUI : MonoBehaviour
     MainMenuHandler menuHandlerClass = null;
     UpgradeManager upgradeManagerClass = null;
     LevelComplete levelComplete = null;
+    AdMob adMob = null;
 
     private void Start()
     {
@@ -173,6 +174,19 @@ public class OnClickMenuUI : MonoBehaviour
             upgradeManagerClass = FindObjectOfType<UpgradeManager>();
 
         upgradeManagerClass.SelectButtonClicked();
+    }
+
+
+    public void OnClickRequestAd()
+    {
+        adMob = FindObjectOfType<AdMob>();
+        adMob.RequestInterstitial();
+    }
+
+    public void OnClickShowAd()
+    {
+        adMob = FindObjectOfType<AdMob>();
+        adMob.ShowInterstitialAd();
     }
 
 }

@@ -203,8 +203,6 @@ public class MainMenuHandler : MonoBehaviour
             }
         }
 
-        Debug.Log(currChapter);
-
         int k = 0;
         for(int i=0;i<=currChapter;i++)
         {

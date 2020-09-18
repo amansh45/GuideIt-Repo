@@ -5,11 +5,13 @@ using UnityEngine;
 public class MusicPlayer : MonoBehaviour
 {
     [SerializeField] List<AudioClip> musicList;
-    
+    AudioSource audioSource;
+    PlayerStatistics playerStats;
+
     private void Awake()
     {
-        int playerStatsCount = FindObjectsOfType<MusicPlayer>().Length;
-        if (playerStatsCount > 1)
+        int musicPlayerCount = FindObjectsOfType<MusicPlayer>().Length;
+        if (musicPlayerCount > 1)
             Destroy(gameObject);
         else
             DontDestroyOnLoad(gameObject);
@@ -17,8 +19,15 @@ public class MusicPlayer : MonoBehaviour
 
     private void Start()
     {
-        AudioSource audioSource = GetComponent<AudioSource>();
+        playerStats = FindObjectOfType<PlayerStatistics>();
+        audioSource = GetComponent<AudioSource>();
         audioSource.clip = musicList[Random.Range(0, musicList.Count + 1)];
+        audioSource.volume = playerStats.musicVolume;
         audioSource.Play();
+    }
+
+    public void SetVolume(float volume)
+    {
+        audioSource.volume = volume;
     }
 }

@@ -10,7 +10,7 @@ public class EnemyLauncher : MonoBehaviour
     public bool aimAtPlayer = false;
     public bool isBlinking = false;
     public bool isUpShootingLauncher = false;
-    [SerializeField] float blinkDistanceThreshold = 0.5f, thresholdForSFX = 5f;
+    [SerializeField] float blinkDistanceThreshold = 0.5f, thresholdForSFX = 5f, granadeSpeed = 200f;
     [SerializeField] AudioClip enemyShootingSFX;
 
     float screenCenter, initializationFactor = 1f, spawnScaleFactor = 0f;
@@ -113,6 +113,7 @@ public class EnemyLauncher : MonoBehaviour
         }
             
         latestGranadeClass = latestGranade.GetComponent<Granade>();
+        latestGranadeClass.granadeSpeed = granadeSpeed;
     }
 
     public void SetSlowmoForGranadeLauncher(float slowmoFactor)

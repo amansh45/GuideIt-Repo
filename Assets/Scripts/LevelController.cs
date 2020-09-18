@@ -211,6 +211,8 @@ public class LevelController : MonoBehaviour
         currentLevelObj.IsPlayed = true;
         currentLevelObj.IsPlaying = false;
         currentLevelObj.PersonalBestTime = Mathf.Min(currentLevelObj.PersonalBestTime, timeTaken);
+        currentLevelObj.CoinsInLevel = coinsInScene;
+        currentLevelObj.CoinsAcquiredInLevel = currentCoinsAcquired;
         playerStats.chaptersList[currentChapterIndex].LevelsInChapter[currentLevelIndex] = currentLevelObj;
 
         if (currentLevelIndex == playerStats.chaptersList[currentChapterIndex].LevelsInChapter.Count - 1)
@@ -263,7 +265,7 @@ public class LevelController : MonoBehaviour
         }
         
         LoadSaveStats.SavePlayerData(playerStats.tasksList, playerStats.chaptersList, playerStats.upgradesList, playerStats.firstActiveTaskIndex, playerStats.secondActiveTaskIndex, playerStats.tasksCompleted,
-            playerStats.highestChapter, playerStats.highestLevel, playerStats.playerCoins);
+            playerStats.highestChapter, playerStats.highestLevel, playerStats.playerCoins, playerStats.musicVolume, playerStats.sfxVolume);
     }
 
 }

@@ -15,12 +15,15 @@ public class LevelScroller : MonoBehaviour
     bool firstTimeLoad = true;
     PlayerStatistics playerStats;
     TextMeshProUGUI coinsText;
+    AdMob adMob;
 
     private void Start()
     {
         playerStats = FindObjectOfType<PlayerStatistics>();
         chapterIndex = PersistentInformation.CurrentChapter;
         coinsText = coinsTextGO.GetComponent<TextMeshProUGUI>();
+        adMob = FindObjectOfType<AdMob>();
+        adMob.RequestBanner();
     }
 
     void Update()
@@ -36,7 +39,8 @@ public class LevelScroller : MonoBehaviour
             int numLevels = levelsInChapter.Count;
             for (int i = numLevels-1; i >= 0; i--)
             {
-                generateLevelItem(levelsInChapter[i].IsPlayed, levelsInChapter[i].IsPlaying, levelsInChapter[i].IsLocked, levelsInChapter[i].LevelIndex);
+                generateLevelItem(levelsInChapter[i].IsPlayed, levelsInChapter[i].IsPlaying, levelsInChapter[i].IsLocked, 
+                    levelsInChapter[i].LevelIndex, levelsInChapter[i].PersonalBestTime, levelsInChapter[i].CoinsAcquiredInLevel, levelsInChapter[i].CoinsInLevel);
             }
             scrollView.verticalNormalizedPosition = 0f;
             firstTimeLoad = false;
@@ -44,7 +48,7 @@ public class LevelScroller : MonoBehaviour
 
     }
     
-    void generateLevelItem(bool isPlayed, bool isPlaying, bool isLocked, int levelIndex)
+    void generateLevelItem(bool isPlayed, bool isPlaying, bool isLocked, int levelIndex, float personalBestTime, int coinsAcquired, int totalCoinsInLevel)
     {
         GameObject scrollItemObj = Instantiate(scrollItemPrefab);
         scrollItemObj.transform.parent = scrollContent.transform;
@@ -75,8 +79,21 @@ public class LevelScroller : MonoBehaviour
                 {
                     if (grandChild.name == "Left Level Num" || grandChild.name == "Right Level Num")
                     {
-                        TextMeshProUGUI textFeild = grandChild.gameObject.GetComponent<TextMeshProUGUI>();
-                        textFeild.text = (levelIndex + 1).ToString();
+                        TextMeshProUGUI textField = grandChild.gameObject.GetComponent<TextMeshProUGUI>();
+                        textField.text = (levelIndex + 1).ToString();
+                    }
+                    else if(grandChild.name == "Personal Best Time")
+                    {
+                        var minutes = Mathf.FloorToInt(personalBestTime / 60);
+                        var seconds = Mathf.FloorToInt(personalBestTime % 60);
+                        var fraction = (personalBestTime * 100) % 99;
+                        string timeStr = string.Format("{0:00}:{1:00}", (minutes * 60) + seconds, fraction) + " s";
+                        TextMeshProUGUI textField = grandChild.gameObject.GetComponent<TextMeshProUGUI>();
+                        textField.text = "Best run: " + timeStr;
+                    } else if(grandChild.name == "Coins Acquired Data")
+                    {
+                        TextMeshProUGUI textField = grandChild.gameObject.GetComponent<TextMeshProUGUI>();
+                        textField.text = "Juice: " + coinsAcquired.ToString() + " / " + totalCoinsInLevel.ToString();
                     }
                 }
             }

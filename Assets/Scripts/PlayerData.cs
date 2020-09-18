@@ -9,9 +9,10 @@ public class PlayerData {
     public List<PlayerStatistics.Chapter> chaptersList = new List<PlayerStatistics.Chapter>();
     public List<PlayerStatistics.Upgrade> upgradesList = new List<PlayerStatistics.Upgrade>();
     public int currentChapter, firstActiveTaskIndex, secondActiveTaskIndex, tasksCompleted, highestChapter, highestLevel, playerCoins;
+    public float musicVolume, sfxVolume;
 
     public void PopulatePlayerData(List<PlayerStatistics.Task> tasksList, List<PlayerStatistics.Chapter> chaptersList, List<PlayerStatistics.Upgrade> upgradesList,
-        int firstActiveTaskIndex, int secondActiveTaskIndex, int tasksCompleted, int highestChapter, int highestLevel,  int playerCoins)
+        int firstActiveTaskIndex, int secondActiveTaskIndex, int tasksCompleted, int highestChapter, int highestLevel,  int playerCoins, float musicVolume, float sfxVolume)
     {
         currentChapter = PersistentInformation.CurrentChapter;
         this.firstActiveTaskIndex = firstActiveTaskIndex;
@@ -23,6 +24,8 @@ public class PlayerData {
         this.highestChapter = highestChapter;
         this.highestLevel = highestLevel;
         this.playerCoins = playerCoins;
+        this.musicVolume = musicVolume;
+        this.sfxVolume = sfxVolume;
     }
 
 }

@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Granade : MonoBehaviour
 {
-
-    [SerializeField] float granadeSpeed = 200f, shrinkFactorOnLaunch = 0.3f, cameraShakeDuration = 0.25f;
+    public float granadeSpeed = 200;
+    [SerializeField] float shrinkFactorOnLaunch = 0.3f, cameraShakeDuration = 0.25f;
     [SerializeField] AudioClip enemyLauncherDeathSFX;
 
     bool isGranadeMoving = false;

@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 public static class LoadSaveStats
 {
     public static void SavePlayerData(List<PlayerStatistics.Task> tasksList, List<PlayerStatistics.Chapter> chaptersList, List<PlayerStatistics.Upgrade> upgradesList,
-        int firstActiveTaskIndex, int secondActiveTaskIndex, int totalTasksCompleted, int highestChapter, int highestLevel, int playerCoins)
+        int firstActiveTaskIndex, int secondActiveTaskIndex, int totalTasksCompleted, int highestChapter, int highestLevel, int playerCoins, float musicVolume, float sfxVolume)
     {
         BinaryFormatter formatter = new BinaryFormatter();
         string path = Application.persistentDataPath + "/playerData.config";
@@ -16,7 +16,7 @@ public static class LoadSaveStats
         FileStream stream = new FileStream(path, FileMode.Create);
         PlayerData data = new PlayerData();
         data.PopulatePlayerData(tasksList, chaptersList, upgradesList, firstActiveTaskIndex, secondActiveTaskIndex, totalTasksCompleted,
-            highestChapter, highestLevel, playerCoins);
+            highestChapter, highestLevel, playerCoins, musicVolume, sfxVolume );
 
 
         var jsonString = JsonConvert.SerializeObject(data);

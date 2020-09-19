@@ -280,6 +280,7 @@ MonoBehaviour:
   vfxController: {fileID: 418327318}
   levelController: {fileID: 1118273807}
   playerState: 0
+  timeUntilPlayerShouldNotDie: 0
 --- !u!58 &158589556
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1183,6 +1184,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 844643720573235725, guid: 8814e905b56d96b4bb0fce3a6cd77ca9,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 844643720573235725, guid: 8814e905b56d96b4bb0fce3a6cd77ca9,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.92156863
+      objectReference: {fileID: 0}
+    - target: {fileID: 844643720573235725, guid: 8814e905b56d96b4bb0fce3a6cd77ca9,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.5254902
+      objectReference: {fileID: 0}
     - target: {fileID: 8531627865648063938, guid: 8814e905b56d96b4bb0fce3a6cd77ca9,
         type: 3}
       propertyPath: m_Name
@@ -1533,6 +1549,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Scene Loader
+      objectReference: {fileID: 0}
+    - target: {fileID: 7836805310484517069, guid: 713e734d472c3b7428756c1f3a9e124a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 713e734d472c3b7428756c1f3a9e124a, type: 3}

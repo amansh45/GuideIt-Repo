@@ -61,5 +61,6 @@ MonoBehaviour:
   coinsAcquired: {fileID: 0}
   retryCanvasAdButton: {fileID: 0}
   retryCanvasNextToAdButton: {fileID: 0}
+  timeUntilPlayerShouldNotDie: 5
   coinsInScene: 0
   currentCoinsAcquired: 0

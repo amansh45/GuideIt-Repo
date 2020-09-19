@@ -54,6 +54,15 @@ public class OnClickMenuUI : MonoBehaviour
         levelController.ClickedPauseButton();
     }
 
+    public void OnWatchAdForResumeLevelClick()
+    {
+        Debug.Log("Entered...");
+        if (levelController == null)
+            levelController = FindObjectOfType<LevelController>();
+        Debug.Log("Incountered click, calling levelController script...");
+        levelController.ResumeLevelAfterWatchingAd();
+    }
+
     public void OnResumeClick()
     {
         if (levelController == null)
@@ -78,6 +87,12 @@ public class OnClickMenuUI : MonoBehaviour
 
     public void LoadUpgradeScene()
     {
+        if (levelController == null)
+            levelController = FindObjectOfType<LevelController>();
+
+        if (levelController != null)
+            levelController.ExecuteResetTaskRequest();
+
         if (sceneLoaderClass == null)
             sceneLoaderClass = FindObjectOfType<SceneLoader>();
         sceneLoaderClass.LoadScene("Upgrades");
@@ -180,13 +195,13 @@ public class OnClickMenuUI : MonoBehaviour
     public void OnClickRequestAd()
     {
         adMob = FindObjectOfType<AdMob>();
-        adMob.RequestInterstitial();
+        adMob.RequestRewardBasedVideo();
     }
 
     public void OnClickShowAd()
     {
         adMob = FindObjectOfType<AdMob>();
-        adMob.ShowInterstitialAd();
+        adMob.ShowVideoRewardedAd();
     }
 
 }

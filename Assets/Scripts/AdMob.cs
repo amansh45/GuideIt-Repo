@@ -31,7 +31,6 @@ public class AdMob : MonoBehaviour
 
     public void RequestBanner()
     {
-        Debug.Log("Call happened.........");
 
         if (bannerView != null)
         {
@@ -95,6 +94,7 @@ public class AdMob : MonoBehaviour
         rewardBasedVideoAd.OnAdOpening += HandleOnAdOpened;
         rewardBasedVideoAd.OnAdClosed += HandleOnAdClosed;
         rewardBasedVideoAd.OnAdLeavingApplication += HandleOnAdLeavingApplication;
+        rewardBasedVideoAd.OnAdRewarded += HandleUserEarnedReward;
 
         labelTextField.text = "Ad is about to load";
 
@@ -119,15 +119,14 @@ public class AdMob : MonoBehaviour
 
     public void HandleOnAdLoaded(object sender, EventArgs args)
     {
+        
         labelTextField.text = "Ad is loaded";
-        Debug.Log("Ad is loaded...");
     }
 
     public void HandleOnAdFailedToLoad(object sender, AdFailedToLoadEventArgs args)
     {
 
         labelTextField.text = "Failed to load ad";
-        Debug.Log("Ad failed to load...");
     }
 
     public void HandleOnAdOpened(object sender, EventArgs args)
@@ -143,5 +142,11 @@ public class AdMob : MonoBehaviour
     public void HandleOnAdLeavingApplication(object sender, EventArgs args)
     {
         MonoBehaviour.print("HandleAdLeavingApplication event received");
+    }
+
+    public void HandleUserEarnedReward(object sender, Reward args)
+    {
+        LevelController levelControllerClass = FindObjectOfType<LevelController>();
+        levelControllerClass.isPlayerEligibleForReward = true;
     }
 }

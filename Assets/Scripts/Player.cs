@@ -46,6 +46,7 @@ public class Player : MonoBehaviour
     LevelController levelControllerClass;
 
     public PlayerState playerState;
+    public float timeUntilPlayerShouldNotDie = 0f;
     List<string> nearMissObjectNames = new List<string>();
     PlayerStatistics playerStats;
 
@@ -101,6 +102,10 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        if(timeUntilPlayerShouldNotDie > 0)
+        {
+            timeUntilPlayerShouldNotDie -= Time.deltaTime;
+        }
 
         if (playerState == PlayerState.Run)
             ballSpeed = runSpeed;
@@ -158,10 +163,16 @@ public class Player : MonoBehaviour
 
     void Die(GameObject collider)
     {
-        Debug.Log("Player Died...");
-        levelControllerClass.ShowRetryCanvas(camShakeDuration);
-        Destroy(gameObject);
-        vfxControllerClass.PlayerDied(transform.position, collider, camShakeDuration);
+        if(timeUntilPlayerShouldNotDie <= 0)
+        {
+            Debug.Log("Player Died...");
+            levelControllerClass.ShowRetryCanvas(camShakeDuration);
+
+            playerState = PlayerState.Still;
+
+            gameObject.SetActive(false);
+            vfxControllerClass.PlayerDied(transform.position, collider, camShakeDuration);
+        }
     }
 
     void LevelComplete()

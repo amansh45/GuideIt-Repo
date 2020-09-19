@@ -13,6 +13,7 @@ public class LevelController : MonoBehaviour
     [SerializeField] AudioClip coinsAcquiredSFX;
     [SerializeField] GameObject coinsAcquired;
     [SerializeField] Image retryCanvasAdButton, retryCanvasNextToAdButton;
+    [SerializeField] float timeUntilPlayerShouldNotDie = 5f;
 
     Slowmotion slowmotionClass;
     Player playerClass;
@@ -26,13 +27,15 @@ public class LevelController : MonoBehaviour
     float lowerBound, prevLowerBound;
 
     GameObject testObj = null;
-    bool isPlayerStillBeforePause = false;
+    bool isPlayerStillBeforePause = false, isPlayerDied = false;
 
     TextMeshProUGUI coinsAcquiredOnScreenText;
     public int coinsInScene = 0;
     public int currentCoinsAcquired = 0;
     ProceduralGeneration pg;
     bool retryCanvasVisible = false, retryCanvasAnimationDisabled = false;
+    AdMob adMobClass;
+    public bool isPlayerEligibleForReward = false;
 
     private void Start()
     {
@@ -51,6 +54,9 @@ public class LevelController : MonoBehaviour
         PersistentInformation.LevelIdentifier = gameObject.scene.name;
         pg = FindObjectOfType<ProceduralGeneration>();
         initialTimeForAdButtonAnimation = timeForAdButtonAnimation;
+        adMobClass = FindObjectOfType<AdMob>();
+        adMobClass.RequestRewardBasedVideo();
+        adMobClass.RequestInterstitial();
     }
 
     private void UpdateFirstTaskOnScreen(bool isTaskCompleted)
@@ -105,6 +111,22 @@ public class LevelController : MonoBehaviour
         }
     }
 
+    private void ResetNearMissCountOnLevelFailed()
+    {
+        string levelName = gameObject.scene.name;
+        string[] levelIdentity = levelName.Split('.');
+        int currentChapterIndex = int.Parse(levelIdentity[0]);
+        int currentLevelIndex = int.Parse(levelIdentity[1]);
+
+        PlayerStatistics.Level currentLevel = playerStats.chaptersList[currentChapterIndex].LevelsInChapter[currentLevelIndex];
+        if (!currentLevel.IsPlayed)
+        {
+            currentLevel.numTimesLevelFailed += 1;
+            currentLevel.numTimesNearMiss = 0;
+            playerStats.chaptersList[currentChapterIndex].LevelsInChapter[currentLevelIndex] = currentLevel;
+        }
+    }
+
     private void Update()
     {
         if(retryCanvasVisible)
@@ -131,6 +153,7 @@ public class LevelController : MonoBehaviour
                     else if (child.gameObject.name == "Upgrades")
                         child.gameObject.SetActive(true);
                 }
+                ResetNearMissCountOnLevelFailed();
             }
         }
     }
@@ -157,25 +180,40 @@ public class LevelController : MonoBehaviour
 
     public void ShowRetryCanvas(float waitTime)
     {
+        isPlayerDied = true;
         if (pg != null)
             playerStats.prevProceduralLevelFailed = true;
-
-        string levelName = gameObject.scene.name;
-        string[] levelIdentity = levelName.Split('.');
-        int currentChapterIndex = int.Parse(levelIdentity[0]);
-        int currentLevelIndex = int.Parse(levelIdentity[1]);
-
-        PlayerStatistics.Level currentLevel = playerStats.chaptersList[currentChapterIndex].LevelsInChapter[currentLevelIndex];
-        if(!currentLevel.IsPlayed)
-        {
-            currentLevel.numTimesLevelFailed += 1;
-            currentLevel.numTimesNearMiss = 0;
-            playerStats.chaptersList[currentChapterIndex].LevelsInChapter[currentLevelIndex] = currentLevel;
-        }
 
         AudioSource.PlayClipAtPoint(playerDeathSFX, Camera.main.transform.position, playerStats.sfxVolume);
 
         StartCoroutine(PlayerDeathActions(waitTime));
+    }
+
+    IEnumerator UpdatePlayerStateAfterCrossCheck()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        if(isPlayerEligibleForReward)
+        {
+            retryCanvas.gameObject.SetActive(false);
+            retryCanvasVisible = false;
+            playerActionsClass.isGamePaused = false;
+            playerClass.gameObject.SetActive(true);
+            playerClass.timeUntilPlayerShouldNotDie = timeUntilPlayerShouldNotDie;
+            playerClass.playerState = PlayerState.Hover;
+            isPlayerDied = false;
+            retryCanvasAnimationDisabled = false;
+            timeForAdButtonAnimation = initialTimeForAdButtonAnimation;
+            slowmotionClass.customSlowmo(false, onPauseSlowmoFactor);
+            isPlayerEligibleForReward = false;
+            adMobClass.RequestRewardBasedVideo();
+        }
+    }
+
+    public void ResumeLevelAfterWatchingAd()
+    {
+        adMobClass.ShowVideoRewardedAd();
+        StartCoroutine(UpdatePlayerStateAfterCrossCheck());
     }
 
     public void CoinAcquired(float coinValue, string coinType)
@@ -221,11 +259,16 @@ public class LevelController : MonoBehaviour
 
     public void ExecuteResetTaskRequest()
     {
+        if (isPlayerDied)
+            ResetNearMissCountOnLevelFailed();
         taskHandler.ResetTasks();
     }
 
     public void ClickedRetryButton(bool taskResetRequired)
     {
+        if (isPlayerDied)
+            ResetNearMissCountOnLevelFailed();
+
         if(taskResetRequired)
             taskHandler.ResetTasks();
         Scene scene = SceneManager.GetActiveScene();
@@ -269,6 +312,20 @@ public class LevelController : MonoBehaviour
             playerStats.chaptersList[currentChapterIndex].LevelsInChapter[currentLevelIndex + 1] = nextLevelObj;
         }
     }
+
+    private bool ShowInterstitialAd(int chapterIndex, int levelIndex)
+    {
+        int levelCount = 0;
+        for(int i=0;i<chapterIndex;i++)
+        {
+            levelCount += playerStats.levelsInChapter[i];
+        }
+        levelCount += (levelIndex + 1);
+
+        Debug.Log("Level Count is: " + levelCount);
+
+        return levelCount % 3 == 0;
+    }
     
 
     public void OnLevelFinished(float timeTaken)
@@ -288,6 +345,9 @@ public class LevelController : MonoBehaviour
             float prevBestTime = playerStats.chaptersList[currentChapterIndex].LevelsInChapter[currentLevelIndex].PersonalBestTime;
             playerStats.levelCompletionData = new PlayerStatistics.LevelCompletionData(currentChapterIndex, currentLevelIndex, coinsInScene, currentCoinsAcquired, timeTaken, prevBestTime);
             UpdateAndUnlockNextLevel(currentChapterIndex, currentLevelIndex, timeTaken);
+
+            if (ShowInterstitialAd(currentChapterIndex, currentLevelIndex))
+                adMobClass.ShowInterstitialAd();
 
             SceneManager.LoadScene("Level Complete");
         }

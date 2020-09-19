@@ -16,7 +16,7 @@ public class PlayerStatistics : MonoBehaviour
 
 
     public LevelCompletionData levelCompletionData;
-    [SerializeField] List<int> levelsInChapter = new List<int>();
+    public List<int> levelsInChapter = new List<int>();
     public bool playerStatsLoaded = false;
     public List<ObjectsData> listOfObjects = new List<ObjectsData>();
     public bool prevProceduralLevelFailed = false;

@@ -364,6 +364,16 @@ PrefabInstance:
       propertyPath: coinsAcquired
       value: 
       objectReference: {fileID: 1807482393}
+    - target: {fileID: 4807413330352748268, guid: 68e77b0f60134d74aa43461d96dc1b04,
+        type: 3}
+      propertyPath: retryCanvasAdButton
+      value: 
+      objectReference: {fileID: 311287294}
+    - target: {fileID: 4807413330352748268, guid: 68e77b0f60134d74aa43461d96dc1b04,
+        type: 3}
+      propertyPath: retryCanvasNextToAdButton
+      value: 
+      objectReference: {fileID: 311287293}
     - target: {fileID: 4807413330352748269, guid: 68e77b0f60134d74aa43461d96dc1b04,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -569,6 +579,30 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 311287289}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &311287293 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8531627864194026159, guid: 8814e905b56d96b4bb0fce3a6cd77ca9,
+    type: 3}
+  m_PrefabInstance: {fileID: 311287289}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &311287294 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8531627864855941993, guid: 8814e905b56d96b4bb0fce3a6cd77ca9,
+    type: 3}
+  m_PrefabInstance: {fileID: 311287289}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &418327318 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5725267003532385474, guid: 11feafbdf551ea843bcd57ce82f0d9a5,

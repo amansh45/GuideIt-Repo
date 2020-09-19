@@ -301,6 +301,16 @@ PrefabInstance:
       propertyPath: coinsAcquired
       value: 
       objectReference: {fileID: 1807482393}
+    - target: {fileID: 4807413330352748268, guid: 68e77b0f60134d74aa43461d96dc1b04,
+        type: 3}
+      propertyPath: retryCanvasAdButton
+      value: 
+      objectReference: {fileID: 2021821983}
+    - target: {fileID: 4807413330352748268, guid: 68e77b0f60134d74aa43461d96dc1b04,
+        type: 3}
+      propertyPath: retryCanvasNextToAdButton
+      value: 
+      objectReference: {fileID: 2021821984}
     - target: {fileID: 4807413330352748269, guid: 68e77b0f60134d74aa43461d96dc1b04,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1962,6 +1972,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 8531627864902477423, guid: 8814e905b56d96b4bb0fce3a6cd77ca9,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8531627864902477423, guid: 8814e905b56d96b4bb0fce3a6cd77ca9,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8531627865648063938, guid: 8814e905b56d96b4bb0fce3a6cd77ca9,
         type: 3}
       propertyPath: m_Name
@@ -2072,6 +2092,21 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8531627865781976787, guid: 8814e905b56d96b4bb0fce3a6cd77ca9,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8531627865781976787, guid: 8814e905b56d96b4bb0fce3a6cd77ca9,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8531627865781976787, guid: 8814e905b56d96b4bb0fce3a6cd77ca9,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8814e905b56d96b4bb0fce3a6cd77ca9, type: 3}
 --- !u!1 &2021821980 stripped
@@ -2092,6 +2127,30 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 2021821979}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2021821983 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8531627864855941993, guid: 8814e905b56d96b4bb0fce3a6cd77ca9,
+    type: 3}
+  m_PrefabInstance: {fileID: 2021821979}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2021821984 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8531627864194026159, guid: 8814e905b56d96b4bb0fce3a6cd77ca9,
+    type: 3}
+  m_PrefabInstance: {fileID: 2021821979}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2072297256
 PrefabInstance:
   m_ObjectHideFlags: 0

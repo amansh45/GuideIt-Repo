@@ -44,25 +44,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slowmotion: {fileID: 0}
-  pauseCanvas: {fileID: 8630789613922972673, guid: 6991f825837490c419cd0af145ee25fd,
-    type: 3}
-  retryCanvas: {fileID: 8502379737700463872, guid: 8ccd4d03e46944042829f73dc766bda5,
-    type: 3}
-  levelCompleteSlider: {fileID: 1627080309487217640, guid: 78d15b95f373c0e4b93413ebda05c43c,
-    type: 3}
-  levelCompletedTextGO: {fileID: 4642360892024462175, guid: 31049d90fe90fe94c88ab2123bf802b8,
-    type: 3}
+  pauseCanvas: {fileID: 0}
+  retryCanvas: {fileID: 0}
+  levelCompleteSlider: {fileID: 0}
+  levelCompletedTextGO: {fileID: 0}
   player: {fileID: 0}
   playSpace: {fileID: 0}
   gameLines: {fileID: 0}
-  firstTaskGO: {fileID: 3774738253229047727, guid: 1d406bc0a92487848b4f906a98566092,
-    type: 3}
-  secondTaskGO: {fileID: 7605325975353033427, guid: 614aa61d2f2c8ee47a811b436a546ad5,
-    type: 3}
+  firstTaskGO: {fileID: 0}
+  secondTaskGO: {fileID: 0}
   onPauseSlowmoFactor: 0.1
   movementOffset: 2
+  timeForAdButtonAnimation: 7
   playerDeathSFX: {fileID: 8300000, guid: fb66d4a8a6cdcdb478efa0193edfdd60, type: 3}
   coinsAcquiredSFX: {fileID: 8300000, guid: ea8b25353b3feed438714292f0e9600b, type: 3}
   coinsAcquired: {fileID: 0}
+  retryCanvasAdButton: {fileID: 0}
+  retryCanvasNextToAdButton: {fileID: 0}
   coinsInScene: 0
   currentCoinsAcquired: 0

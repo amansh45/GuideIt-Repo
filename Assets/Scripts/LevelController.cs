@@ -8,11 +8,11 @@ using UnityEngine.UI;
 public class LevelController : MonoBehaviour
 {
     [SerializeField] GameObject slowmotion, pauseCanvas, retryCanvas, levelCompleteSlider, levelCompletedTextGO, player, playSpace, gameLines, firstTaskGO, secondTaskGO;
-    [SerializeField] float onPauseSlowmoFactor = 0.05f, movementOffset = 2f;
+    [SerializeField] float onPauseSlowmoFactor = 0.05f, movementOffset = 2f, timeForAdButtonAnimation = 7f;
     [SerializeField] AudioClip playerDeathSFX;
     [SerializeField] AudioClip coinsAcquiredSFX;
     [SerializeField] GameObject coinsAcquired;
-
+    [SerializeField] Image retryCanvasAdButton, retryCanvasNextToAdButton;
 
     Slowmotion slowmotionClass;
     Player playerClass;
@@ -22,6 +22,7 @@ public class LevelController : MonoBehaviour
     PolygonCollider2D playSpaceCollider;
     TextMeshProUGUI levelCompletedText;
     GameLines gameLinesClass;
+    float initialTimeForAdButtonAnimation;
     float lowerBound, prevLowerBound;
 
     GameObject testObj = null;
@@ -31,6 +32,7 @@ public class LevelController : MonoBehaviour
     public int coinsInScene = 0;
     public int currentCoinsAcquired = 0;
     ProceduralGeneration pg;
+    bool retryCanvasVisible = false, retryCanvasAnimationDisabled = false;
 
     private void Start()
     {
@@ -48,6 +50,7 @@ public class LevelController : MonoBehaviour
         levelCompletedText = levelCompletedTextGO.GetComponent<TextMeshProUGUI>();
         PersistentInformation.LevelIdentifier = gameObject.scene.name;
         pg = FindObjectOfType<ProceduralGeneration>();
+        initialTimeForAdButtonAnimation = timeForAdButtonAnimation;
     }
 
     private void UpdateFirstTaskOnScreen(bool isTaskCompleted)
@@ -102,10 +105,34 @@ public class LevelController : MonoBehaviour
         }
     }
 
-
     private void Update()
     {
-        //SetBoundingBox();
+        if(retryCanvasVisible)
+        {
+            timeForAdButtonAnimation -= Time.deltaTime;
+            if (timeForAdButtonAnimation > 0)
+                retryCanvasAdButton.fillAmount = (timeForAdButtonAnimation / initialTimeForAdButtonAnimation);
+            else if(!retryCanvasAnimationDisabled)
+            {
+                retryCanvasAdButton.gameObject.GetComponent<Animator>().enabled = false;
+                retryCanvasAnimationDisabled = true;
+                foreach(Transform child in retryCanvasAdButton.gameObject.transform)
+                {
+                    if (child.gameObject.name == "Retry Icon")
+                        child.gameObject.SetActive(true);
+                    else if (child.gameObject.name == "WatchAd Icon")
+                        child.gameObject.SetActive(false);
+                }
+
+                foreach(Transform child in retryCanvasNextToAdButton.gameObject.transform)
+                {
+                    if (child.gameObject.name == "Retry Icon")
+                        child.gameObject.SetActive(false);
+                    else if (child.gameObject.name == "Upgrades")
+                        child.gameObject.SetActive(true);
+                }
+            }
+        }
     }
 
     IEnumerator PlayerDeathActions(float waitTime)
@@ -120,6 +147,7 @@ public class LevelController : MonoBehaviour
         
             slowmotionClass.customSlowmo(true, onPauseSlowmoFactor);
             retryCanvas.gameObject.SetActive(true);
+            retryCanvasVisible = true;
             levelCompleteSlider.GetComponent<Slider>().value = gameLinesClass.levelCompleted;
             int completedPercentage = (int)(gameLinesClass.levelCompleted * 100f);
             levelCompletedText.text = "Level Completed: " + completedPercentage + "%";

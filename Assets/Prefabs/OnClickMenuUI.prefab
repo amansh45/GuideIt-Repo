@@ -43,3 +43,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afb0bbb38a5b70e47a52fbfb861c6ae6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonClick: {fileID: 8300000, guid: cac3298a88f51b14f8d2f3886d9f77f8, type: 3}
+  wooshSFX: {fileID: 8300000, guid: b5f3cecaf20abab4a96c365d93852de6, type: 3}
+  taskCompletedSFX: {fileID: 8300000, guid: 790850a3c089a7a44a0240fce77728ac, type: 3}

@@ -39,6 +39,7 @@ public class UpgradeManager : MonoBehaviour
 
     // Note: The sequence for declaring these should be same as that of skinCategory and also the size of the list should be the size of the skinCategory...
     [SerializeField] List<GameObject> upgradesGO;
+    [SerializeField] AudioClip buyUpgradesSFX;
 
     int selectedUpgradeIndexForPreview;
     TextMeshProUGUI coinCostTMPro, moneyCostTMPro, unlockButtonTMPro, numCoinsTMPro;
@@ -321,22 +322,34 @@ public class UpgradeManager : MonoBehaviour
                 {
                     unlockButtonsGO.SetActive(false);
                     lockButtonsGO.SetActive(true);
-                    moneyCostTMPro.text = currentUpgrade.ColorStuff[currentUpgrade.ParticlesColor.ToString()].MoneyCost.ToString();
+                    int coinsRequired = currentUpgrade.ColorStuff[currentUpgrade.ParticlesColor.ToString()].CoinCost;
+                    if (coinsRequired > playerStats.playerCoins) {
+                        lockButtonsGO.transform.GetChild(0).GetComponent<Image>().color = playerStats.HexToRGB("#FF7B3B78");
+                    } else {
+                        lockButtonsGO.transform.GetChild(0).GetComponent<Image>().color = playerStats.HexToRGB("#00FFBC78");
+                    }
+                    moneyCostTMPro.text = coinsRequired.ToString();
                     coinCostTMPro.text = currentUpgrade.ColorStuff[currentUpgrade.ParticlesColor.ToString()].CoinCost.ToString();
                 }
                 else
                 {
                     lockButtonsGO.SetActive(false);
                     if (currentUpgrade.ColorStuff[currentUpgrade.ParticlesColor.ToString()].IsActive)
+                    {
                         unlockButtonTMPro.text = "Selected";
-                    else
+                        unlockButtonsGO.transform.GetChild(0).GetComponent<Image>().color = playerStats.HexToRGB("#FF7B3B78");
+                    } else
+                    {
                         unlockButtonTMPro.text = "Select Color";
+                        unlockButtonsGO.transform.GetChild(0).GetComponent<Image>().color = playerStats.HexToRGB("#00FFBC78");
+                    }
                 }
                 colorSelector.SetActive(true);
                 colorSelector.GetComponent<Image>().color = playerStats.colorsData[currentUpgrade.ParticlesColor.ToString()].ThirdColor;
             } else
             {
                 unlockButtonTMPro.text = "Select Skin";
+                unlockButtonsGO.transform.GetChild(0).GetComponent<Image>().color = playerStats.HexToRGB("#00FFBC78");
                 lockButtonsGO.SetActive(false);
                 colorSelector.SetActive(false);
             }
@@ -345,6 +358,13 @@ public class UpgradeManager : MonoBehaviour
             uiPreviewArea.GetComponent<Image>().color = playerStats.HexToRGB("#30303082");
             unlockButtonsGO.SetActive(false);
             lockButtonsGO.SetActive(true);
+            int coinsRequired = currentUpgrade.CoinCost;
+            if (coinsRequired > playerStats.playerCoins) {
+                lockButtonsGO.transform.GetChild(0).GetComponent<Image>().color = playerStats.HexToRGB("#FF7B3B78");
+            } else {
+                lockButtonsGO.transform.GetChild(0).GetComponent<Image>().color = playerStats.HexToRGB("#00FFBC78");
+            }
+
             colorSelector.SetActive(false);
             moneyCostTMPro.text = currentUpgrade.MoneyCost.ToString();
             coinCostTMPro.text = currentUpgrade.CoinCost.ToString();
@@ -396,6 +416,7 @@ public class UpgradeManager : MonoBehaviour
                 PlayerStatistics.SkinColorStuff skinColorData = currentUpgrade.ColorStuff[currentUpgrade.ParticlesColor.ToString()];
                 if(playerStats.playerCoins >= skinColorData.CoinCost)
                 {
+                    AudioSource.PlayClipAtPoint(buyUpgradesSFX, Camera.main.transform.position, playerStats.sfxVolume);
                     playerStats.playerCoins -= skinColorData.CoinCost;
                     numCoinsTMPro.text = playerStats.playerCoins.ToString();
                     skinColorData.IsUnlocked = true;
@@ -414,6 +435,8 @@ public class UpgradeManager : MonoBehaviour
             {
                 if(playerStats.playerCoins >= currentUpgrade.CoinCost)
                 {
+                    AudioSource.PlayClipAtPoint(buyUpgradesSFX, Camera.main.transform.position, playerStats.sfxVolume);
+
                     playerStats.playerCoins -= currentUpgrade.CoinCost;
                     numCoinsTMPro.text = playerStats.playerCoins.ToString();
                     currentUpgrade.IsUnlocked = true;

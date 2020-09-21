@@ -96,4 +96,42 @@ public class PlaceObjects : MonoBehaviour
             isFirstTimeLoad = false;
         }
     }
+
+    List<Vector3> rotatingPoints = new List<Vector3>();
+    int numPoints = 0;
+    float normalSpeed = 2f;
+    int currentIndex = 0;
+    bool isPlacementOnLineRequired = false;
+    bool isLine = false;
+
+    private void FixedUpdate()
+    {
+        if(isPlacementOnLineRequired)
+        {
+            int nextIndex = (currentIndex + 1) % numPoints;
+            if (rotatingPoints[nextIndex] != transform.position)
+            {
+                Vector3 dir = rotatingPoints[nextIndex] - transform.position;
+                float dist = dir.magnitude;
+                dir = dir.normalized;
+                float move = normalSpeed * Time.deltaTime;
+                if (move > dist) 
+                    move = dist;
+
+                transform.Translate(dir * move);
+            } else
+            {
+                currentIndex = nextIndex;
+            }
+        }
+    }
+
+    public void TriggerPlacementOnLine(List<Vector3> points, int index, bool isLine)
+    {
+        isPlacementOnLineRequired = true;
+        rotatingPoints = points;
+        currentIndex = index;
+        this.isLine = isLine;
+        numPoints = rotatingPoints.Count;
+    }
 }

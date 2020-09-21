@@ -15,15 +15,12 @@ public class LevelScroller : MonoBehaviour
     bool firstTimeLoad = true;
     PlayerStatistics playerStats;
     TextMeshProUGUI coinsText;
-    AdMob adMob;
 
     private void Start()
     {
         playerStats = FindObjectOfType<PlayerStatistics>();
         chapterIndex = PersistentInformation.CurrentChapter;
         coinsText = coinsTextGO.GetComponent<TextMeshProUGUI>();
-        adMob = FindObjectOfType<AdMob>();
-        adMob.RequestBanner();
     }
 
     void Update()

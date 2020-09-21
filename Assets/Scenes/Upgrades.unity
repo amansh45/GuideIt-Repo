@@ -398,7 +398,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.1882353, g: 0.1882353, b: 0.1882353, a: 0.47058824}
+  m_Color: {r: 1, g: 0.48235294, b: 0.23113209, a: 0.47058824}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1970,6 +1970,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Scene Loader
       objectReference: {fileID: 0}
+    - target: {fileID: 7836805310484517069, guid: 713e734d472c3b7428756c1f3a9e124a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 713e734d472c3b7428756c1f3a9e124a, type: 3}
 --- !u!1 &864649468
@@ -2025,7 +2030,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.1882353, g: 0.1882353, b: 0.1882353, a: 0.47058824}
+  m_Color: {r: 0, g: 1, b: 0.7342434, a: 0.47058824}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -8818,6 +8823,7 @@ MonoBehaviour:
   - {fileID: 7386533882511071369, guid: 9ec5c661cc36d8e47a72cf2562a5a5e2, type: 3}
   - {fileID: 2143946417511062983, guid: 3f81f5ffeb42ec141b490771d3a551b5, type: 3}
   - {fileID: 3799918029783865826, guid: f6fbc91be3f9b2647b38333e78d1b800, type: 3}
+  buyUpgradesSFX: {fileID: 8300000, guid: 08981a3f605326a418f9e3b4869587f9, type: 3}
 --- !u!1 &1589956427
 GameObject:
   m_ObjectHideFlags: 0
@@ -9259,7 +9265,7 @@ MonoBehaviour:
   m_text: Select Skin
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 15dd99dd269bd994ebf770400831222f, type: 2}
-  m_sharedMaterial: {fileID: 1446428770408279248, guid: c06fb401cdb8b06488e95c35845c4249,
+  m_sharedMaterial: {fileID: 1278043277659715905, guid: 15dd99dd269bd994ebf770400831222f,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -9612,6 +9618,7 @@ MonoBehaviour:
   vfxController: {fileID: 0}
   levelController: {fileID: 0}
   playerState: 0
+  timeUntilPlayerShouldNotDie: 0
 --- !u!4 &8682941479608577778
 Transform:
   m_ObjectHideFlags: 0

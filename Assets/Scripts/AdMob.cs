@@ -29,36 +29,6 @@ public class AdMob : MonoBehaviour
             DontDestroyOnLoad(gameObject);
     }
 
-    public void RequestBanner()
-    {
-
-        if (bannerView != null)
-        {
-            bannerView.Destroy();
-        }
-
-        AdSize adaptiveSize = AdSize.GetCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(AdSize.FullWidth);
-
-        bannerView = new BannerView(BANNER_AD_ID, adaptiveSize, AdPosition.Bottom);
-
-        bannerView.OnAdLoaded += HandleOnAdLoaded;
-        bannerView.OnAdFailedToLoad += HandleOnAdFailedToLoad;
-        bannerView.OnAdOpening += HandleOnAdOpened;
-        bannerView.OnAdClosed += HandleOnAdClosed;
-        bannerView.OnAdLeavingApplication += HandleOnAdLeavingApplication;
-
-        AdRequest adRequest = new AdRequest.Builder().Build();
-
-        bannerView.LoadAd(adRequest);
-    }
-
-    public void ShowBannerAd()
-    {
-        labelTextField.text = "Showing banner ad";
-        AdRequest request = new AdRequest.Builder().Build();
-        this.bannerView.LoadAd(request);
-    }
-
     public void RequestInterstitial()
     {
         interstitialAd = new InterstitialAd(INTERSTITIAL_AD_ID);

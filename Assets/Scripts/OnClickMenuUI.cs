@@ -4,9 +4,16 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 
+// onTaskCompleted sfx pending
+
+
 public class OnClickMenuUI : MonoBehaviour
 {
     //[SerializeField] GameObject sceneLoader;
+    [SerializeField] AudioClip buttonClick;
+    [SerializeField] AudioClip wooshSFX;
+    [SerializeField] AudioClip taskCompletedSFX;
+
     SceneLoader sceneLoaderClass = null;
     LevelController levelController = null;
     MainMenuHandler menuHandlerClass = null;
@@ -19,8 +26,15 @@ public class OnClickMenuUI : MonoBehaviour
         sceneLoaderClass = FindObjectOfType<SceneLoader>();
     }
 
+    private void PlaySound(AudioClip clipToBePlayed)
+    {
+        PlayerStatistics playerStats = FindObjectOfType<PlayerStatistics>();
+        AudioSource.PlayClipAtPoint(clipToBePlayed, Camera.main.transform.position, playerStats.sfxVolume);
+    }
+
     public void LoadChapter()
     {
+        PlaySound(wooshSFX);
         if (menuHandlerClass == null)
             menuHandlerClass = FindObjectOfType<MainMenuHandler>().GetComponent<MainMenuHandler>();
         menuHandlerClass.LoadChapter();
@@ -28,6 +42,8 @@ public class OnClickMenuUI : MonoBehaviour
 
     public void LoadMainMenu()
     {
+        PlaySound(wooshSFX);
+
         if (levelController == null)
             levelController = FindObjectOfType<LevelController>();
 
@@ -41,13 +57,17 @@ public class OnClickMenuUI : MonoBehaviour
 
     public void LoadSettings()
     {
+        PlaySound(wooshSFX);
+
         if (sceneLoaderClass == null)
             sceneLoaderClass = FindObjectOfType<SceneLoader>();
+       
         sceneLoaderClass.LoadScene("Settings");
     }
 
     public void OnPauseIconClick()
     {
+        PlaySound(buttonClick);
         // Removing this null is giving error which is mapped to levelController from inspector.
         if (levelController == null)
             levelController = FindObjectOfType<LevelController>();
@@ -56,15 +76,15 @@ public class OnClickMenuUI : MonoBehaviour
 
     public void OnWatchAdForResumeLevelClick()
     {
-        Debug.Log("Entered...");
+        PlaySound(buttonClick);
         if (levelController == null)
             levelController = FindObjectOfType<LevelController>();
-        Debug.Log("Incountered click, calling levelController script...");
         levelController.ResumeLevelAfterWatchingAd();
     }
 
     public void OnResumeClick()
     {
+        PlaySound(buttonClick);
         if (levelController == null)
             levelController = FindObjectOfType<LevelController>();
         levelController.ClickedResumeButton();
@@ -72,6 +92,7 @@ public class OnClickMenuUI : MonoBehaviour
 
     public void OnRetryClick()
     {
+        PlaySound(buttonClick);
         if (levelController == null)
             levelController = FindObjectOfType<LevelController>();
         levelController.ClickedRetryButton(true);
@@ -80,6 +101,7 @@ public class OnClickMenuUI : MonoBehaviour
 
     public void OnTaskCompleted(int index)
     {
+        PlaySound(taskCompletedSFX);
         if(menuHandlerClass == null)
             menuHandlerClass = FindObjectOfType<MainMenuHandler>().GetComponent<MainMenuHandler>();
         menuHandlerClass.CompleteTask(index);
@@ -87,6 +109,7 @@ public class OnClickMenuUI : MonoBehaviour
 
     public void LoadUpgradeScene()
     {
+        PlaySound(wooshSFX);
         if (levelController == null)
             levelController = FindObjectOfType<LevelController>();
 
@@ -100,6 +123,7 @@ public class OnClickMenuUI : MonoBehaviour
 
     public void OnNextChapterArrowClicked()
     {
+        PlaySound(buttonClick);
         if (menuHandlerClass == null)
             menuHandlerClass = FindObjectOfType<MainMenuHandler>().GetComponent<MainMenuHandler>();
         menuHandlerClass.RightArrowClicked();
@@ -107,6 +131,7 @@ public class OnClickMenuUI : MonoBehaviour
 
     public void OnPrevChapterArrowClicked()
     {
+        PlaySound(buttonClick);
         if (menuHandlerClass == null)
             menuHandlerClass = FindObjectOfType<MainMenuHandler>().GetComponent<MainMenuHandler>();
         menuHandlerClass.LeftArrowClicked();
@@ -114,6 +139,7 @@ public class OnClickMenuUI : MonoBehaviour
 
     public void OnLoadNextLevelClicked()
     {
+        PlaySound(buttonClick);
         if (levelComplete == null)
             levelComplete = FindObjectOfType<LevelComplete>();
         levelComplete.LoadNextLevel();
@@ -121,7 +147,7 @@ public class OnClickMenuUI : MonoBehaviour
 
     public void OnClickRetryAfterLevelComplete()
     {
-        Debug.Log("Calling Level Complete");
+        PlaySound(buttonClick);
         if (levelComplete == null)
             levelComplete = FindObjectOfType<LevelComplete>();
         levelComplete.RetryCurrentLevel();
@@ -129,6 +155,7 @@ public class OnClickMenuUI : MonoBehaviour
 
     public void OnLevelSelected()
     {
+        PlaySound(wooshSFX);
         var levelClickedGO = EventSystem.current.currentSelectedGameObject;
         string levelName = levelClickedGO.transform.parent.transform.parent.name;
         SceneManager.LoadScene(levelName);
@@ -136,6 +163,7 @@ public class OnClickMenuUI : MonoBehaviour
 
     public void ShowPreviewOfUpgrade()
     {
+        PlaySound(buttonClick);
         if (upgradeManagerClass == null)
             upgradeManagerClass = FindObjectOfType<UpgradeManager>();
         var upgradeClickedGO = EventSystem.current.currentSelectedGameObject;
@@ -145,6 +173,7 @@ public class OnClickMenuUI : MonoBehaviour
 
     public void UpgradeColorClicked()
     {
+        PlaySound(buttonClick);
         if (upgradeManagerClass == null)
             upgradeManagerClass = FindObjectOfType<UpgradeManager>();
         upgradeManagerClass.ShowColorsMenu();
@@ -152,6 +181,7 @@ public class OnClickMenuUI : MonoBehaviour
     
     public void EnterToUpgradeMainCanvas()
     {
+        PlaySound(buttonClick);
         if (upgradeManagerClass == null)
             upgradeManagerClass = FindObjectOfType<UpgradeManager>();
         upgradeManagerClass.ShowMainCanvas();
@@ -159,6 +189,7 @@ public class OnClickMenuUI : MonoBehaviour
 
     public void OnSelectColorForUpgrade()
     {
+        PlaySound(buttonClick);
         if (upgradeManagerClass == null)
             upgradeManagerClass = FindObjectOfType<UpgradeManager>();
 
@@ -185,6 +216,7 @@ public class OnClickMenuUI : MonoBehaviour
 
     public void SelectSkin()
     {
+        PlaySound(buttonClick);
         if (upgradeManagerClass == null)
             upgradeManagerClass = FindObjectOfType<UpgradeManager>();
 

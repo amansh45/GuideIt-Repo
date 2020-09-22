@@ -12,7 +12,8 @@ public class PlayerActions : MonoBehaviour
     float previousClickTime = 0f;
 
     Player playerClass;
-    GameObject currentLine, previousFingerPosition, playerLauncherInstance, playerMovementArea;
+    GameObject currentLine, previousFingerPosition, playerLauncherInstance;
+    public GameObject playerMovementArea;
     Vector2 prevPlayerPosition;
     Vector3 playerMovementAreaScale;
     Slowmotion slowmoClass;
@@ -20,6 +21,7 @@ public class PlayerActions : MonoBehaviour
 
     bool isPlayerShooting = false, isLineDrawing = false;
     public bool isGamePaused = false;
+
     private void Start()
     {
         slowmoClass = slowmotion.GetComponent<Slowmotion>();

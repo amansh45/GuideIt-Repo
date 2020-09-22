@@ -163,7 +163,7 @@ public class Player : MonoBehaviour
 
     void Die(GameObject collider)
     {
-        /*
+        
         if(timeUntilPlayerShouldNotDie <= 0)
         {
             Debug.Log("Player Died...");
@@ -174,7 +174,7 @@ public class Player : MonoBehaviour
             gameObject.SetActive(false);
             vfxControllerClass.PlayerDied(transform.position, collider, camShakeDuration);
         }
-        */
+        
     }
 
     void LevelComplete()

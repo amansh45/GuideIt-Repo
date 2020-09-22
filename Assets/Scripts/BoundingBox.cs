@@ -5,7 +5,8 @@ using UnityEngine;
 public class BoundingBox : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D other) {
-        Destroy(other.gameObject);
+        if(other.gameObject.name != "Following Missile")
+            Destroy(other.gameObject);
     }
 
 }

@@ -43,3 +43,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d89d41519f76691428f6fe2c4fd7c4b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  circlePlacement:
+  - xCoordinate: 0
+    yCoordinate: 0
+    adjustWrtBorders: 0
+    radius: 1.5
+    objectType: {fileID: 3608964236608183296, guid: 4948a6519d8e41d47ae40a69babce2dd,
+      type: 3}
+    count: 4
+  linePlacement:
+  - firstPoint: {x: -2.51, y: -2.51, z: 0}
+    secondPoint: {x: 2.51, y: 2.51, z: 0}
+    objectSpawnPoint: 0
+    objectType: {fileID: 9089513015767164995, guid: 221ce7e384e6e7f41be160aac4526c77,
+      type: 3}
+  rotateAnimationController: {fileID: 9100000, guid: 9628e44c5735e3d418ec8fd47a07fdc1,
+    type: 2}
+  endPointsSprite: {fileID: 21300000, guid: 8ad40b0ed8c82724e9fd5a8b9cba73fa, type: 3}

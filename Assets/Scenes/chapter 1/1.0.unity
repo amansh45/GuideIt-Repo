@@ -4245,6 +4245,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Following Missile Wrapper
       objectReference: {fileID: 0}
+    - target: {fileID: 2800898472216840614, guid: cff0dd0a53a24814d9ab00a40b47ba62,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2800898472216840615, guid: cff0dd0a53a24814d9ab00a40b47ba62,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4408,63 +4413,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3584918670665718757, guid: ec0703fa834d19b45bd40d774b4a03cb,
-        type: 3}
-      propertyPath: circlePlacement.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3584918670665718757, guid: ec0703fa834d19b45bd40d774b4a03cb,
-        type: 3}
-      propertyPath: linePlacement.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3584918670665718757, guid: ec0703fa834d19b45bd40d774b4a03cb,
-        type: 3}
-      propertyPath: linePlacement.Array.data[0].firstPoint.x
-      value: -2.51
-      objectReference: {fileID: 0}
-    - target: {fileID: 3584918670665718757, guid: ec0703fa834d19b45bd40d774b4a03cb,
-        type: 3}
-      propertyPath: linePlacement.Array.data[0].firstPoint.y
-      value: -2.51
-      objectReference: {fileID: 0}
-    - target: {fileID: 3584918670665718757, guid: ec0703fa834d19b45bd40d774b4a03cb,
-        type: 3}
-      propertyPath: linePlacement.Array.data[0].secondPoint.x
-      value: 2.51
-      objectReference: {fileID: 0}
-    - target: {fileID: 3584918670665718757, guid: ec0703fa834d19b45bd40d774b4a03cb,
-        type: 3}
-      propertyPath: linePlacement.Array.data[0].secondPoint.y
-      value: 2.51
-      objectReference: {fileID: 0}
-    - target: {fileID: 3584918670665718757, guid: ec0703fa834d19b45bd40d774b4a03cb,
-        type: 3}
-      propertyPath: linePlacement.Array.data[0].objectType
-      value: 
-      objectReference: {fileID: 9089513015767164995, guid: 221ce7e384e6e7f41be160aac4526c77,
-        type: 3}
-    - target: {fileID: 3584918670665718757, guid: ec0703fa834d19b45bd40d774b4a03cb,
-        type: 3}
-      propertyPath: circlePlacement.Array.data[0].radius
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3584918670665718757, guid: ec0703fa834d19b45bd40d774b4a03cb,
-        type: 3}
-      propertyPath: circlePlacement.Array.data[0].objectType
-      value: 
-      objectReference: {fileID: 3608964236608183296, guid: 4948a6519d8e41d47ae40a69babce2dd,
-        type: 3}
-    - target: {fileID: 3584918670665718757, guid: ec0703fa834d19b45bd40d774b4a03cb,
-        type: 3}
-      propertyPath: circlePlacement.Array.data[0].count
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 3584918670665718757, guid: ec0703fa834d19b45bd40d774b4a03cb,
-        type: 3}
-      propertyPath: rotateAnimationController
-      value: 
-      objectReference: {fileID: 9100000, guid: 9628e44c5735e3d418ec8fd47a07fdc1, type: 2}
     - target: {fileID: 5594153103402296235, guid: ec0703fa834d19b45bd40d774b4a03cb,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4524,11 +4472,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Runtime Object Placement
-      objectReference: {fileID: 0}
-    - target: {fileID: 6883093168010784547, guid: ec0703fa834d19b45bd40d774b4a03cb,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ec0703fa834d19b45bd40d774b4a03cb, type: 3}

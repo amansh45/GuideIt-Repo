@@ -29,6 +29,7 @@ public class RuntimeObjectPlacement : MonoBehaviour
     [SerializeField] List<Circle> circlePlacement = new List<Circle>();
     [SerializeField] List<Line> linePlacement = new List<Line>();
     [SerializeField] RuntimeAnimatorController rotateAnimationController;
+    [SerializeField] Sprite endPointsSprite;
 
 
     private void Start()
@@ -45,6 +46,7 @@ public class RuntimeObjectPlacement : MonoBehaviour
             for(int j=0;j<circlePlacement[i].count;j++)
             {
                 GameObject gameObject = Instantiate(circlePlacement[i].objectType, points[assignedIndex], transform.rotation);
+                gameObject.name = circlePlacement[i].objectType.name + " on circle";
                 gameObject.GetComponentInChildren<Animator>().runtimeAnimatorController = rotateAnimationController;
                 PlaceObjects objectPlacementScript = gameObject.GetComponent<PlaceObjects>();
                 objectPlacementScript.TriggerPlacementOnLine(points, assignedIndex, false);
@@ -54,11 +56,11 @@ public class RuntimeObjectPlacement : MonoBehaviour
 
         for(int i=0;i<numLines;i++)
         {
-            Utils.DrawLine(linePlacement[i].firstPoint, linePlacement[i].secondPoint);
+            Utils.DrawLine(linePlacement[i].firstPoint, linePlacement[i].secondPoint, endPointsSprite);
             GameObject gameObject = Instantiate(linePlacement[i].objectType, 
                 (linePlacement[i].objectSpawnPoint == 0) ? linePlacement[i].firstPoint : linePlacement[i].secondPoint, 
                 transform.rotation);
-            gameObject.name = "New object On Line";
+            gameObject.name = linePlacement[i].objectType.name + " on line";
             PlaceObjects objectPlacementScript = gameObject.GetComponent<PlaceObjects>();
             objectPlacementScript.TriggerPlacementOnLine(new List<Vector3>() { linePlacement[i].firstPoint, linePlacement[i].secondPoint }, linePlacement[i].objectSpawnPoint, true);
         }

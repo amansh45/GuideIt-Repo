@@ -5,12 +5,19 @@ using UnityEngine;
 public static class Utils
 {
     static int vertexCount = 40;
-    static float lineWidth = 0.05f, borderOffset = 0.2f;
+    static float lineWidth = 0.075f, borderOffset = 0.2f;
+
+    public static Color HexToRGB(string code)
+    {
+        Color testColor;
+        ColorUtility.TryParseHtmlString(code, out testColor);
+        return testColor;
+    }
 
     public static List<Vector3> DrawCircle(float xPos, float yPos, bool adjustWrtBorders, float radius)
     {
         List<Vector3> points = new List<Vector3>();
-        GameObject newCircle = new GameObject();
+        GameObject newCircle = new GameObject("Circle Holder");
         newCircle.transform.position = new Vector3(xPos, yPos, 0f);
         LineRenderer lineRenderer = newCircle.AddComponent<LineRenderer>();
 
@@ -30,7 +37,10 @@ public static class Utils
         float theta = 0f;
 
         lineRenderer.positionCount = vertexCount;
-        for(int i=0;i<lineRenderer.positionCount;i++)
+        lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
+        lineRenderer.startColor = HexToRGB("#B7A3A3");
+        lineRenderer.endColor = HexToRGB("#B7A3A3");
+        for (int i=0;i<lineRenderer.positionCount;i++)
         {
             Vector3 pos = new Vector3(radius * Mathf.Cos(theta), radius * Mathf.Sin(theta), 0f);
             lineRenderer.SetPosition(i, pos);
@@ -41,18 +51,35 @@ public static class Utils
     }
 
 
-    public static void DrawLine(Vector3 firstPos, Vector3 secondPos)
+    public static void DrawLine(Vector3 firstPos, Vector3 secondPos, Sprite incomingSprite)
     {
-        GameObject newLine = new GameObject();
+        GameObject first = new GameObject("Line Starter");
+        first.transform.position = firstPos;
+        first.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
+        SpriteRenderer renderer = first.AddComponent<SpriteRenderer>();
+        renderer.sprite = incomingSprite;
+        renderer.sortingOrder = 1;
+        GameObject second = new GameObject("Line End point 1");
+        second.transform.position = secondPos;
+        second.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
+        renderer = second.AddComponent<SpriteRenderer>();
+        renderer.sprite = incomingSprite;
+        renderer.sortingOrder = 1;
+
+        GameObject newLine = new GameObject("Line End point 2");
         newLine.transform.position = new Vector3(0,0,0);
-        newLine.name = "Line Holder";
         LineRenderer lineRenderer = newLine.AddComponent<LineRenderer>();
+
+        lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
+        lineRenderer.startColor = HexToRGB("#B7A3A3");
+        lineRenderer.endColor = HexToRGB("#B7A3A3");
 
         lineRenderer.widthMultiplier = lineWidth;
         lineRenderer.loop = true;
 
         lineRenderer.SetPosition(0, firstPos);
         lineRenderer.SetPosition(1, secondPos);
+
     }
 
 }

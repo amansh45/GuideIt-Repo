@@ -105,11 +105,7 @@ public class EnemyLauncher : MonoBehaviour
 
         if (isUpShootingLauncher)
         {
-            if(transform.position.x < screenCenter)
-                latestGranade.transform.Rotate(0, 0, -90f, Space.World);
-            else
-                latestGranade.transform.Rotate(0, 0, 90f, Space.World);
-                
+            latestGranade.transform.Rotate(0, 0, 90f);
         }
             
         latestGranadeClass = latestGranade.GetComponent<Granade>();

@@ -298,6 +298,7 @@ public class LevelController : MonoBehaviour
                 playerStats.chaptersList[currentChapterIndex + 1] = nextChapterObj;
                 PlayerStatistics.Level nextLevelObj = playerStats.chaptersList[currentChapterIndex + 1].LevelsInChapter[0];
                 playerStats.highestChapter = PersistentInformation.CurrentChapter = currentChapterIndex + 1;
+                playerStats.highestLevel = 0;
                 if(!nextLevelObj.IsPlayed)
                     nextLevelObj.IsPlaying = true;
                 nextLevelObj.IsLocked = false;
@@ -310,6 +311,7 @@ public class LevelController : MonoBehaviour
             nextLevelObj.IsPlaying = true;
             nextLevelObj.IsLocked = false;
             playerStats.chaptersList[currentChapterIndex].LevelsInChapter[currentLevelIndex + 1] = nextLevelObj;
+            playerStats.highestLevel = currentLevelIndex + 1;
         }
     }
 

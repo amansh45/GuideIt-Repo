@@ -39,7 +39,14 @@ public class LevelScroller : MonoBehaviour
                 generateLevelItem(levelsInChapter[i].IsPlayed, levelsInChapter[i].IsPlaying, levelsInChapter[i].IsLocked, 
                     levelsInChapter[i].LevelIndex, levelsInChapter[i].PersonalBestTime, levelsInChapter[i].CoinsAcquiredInLevel, levelsInChapter[i].CoinsInLevel);
             }
-            scrollView.verticalNormalizedPosition = 0f;
+            if(playerStats.highestChapter > chapterIndex)
+            {
+                scrollView.verticalNormalizedPosition = 1f;
+            } else
+            {
+                Debug.Log("Highest level in " + chapterIndex + "is: " + playerStats.highestLevel);
+                scrollView.verticalNormalizedPosition = (float) (playerStats.highestLevel) / 10f;
+            }
             firstTimeLoad = false;
         }
 

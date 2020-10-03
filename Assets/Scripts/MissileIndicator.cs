@@ -98,6 +98,10 @@ public class MissileIndicator : MonoBehaviour
         indicatorInitiated = true;
     }
 
+    private void Start()
+    {
+        GetComponent<SpriteRenderer>().enabled = false;
+    }
 
     void Update()
     {
@@ -105,30 +109,35 @@ public class MissileIndicator : MonoBehaviour
         {
 
             Vector3 movementAreaCoordinates = playerMovementArea.transform.position;
-   
-            Vector3 missilePos = missileGO.transform.position;
-            
-            float playerMovementAreaLeftX = movementAreaCoordinates.x - (playerMovementArea.transform.localScale.x / 2f), 
-                playerMovementAreaRightX = movementAreaCoordinates.x + (playerMovementArea.transform.localScale.x / 2f),
-                playerMovementAreaTopY = movementAreaCoordinates.y + (playerMovementArea.transform.localScale.y / 2f),
-                playerMovementAreaBottomY = movementAreaCoordinates.y - (playerMovementArea.transform.localScale.y / 2f) + 0.06f;
 
-
-            if (missilePos.x > playerMovementAreaRightX || missilePos.x < playerMovementAreaLeftX || missilePos.y < playerMovementAreaBottomY || missilePos.y > playerMovementAreaTopY)
+            if (missileGO == null)
+                Destroy(gameObject);
+            else
             {
-                GetComponent<SpriteRenderer>().enabled = true;
-                Vector2? positionOfIndicator = LSegRec_IntersPoint_v02((Vector2)playerGO.transform.position, (Vector2)missilePos,
-                    playerMovementAreaLeftX, playerMovementAreaBottomY, playerMovementAreaRightX, playerMovementAreaTopY);
-                if (positionOfIndicator != null)
+                Vector3 missilePos = missileGO.transform.position;
+
+                float playerMovementAreaLeftX = movementAreaCoordinates.x - (playerMovementArea.transform.localScale.x / 2f),
+                    playerMovementAreaRightX = movementAreaCoordinates.x + (playerMovementArea.transform.localScale.x / 2f),
+                    playerMovementAreaTopY = movementAreaCoordinates.y + (playerMovementArea.transform.localScale.y / 2f),
+                    playerMovementAreaBottomY = movementAreaCoordinates.y - (playerMovementArea.transform.localScale.y / 2f) + 0.06f;
+
+
+                if (missilePos.x > playerMovementAreaRightX || missilePos.x < playerMovementAreaLeftX || missilePos.y < playerMovementAreaBottomY || missilePos.y > playerMovementAreaTopY)
                 {
-                    Vector2 finalPos = (Vector2)positionOfIndicator;
-                    gameObject.transform.position = new Vector3(finalPos.x, finalPos.y, -2f);
-                } 
-            } else
-            {
-                GetComponent<SpriteRenderer>().enabled = false;
+                    GetComponent<SpriteRenderer>().enabled = true;
+                    Vector2? positionOfIndicator = LSegRec_IntersPoint_v02((Vector2)playerGO.transform.position, (Vector2)missilePos,
+                        playerMovementAreaLeftX, playerMovementAreaBottomY, playerMovementAreaRightX, playerMovementAreaTopY);
+                    if (positionOfIndicator != null)
+                    {
+                        Vector2 finalPos = (Vector2)positionOfIndicator;
+                        gameObject.transform.position = new Vector3(finalPos.x, finalPos.y, -2f);
+                    }
+                }
+                else
+                {
+                    GetComponent<SpriteRenderer>().enabled = false;
+                }
             }
-            
         }
 
     }

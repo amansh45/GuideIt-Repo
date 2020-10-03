@@ -124,8 +124,8 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == ObjectsDescription.EnemyObject.ToString() || other.gameObject.tag == ObjectsDescription.EnemyLauncher.ToString())
-            Die(other.gameObject);
+        if (other.gameObject.tag == ObjectsDescription.EnemyObject.ToString() || other.gameObject.tag == ObjectsDescription.EnemyLauncher.ToString());
+        //Die(other.gameObject);
         else if (other.gameObject.tag == ObjectsDescription.FinishLine.ToString())
             LevelComplete();
         else if (other.gameObject.name.Replace(" ", string.Empty) == ObjectsDescription.NearMissBladeGO.ToString())
@@ -138,16 +138,18 @@ public class Player : MonoBehaviour
             nearMissObjectNames.Add(objectName);
 
             taskHandlerClass.UpdateLevelTaskState(ObjectsDescription.Blade, TaskTypes.NearMiss, TaskCategory.CountingTask, new List<string>() { });
-        } else if(other.gameObject.name.Replace(" ", string.Empty) == ObjectsDescription.NearMissBoxGO.ToString())
+        }
+        else if (other.gameObject.name.Replace(" ", string.Empty) == ObjectsDescription.NearMissBoxGO.ToString())
         {
             string objectName = other.gameObject.transform.parent.parent.gameObject.name;
-            
+
             if (nearMissObjectNames.Contains(objectName))
                 return;
 
             nearMissObjectNames.Add(objectName);
             taskHandlerClass.UpdateLevelTaskState(ObjectsDescription.Box, TaskTypes.NearMiss, TaskCategory.CountingTask, new List<string>() { });
-        } else if(other.gameObject.name.Replace(" ", string.Empty) == ObjectsDescription.NearMissSquareGO.ToString())
+        }
+        else if (other.gameObject.name.Replace(" ", string.Empty) == ObjectsDescription.NearMissSquareGO.ToString())
         {
             string objectName = other.gameObject.transform.parent.parent.gameObject.name;
 

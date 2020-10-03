@@ -49,8 +49,8 @@ MonoBehaviour:
   highestChapter: 0
   highestLevel: 0
   playerCoins: 0
-  sfxVolume: 1
-  musicVolume: 1
-  levelsInChapter: 0a00000001000000
+  sfxVolume: 0
+  musicVolume: 0
+  levelsInChapter: 0a0000000a0000000a0000000a000000
   playerStatsLoaded: 0
   prevProceduralLevelFailed: 0

@@ -8,7 +8,8 @@ public class Slowmotion : MonoBehaviour
     public List<GameObject> gameEntities = new List<GameObject>();
     List<Animator> animators = new List<Animator>();
     List<EnemyLauncher> granadeLaunchersInScene = new List<EnemyLauncher>();
-    int numGameEntities, numAnimators = 0, numLaunchers = 0;
+    List<PlaceObjects> placeObjectScriptContainersInScene = new List<PlaceObjects>();
+    int numGameEntities, numAnimators = 0, numLaunchers = 0, numContainers = 0;
     float slowmoSpeedCache;
 
     void Start()
@@ -17,18 +18,25 @@ public class Slowmotion : MonoBehaviour
         numGameEntities = gameEntities.Count;
         for (int i = 0; i < numGameEntities; i++)
         {
-            var animator = gameEntities[i].GetComponent<Animator>();
+            var animator = gameEntities[i].GetComponentInChildren<Animator>();
             if (animator != null)
             {
                 numAnimators += 1;
                 animators.Add(animator);
             }
 
-            var enemyLauncher = gameEntities[i].GetComponent<EnemyLauncher>();
+            var enemyLauncher = gameEntities[i].GetComponentInChildren<EnemyLauncher>();
             if (enemyLauncher != null)
             {
                 numLaunchers += 1;
                 granadeLaunchersInScene.Add(enemyLauncher);
+            }
+
+            var placeObjectScriptContainers = gameEntities[i].GetComponentInChildren<PlaceObjects>();
+            if(placeObjectScriptContainers != null)
+            {
+                numContainers += 1;
+                placeObjectScriptContainersInScene.Add(placeObjectScriptContainers);
             }
         }
     }
@@ -70,6 +78,13 @@ public class Slowmotion : MonoBehaviour
                 granadeLaunchersInScene[i].SetSlowmoForGranadeLauncher(1f);
         }
 
+        for(int i = 0; i < numContainers; i++)
+        {
+            if (slowmo)
+                placeObjectScriptContainersInScene[i].SetSlowmoForObjectInLine(slowmoSpeed);
+            else
+                placeObjectScriptContainersInScene[i].SetSlowmoForObjectInLine(1 / slowmoSpeed);
+        }
 
         // update moving speed for all active granades and scaling speed of all non active granades.
         Granade[] granades = FindObjectsOfType<Granade>();

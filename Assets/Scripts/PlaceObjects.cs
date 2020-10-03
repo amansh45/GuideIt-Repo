@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlaceObjects : MonoBehaviour
 {
-    public bool isRotating = false, placeWrtCornors = false, isCoinOrPlayer = false, scalingRequired = false;
+    public bool isRotating = false, placeWrtCornors = false, isCoinOrPlayer = false, scalingRequired = false, isObjectAFreeBird = false;
     public float leftRightOffset = 0f, baseScreenWidth = 5.635593f, dynamicWidthForScaling = 0.0f;
 
     bool isFirstTimeLoad = true, objectInLeftHalf;
@@ -68,7 +68,7 @@ public class PlaceObjects : MonoBehaviour
 
     void Update()
     {
-        if (PersistentInformation.MarginsSet && isFirstTimeLoad)
+        if (PersistentInformation.MarginsSet && isFirstTimeLoad && !isObjectAFreeBird)
         {
             Vector3 newPosition = transform.position;
             if(objectInLeftHalf)
@@ -124,6 +124,11 @@ public class PlaceObjects : MonoBehaviour
                 currentIndex = nextIndex;
             }
         }
+    }
+
+    public void SetSlowmoForObjectInLine(float slowmoFactor)
+    {
+        normalSpeed *= slowmoFactor;
     }
 
     public void TriggerPlacementOnLine(List<Vector3> points, int index, bool isLine)

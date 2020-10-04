@@ -247,7 +247,7 @@ PlayerSettings:
   AndroidTargetArchitectures: 5
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: C:/Users/Aman/Documents/do not delete, key for updating guideIt/user.keystore
+  AndroidKeystoreName: C:/Users/Aman/Documents/do not delete, key for updating guideIt/guideIt.keystore
   AndroidKeyaliasName: guideit key
   AndroidBuildApkPerCpuArchitecture: 0
   AndroidTVCompatibility: 1

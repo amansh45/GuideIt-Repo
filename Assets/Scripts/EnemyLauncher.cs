@@ -91,6 +91,8 @@ public class EnemyLauncher : MonoBehaviour
             }
         }
 
+        if(!isUpShootingLauncher)
+            latestGranadeClass.gameObject.transform.rotation = transform.GetChild(0).rotation;
         latestGranadeClass.setGranadeSpeed(initializationFactor);
         latestGranadeClass.MoveGranade();
     }

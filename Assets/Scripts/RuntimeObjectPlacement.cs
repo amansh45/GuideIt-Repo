@@ -13,6 +13,7 @@ public class RuntimeObjectPlacement : MonoBehaviour
         public float radius;
         public GameObject objectType;
         public int count;
+        public float circleBorderWidth;
     }
 
     [System.Serializable]
@@ -45,7 +46,7 @@ public class RuntimeObjectPlacement : MonoBehaviour
 
         for(int i=0;i<numCircles;i++)
         {
-            List<Vector3> points = Utils.DrawCircle(circlePlacement[i].xCoordinate, circlePlacement[i].yCoordinate, circlePlacement[i].adjustWrtBorders, circlePlacement[i].radius);
+            List<Vector3> points = Utils.DrawCircle(circlePlacement[i].xCoordinate, circlePlacement[i].yCoordinate, circlePlacement[i].adjustWrtBorders, circlePlacement[i].radius, circlePlacement[i].circleBorderWidth);
             int numPoints = points.Count;
             int assignedIndex = 0;
             int differenceBetweenIndex = numPoints / circlePlacement[i].count;

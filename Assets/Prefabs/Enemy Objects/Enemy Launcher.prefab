@@ -127,9 +127,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isRotating: 0
-  placeWrtCornors: 0
+  placeWrtCornors: 1
   isCoinOrPlayer: 0
   scalingRequired: 0
+  isObjectAFreeBird: 0
   leftRightOffset: 0.3
   baseScreenWidth: 5.61
   dynamicWidthForScaling: 0
@@ -395,10 +396,12 @@ MonoBehaviour:
     type: 3}
   playerPrefab: {fileID: 0}
   stillDistanceThreshold: 3
-  aimAtPlayer: 0
+  aimAtPlayer: 1
   isBlinking: 0
   isUpShootingLauncher: 0
   blinkDistanceThreshold: 0.5
+  thresholdForSFX: 5
+  granadeSpeed: 200
   enemyShootingSFX: {fileID: 8300000, guid: da6e7a7dcc6899e409fda4a2ec5dcb11, type: 3}
 --- !u!60 &7500571777623009594
 PolygonCollider2D:

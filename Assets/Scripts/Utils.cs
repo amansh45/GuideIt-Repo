@@ -14,23 +14,33 @@ public static class Utils
         return testColor;
     }
 
-    public static List<Vector3> DrawCircle(float xPos, float yPos, bool adjustWrtBorders, float radius)
+    public static List<Vector3> DrawCircle(float xPos, float yPos, bool adjustWrtBorders, float radius, float circleBorderWidth)
     {
         List<Vector3> points = new List<Vector3>();
         GameObject newCircle = new GameObject("Circle Holder");
         newCircle.transform.position = new Vector3(xPos, yPos, 0f);
         LineRenderer lineRenderer = newCircle.AddComponent<LineRenderer>();
 
-        lineRenderer.widthMultiplier = lineWidth;
+        lineRenderer.widthMultiplier = circleBorderWidth;
         lineRenderer.loop = true;
 
         if (adjustWrtBorders)
         {
             var bottomLeft = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, 0));
             var bottomRight = Camera.main.ViewportToWorldPoint(new Vector3(1, 0, 0));
+
             float width = bottomRight.x - bottomLeft.x;
-            radius = Mathf.Min((width/2f) - lineWidth - borderOffset, Mathf.Abs(xPos - bottomLeft.x), Mathf.Abs(xPos - bottomRight.x));
-            radius = radius - lineWidth - borderOffset;
+
+            float maxRadius = Mathf.Min((width / 2f) - lineWidth - borderOffset, Mathf.Abs(xPos - bottomLeft.x), Mathf.Abs(xPos - bottomRight.x));
+            maxRadius = maxRadius - circleBorderWidth - borderOffset;
+
+            if (radius == 0)
+            {
+                radius = maxRadius;
+            } else
+            {
+                radius = Mathf.Min(radius, maxRadius);
+            }
         }
 
         float deltaTheta = (2f * Mathf.PI) / vertexCount;
@@ -42,7 +52,7 @@ public static class Utils
         lineRenderer.endColor = HexToRGB("#B7A3A3");
         for (int i=0;i<lineRenderer.positionCount;i++)
         {
-            Vector3 pos = new Vector3(radius * Mathf.Cos(theta), radius * Mathf.Sin(theta), 0f);
+            Vector3 pos = new Vector3(radius * Mathf.Cos(theta) + xPos, radius * Mathf.Sin(theta) + yPos, 0f);
             lineRenderer.SetPosition(i, pos);
             points.Add(pos);
             theta += deltaTheta;
